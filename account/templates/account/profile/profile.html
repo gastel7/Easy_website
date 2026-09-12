@@ -1,0 +1,6 @@
+{% if user.is_authenticated %} Bonjour {{user.username }} {% endif%}
+
+<br><br><br><br>
+
+<a href="{% url 'account:logout' %}">Se déconnecter</a>
+

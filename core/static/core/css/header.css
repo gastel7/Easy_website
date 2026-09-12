@@ -1,0 +1,72 @@
+header{
+    padding: 15px 30px;
+    background-color: #0b0b0f;
+    font-size: .90em;
+    position: fixed;
+    width: 100vw;
+    height: 90px;
+}
+
+.header_content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo{
+    width: 100px;
+}
+
+.logo img{
+    width: 100%;
+    height: 100%;
+}
+
+/* Le menu de navigation */
+
+header .nav_menu ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    gap: 20px;
+}
+
+header .nav_menu ul li a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+header .nav_menu ul li a:hover{
+    border-bottom: solid 1px #e50914;
+    color: #e50914;
+}
+
+/* Les boutons d'actions du header */
+.btns_actions{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btns_actions a{
+    padding: 9px 12px;
+    background: #e50914;
+    border: solid 1px #e50914;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+}
+
+.btns_actions a.log_up{
+    background-color: #fff;
+    color: #e50914;
+    transition-duration: 0.3s;
+    transition-timing-function: linear;
+}
+
+.btns_actions a.log_up:hover{
+    color: #fff;
+    background-color: #e50914;
+}

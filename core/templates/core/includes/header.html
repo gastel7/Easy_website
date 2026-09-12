@@ -1,0 +1,26 @@
+{% load static %}
+
+<header>
+    <div class="header_content">
+        <!-- Le logo -->
+        <div class="logo">
+            <img src="{% static 'core/images/logo.png' %}" alt="logo de la plateforme">
+        </div>
+
+        <!-- Le menu de navigation -->
+        <nav class="nav_menu">
+            <ul>
+                <li><a href="">Accueil</a></li>
+                <li><a href="">Événements</a></li>
+                <li><a href="">À Propos</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
+        </nav>
+
+        <!-- Les boutons d'actions -->
+        <div class="btns_actions">
+            <a class="log_in" href="{% url 'account:login' %}">Se connecter</a>
+            <a class="log_up" href="{% url 'account:logup' %}">Créer un compte</a>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,144 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="{% static 'css/account/log.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/header.css' %}">
+
+</head>
+<body>
+    {% include "core/includes/header.html" %}
+    <div class="container">
+        <div class="container_sub">
+            <!-- Logo et info -->
+            <section class="login_text_info">
+                <h1>Bienvenue sur <strong>Easy</strong></h1>
+                <p>Connectez-vous pour accéder à votre compte (organisateur ou participant) et profiter de toutes les fonctionnalités de la plateforme.</p>
+            </section>
+
+            <!-- Formulaire de connexion -->
+            <section class="form_container">
+                <div class="form_container_sub">
+                    <h2>Connexion</h2>
+
+                    <form method="POST" action="{% url 'account:login' %}">
+                        <!-- Choice rôle block -->
+                        <div class="choice_role_block">
+                            <!-- Organisateur block -->
+                            <section class="role_card is_clicked active" onclick="handleToggle('organisateur')" id="btn-organisateur    ">
+                                <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c0-3.5 3-6.5 7-6.5h2c1.8 0 3.4.7 4.6 1.8" /><path d="M6.8 9.5a3.7 3.7 0 1 1 7.4 0c0 1.2-.6 2.3-1.5 3" /><path d="M6.8 9.5c-.4-1.2.2-3.1 2.2-3.1s2.5.6 3.7.2 1-2.1-1.9-2.1c-2.5 0-4 1.6-4 5z" /><rect x="14" y="15" width="9" height="7" rx="1" /><path d="M14 18h9"/><path d="M16 13v2M21 13v2"/><path d="M16.5 20h2"/></svg>
+
+                                <span>Organisateur</span>
+                            </section>
+
+                            <!-- Participant block -->
+                            <section class="role_card" onclick="handleToggle('participant')" id="btn-participant">                        
+                                <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c0-3.5 3-6.5 7-6.5h2c1.8 0 3.4.7 4.6 1.8" /><path d="M6.8 9.5a3.7 3.7 0 1 1 7.4 0c0 1.2-.6 2.3-1.5 3" /><path d="M6.8 9.5c-.4-1.2.2-3.1 2.2-3.1s2.5.6 3.7.2 1-2.1-1.9-2.1c-2.5 0-4 1.6-4 5z" /><path d="M14 16.5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1.5a1 1 0 0 0 0 1v1.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-1.5a1 1 0 0 0 0-1v-1.5z" /><path stroke-dasharray="1 2" d="M16.5 15.5v5" /></svg>
+
+
+                                <span>Participant</span>
+                            </section>
+                        </div>
+
+
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">{{ form.errors }}</div>
+                        {% endif %}
+
+                        <!-- Champ Username -->
+                        <div class="input-group">
+                            <label for="{{ form.username.id_for_label }}">Identifiant :</label>
+
+                            <div class="input-with-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M367-527q-47-47-47-113t47-113q47-47 113-47t113 47q47 47 47 113t-47 113q-47 47-113 47t-113-47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm296.5-343.5Q560-607 560-640t-23.5-56.5Q513-720 480-720t-56.5 23.5Q400-673 400-640t23.5 56.5Q447-560 480-560t56.5-23.5ZM480-640Zm0 400Z"/></svg>
+                                
+                                {{ form.username }}
+                            </div>
+                        </div>
+
+                        <!-- Champ Password -->
+                        <div class="input-group">
+                            <label for="{{ form.password.id_for_label }}">Mot de passe :</label>
+                            
+                            <div class="input-with-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m644-428-58-58q9-47-27-88t-93-32l-58-58q17-8 34.5-12t37.5-4q75 0 127.5 52.5T660-500q0 20-4 37.5T644-428Zm128 126-58-56q38-29 67.5-63.5T832-500q-50-101-143.5-160.5T480-720q-29 0-57 4t-55 12l-62-62q41-17 84-25.5t90-8.5q151 0 269 83.5T920-500q-23 59-60.5 109.5T772-302Zm20 246L624-222q-35 11-70.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53-98.5t73-81.5L56-792l56-56 736 736-56 56ZM222-624q-29 26-53 57t-41 67q50 101 143.5 160.5T480-280q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-500q0-11 1.5-21t4.5-21l-84-82Zm319 93Zm-151 75Z"/></svg>                                
+                                
+                                {{ form.password }}
+                                
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M607.5-372.5Q660-425 660-500t-52.5-127.5Q555-680 480-680t-127.5 52.5Q300-575 300-500t52.5 127.5Q405-320 480-320t127.5-52.5Zm-204-51Q372-455 372-500t31.5-76.5Q435-608 480-608t76.5 31.5Q588-545 588-500t-31.5 76.5Q525-392 480-392t-76.5-31.5ZM214-281.5Q94-363 40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200q-146 0-266-81.5ZM480-500Zm207.5 160.5Q782-399 832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280q113 0 207.5-59.5Z"/></svg> -->
+                            </div>
+                        </div>
+
+                        <button type="submit">Se connecter</button>
+
+
+                        <!-- Autres façons de se connecter -->
+                        <div class="social-login">
+                            <!-- Connexion avec google -->
+                            <a href="">
+                                <svg viewBox="-0.5 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Google-color</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Color-" transform="translate(-401.000000, -860.000000)"> <g id="Google" transform="translate(401.000000, 860.000000)"> <path d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24" id="Fill-1" fill="#FBBC05"> </path> <path d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333" id="Fill-2" fill="#EB4335"> </path> <path d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667" id="Fill-3" fill="#34A853"> </path> <path d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24" id="Fill-4" fill="#4285F4"> </path> </g> </g> </g> </g></svg>
+                            </a>
+
+
+                            <!-- Connexion avec facebook -->
+                            <a href="">
+                                <svg fill="#1877F2" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" class="icon" stroke="#1877F2"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-92.4 233.5h-63.9c-50.1 0-59.8 23.8-59.8 58.8v77.1h119.6l-15.6 120.7h-104V912H539.2V602.2H434.9V481.4h104.3v-89c0-103.3 63.1-159.6 155.3-159.6 44.2 0 82.1 3.3 93.2 4.8v107.9z"></path> </g></svg>
+                            </a>
+                            
+
+                            <!-- Connexion avec LinkedIn -->
+                            <a href="">
+                                <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none"> <path d="M0 18.338C0 8.216 8.474 0 18.92 0h218.16C247.53 0 256 8.216 256 18.338v219.327C256 247.79 247.53 256 237.08 256H18.92C8.475 256 0 247.791 0 237.668V18.335z" fill="#069"></path> <path d="M77.796 214.238V98.986H39.488v115.252H77.8zM58.65 83.253c13.356 0 21.671-8.85 21.671-19.91-.25-11.312-8.315-19.915-21.417-19.915-13.111 0-21.674 8.603-21.674 19.914 0 11.06 8.312 19.91 21.169 19.91h.248zM99 214.238h38.305v-64.355c0-3.44.25-6.889 1.262-9.346 2.768-6.885 9.071-14.012 19.656-14.012 13.858 0 19.405 10.568 19.405 26.063v61.65h38.304v-66.082c0-35.399-18.896-51.872-44.099-51.872-20.663 0-29.738 11.549-34.78 19.415h.255V98.99H99.002c.5 10.812-.003 115.252-.003 115.252z" fill="#ffffff"></path> </g> </g></svg>
+                            </a>
+                        </div>
+                    </form>
+
+                    <p>_pas encore inscrit ? <a href="{% url 'account:logup' %}">S'inscrire</a></p>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<div class="role-selector-container">
+    <!-- Option 1 : Organisateur (Actif par défaut) -->
+    <label class="role-item active" for="role-organisateur">
+        <input type="radio" id="role-organisateur" name="role" checked onchange="switchRole(this)">
+        <!-- Insérer votre SVG Organisateur ici -->
+        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c0-3.5 3-6.5 7-6.5h2c1.8 0 3.4.7 4.6 1.8"/><path d="M6.8 9.5a3.7 3.7 0 1 1 7.4 0c0 1.2-.6 2.3-1.5 3"/><path d="M6.8 9.5c-.4-1.2.2-3.1 2.2-3.1s2.5.6 3.7.2 1-2.1-1.9-2.1c-2.5 0-4 1.6-4 5z"/><rect x="14" y="15" width="9" height="7" rx="1"/><path d="M14 18h9"/><path d="M16 13v2M21 13v2"/><path d="M16.5 20h2"/></svg>
+        <span>Organisateur</span>
+    </label>
+
+    <!-- Option 2 : Participant -->
+    <label class="role-item" for="role-participant">
+        <input type="radio" id="role-participant" name="role" onchange="switchRole(this)">
+        <!-- Insérer votre SVG Participant ici -->
+        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c0-3.5 3-6.5 7-6.5h2c1.8 0 3.4.7 4.6 1.8"/><path d="M6.8 9.5a3.7 3.7 0 1 1 7.4 0c0 1.2-.6 2.3-1.5 3"/><path d="M6.8 9.5c-.4-1.2.2-3.1 2.2-3.1s2.5.6 3.7.2 1-2.1-1.9-2.1c-2.5 0-4 1.6-4 5z"/><path d="M14 16.5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1.5a1 1 0 0 0 0 1v1.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-1.5a1 1 0 0 0 0-1v-1.5z"/><path stroke-dasharray="1 2" d="M16.5 15.5v5"/></svg>
+        <span>Participant</span>
+    </label>
+</div>
+
+
+<div class="role-selector-container">
+    <label class="role-item active" for="role-email">
+        <input type="radio" id="role-email" name="role" checked onchange="switchRole(this)">
+        <span>Adresse Email</span>
+    </label>
+
+    <!-- Option 2 : Participant -->
+    <label class="role-item" for="role-tel">
+        <input type="radio" id="role-tel" name="role" onchange="switchRole(this)">
+        <!-- Insérer votre SVG Participant ici -->
+        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c0-3.5 3-6.5 7-6.5h2c1.8 0 3.4.7 4.6 1.8"/><path d="M6.8 9.5a3.7 3.7 0 1 1 7.4 0c0 1.2-.6 2.3-1.5 3"/><path d="M6.8 9.5c-.4-1.2.2-3.1 2.2-3.1s2.5.6 3.7.2 1-2.1-1.9-2.1c-2.5 0-4 1.6-4 5z"/><path d="M14 16.5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1.5a1 1 0 0 0 0 1v1.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-1.5a1 1 0 0 0 0-1v-1.5z"/><path stroke-dasharray="1 2" d="M16.5 15.5v5"/></svg>
+        <span>Numéro de téléphone</span>
+    </label>
+</div>

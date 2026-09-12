@@ -1,0 +1,15 @@
+.form_div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.logup_section{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.section_or{
+   margin-top: 15px;
+   margin-bottom: 15px;
+}

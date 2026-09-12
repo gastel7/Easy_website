@@ -1,0 +1,189 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="{% static 'css/account/login.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/header.css' %}">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+    {% include "core/includes/header.html" %}
+    <main class="container">
+        <div class="main_content">
+            <!-- Logo et info -->
+            <section class="login_text_info">
+                <img src="{% static 'core/images/Logo.png' %}" alt="Logo Easy" style="width: 150px;">
+
+
+                <h1>Bon retour sur <strong>Easy</strong></h1>
+                <p>Connectez-vous pour accéder à votre compte (organisateur ou participant) et profiter de toutes les fonctionnalités de la plateforme.</p>
+            </section>
+
+            <!-- La section de connexion -->
+            <section class="login_section">              
+               <div class="tabs-role-container">
+                    <!-- Onglet 1 : Organisateur (Actif par défaut) -->
+                    <label class="tab-item active" for="tab-organisateur">
+                        <input type="radio" id="tab-organisateur" name="role-selection" checked onchange="switchTab(this)">
+                        <!-- Icône Organisateur -->
+                        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c0-3.5 3-6.5 7-6.5h2c1.8 0 3.4.7 4.6 1.8"/><path d="M6.8 9.5a3.7 3.7 0 1 1 7.4 0c0 1.2-.6 2.3-1.5 3"/><path d="M6.8 9.5c-.4-1.2.2-3.1 2.2-3.1s2.5.6 3.7.2 1-2.1-1.9-2.1c-2.5 0-4 1.6-4 5z"/><rect x="14" y="15" width="9" height="7" rx="1"/><path d="M14 18h9"/><path d="M16 13v2M21 13v2"/><path d="M16.5 20h2"/></svg>
+                        <span>Organisateur</span>
+                    </label>
+
+                    <!-- Onglet 2 : Participant -->
+                    <label class="tab-item" for="tab-participant">
+                        <input type="radio" id="tab-participant" name="role-selection" onchange="switchTab(this)">
+                        <!-- Icône Participant (Version Ticket) -->
+                        <svg xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c0-3.5 3-6.5 7-6.5h2c1.8 0 3.4.7 4.6 1.8"/><path d="M6.8 9.5a3.7 3.7 0 1 1 7.4 0c0 1.2-.6 2.3-1.5 3"/><path d="M6.8 9.5c-.4-1.2.2-3.1 2.2-3.1s2.5.6 3.7.2 1-2.1-1.9-2.1c-2.5 0-4 1.6-4 5z"/><path d="M14 16.5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1.5a1 1 0 0 0 0 1v1.5a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-1.5a1 1 0 0 0 0-1v-1.5z"/><path stroke-dasharray="1 2" d="M16.5 15.5v5"/></svg>
+                        <span>Participant</span>
+                    </label>
+                </div>
+
+
+                <div class="email_or_phone-selector-container" style="margin: 20px 0">
+                    <label class="email_or_phone-item active" for="email_or_phone-email">
+                        <input type="radio" id="email_or_phone-email" name="email_or_phone" checked onchange="switchEmailOrPhone(this)">
+                        <span>Email</span>
+                    </label>
+
+                    <!-- Option 2 : Participant -->
+                    <label class="email_or_phone-item" for="email_or_phone-tel">
+                        <input type="radio" id="email_or_phone-tel" name="email_or_phone" onchange="switchEmailOrPhone(this)">
+                        <span>Téléphone</span>
+                    </label>
+                </div>
+
+
+                <form action="" method="post">
+                    <!-- Ce champ sera mis à jour par ta fonction JS handleToggle -->
+                    <input type="hidden" name="role" id="selected-role" value="organisateur">
+    
+
+                    <!-- <section class="container-input">
+                        <label for="id_username">Nom d'utilisateur</label>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-at-sign h-4 w-4 text-muted-foreground" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg>
+                            <input type="text" name="username" id="id_username" placeholder="Nom d'utilisateur">
+                        </div>
+                    </section> -->
+
+                    
+                    <!-- L'email ou le numéro de téléphone -->
+                    <div>
+                        <!-- Email -->
+                        <section class="container-input login_input">
+                            <label for="id_email">Adresse Email</label>
+                            <div class="input_field">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-at-sign h-4 w-4 text-muted-foreground" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg>
+                                <input type="text" name="username" id="id_email" placeholder="email@example.com">
+                            </div>
+                        </section>
+
+                        <!-- Numéro de téléphone -->
+                        <section class="container-input login_input not_choiced">
+                            <label for="id_username">Numéro de téléphone</label>
+
+                            
+                                <div style="display: flex; justify-content: space-between;">
+                                    <select name="country_code" id="country_code" style="width: 100px; padding-left: 5px;">
+                                        <option value="+33">FR (+33)</option>
+                                        <option value="+1">USA (+1)</option>
+                                        <option value="+44">UK (+44)</option>
+                                        <!-- Ajoutez d'autres pays selon vos besoins -->
+                                    </select> 
+
+                                    <div class="input_field" style="width: 210px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="currentColor"><path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12ZM241-600l66-66-17-94h-89q5 41 14 81t26 79Zm358 358q39 17 79.5 27t81.5 13v-88l-94-19-67 67ZM241-600Zm358 358Z"/></svg>
+                                        <input type="text" name="username" id="id_username" placeholder="06 00 00 00 00">
+                                    </div>
+                                </div>
+                        </section>
+                    </div>
+                    
+            
+                    <section class="container-input">
+                        <section>
+                            <label for="id_password">Mot de passe</label>
+
+                            <a class="forget-password" href="">oublié ?</a>
+                        </section>
+
+                        <div class="input_field">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock h-4 w-4 text-muted-foreground" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            <input type="password" name="password" id="id_password" placeholder="Mot de passe">
+                            
+                            <button type="button" class="toggle-password" aria-label="Afficher le mot de passe">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"></path><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"></path><path d="m2 2 20 20"></path></svg>
+                            </button>
+                        </div>
+                    </section>
+
+                    {% if form.errors %}
+                        <div class="error-message">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+            
+
+
+                    {% csrf_token %}
+                    <button class="btn_login">
+                        Se connecter
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white"><path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/></svg>
+                    </button>
+
+
+                    <!-- La section "OU" -->
+                    <section class="section_or">
+                        <div></div>
+                            OU
+                        <div></div>
+                    </section>
+
+                    <!-- Connexion via les réseaux sociaux : -->
+
+                    <div class="social-login" style="display: flex; gap: 10px;">
+                        <!-- "Continuer avec Google" --> 
+                        <a href="" class="social_logins_links" title="Se connecter avec google">
+                            <svg viewBox="-0.5 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>Google-color</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Color-" transform="translate(-401.000000, -860.000000)"> <g id="Google" transform="translate(401.000000, 860.000000)"> <path d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24" id="Fill-1" fill="#FBBC05"> </path> <path d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333" id="Fill-2" fill="#EB4335"> </path> <path d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667" id="Fill-3" fill="#34A853"> </path> <path d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24" id="Fill-4" fill="#4285F4"> </path> </g> </g> </g> </g></svg>
+                        </a>
+
+                        <!-- "Continuer avec Facebook" -->
+                        <a href="" class="social_logins_links" title="Se connecter avec Facebook">
+                            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="16" cy="16" r="14" fill="url(#paint0_linear_87_7208)"></circle> <path d="M21.2137 20.2816L21.8356 16.3301H17.9452V13.767C17.9452 12.6857 18.4877 11.6311 20.2302 11.6311H22V8.26699C22 8.26699 20.3945 8 18.8603 8C15.6548 8 13.5617 9.89294 13.5617 13.3184V16.3301H10V20.2816H13.5617V29.8345C14.2767 29.944 15.0082 30 15.7534 30C16.4986 30 17.2302 29.944 17.9452 29.8345V20.2816H21.2137Z" fill="white"></path> <defs> <linearGradient id="paint0_linear_87_7208" x1="16" y1="2" x2="16" y2="29.917" gradientUnits="userSpaceOnUse"> <stop stop-color="#18ACFE"></stop> <stop offset="1" stop-color="#0163E0"></stop> </linearGradient> </defs> </g></svg>
+                        </a>
+
+
+                        <!-- LinkedIn -->
+                        <a href="" class="social_logins_links" title="Se connecter avec linkedIn">
+                            <svg viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M218.123122,218.127392 L180.191928,218.127392 L180.191928,158.724263 C180.191928,144.559023 179.939053,126.323993 160.463756,126.323993 C140.707926,126.323993 137.685284,141.757585 137.685284,157.692986 L137.685284,218.123441 L99.7540894,218.123441 L99.7540894,95.9665207 L136.168036,95.9665207 L136.168036,112.660562 L136.677736,112.660562 C144.102746,99.9650027 157.908637,92.3824528 172.605689,92.9280076 C211.050535,92.9280076 218.138927,118.216023 218.138927,151.114151 L218.123122,218.127392 Z M56.9550587,79.2685282 C44.7981969,79.2707099 34.9413443,69.4171797 34.9391618,57.260052 C34.93698,45.1029244 44.7902948,35.2458562 56.9471566,35.2436736 C69.1040185,35.2414916 78.9608713,45.0950217 78.963054,57.2521493 C78.9641017,63.090208 76.6459976,68.6895714 72.5186979,72.8184433 C68.3913982,76.9473153 62.7929898,79.26748 56.9550587,79.2685282 M75.9206558,218.127392 L37.94995,218.127392 L37.94995,95.9665207 L75.9206558,95.9665207 L75.9206558,218.127392 Z M237.033403,0.0182577091 L18.8895249,0.0182577091 C8.57959469,-0.0980923971 0.124827038,8.16056231 -0.001,18.4706066 L-0.001,237.524091 C0.120519052,247.839103 8.57460631,256.105934 18.8895249,255.9977 L237.033403,255.9977 C247.368728,256.125818 255.855922,247.859464 255.999,237.524091 L255.999,18.4548016 C255.851624,8.12438979 247.363742,-0.133792868 237.033403,0.000790807055" fill="#0A66C2"> </path> </g> </g></svg>
+                        </a>
+                    </div>
+
+
+                    <!-- Pas encore de compte, Créer un compte-->
+                    <section class="new_account">
+                        <span>Pas encore de compte ? <a href="{% url 'account:logup' %}">Créer un compte</a></span>
+                    </section>
+                </form>
+            </section> 
+        </div>        
+    </main>
+
+    <script src="{% static 'js/account/toggle_password.js' %}"></script>
+    <script src="{% static 'js/account/switch_functions.js' %}"></script>
+</body>
+</html>
