@@ -1,18 +1,16 @@
+{% extends 'core/base.html' %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
-    <link rel="stylesheet" href="{% static 'css/account/login.css' %}">
-    <link rel="stylesheet" href="{% static 'core/css/header.css' %}">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+{% block title %} Connexion {% endblock %}
 
-</head>
-<body>
-    {% include "core/includes/header.html" %}
+{% block css %} 
+    <link rel="stylesheet" href="{% static 'css/account/login.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/header__footer.css' %}">
+    <link rel="shortcut icon" href="{% static 'core/images/logo.png' %}" type="image/x-icon">
+{% endblock %}
+
+{% block main %} 
     <main class="container">
         <div class="main_content">
             <!-- Logo et info -->
@@ -182,8 +180,9 @@
             </section> 
         </div>        
     </main>
+{% endblock %}
 
+{% block js %}
     <script src="{% static 'js/account/toggle_password.js' %}"></script>
     <script src="{% static 'js/account/switch_functions.js' %}"></script>
-</body>
-</html>
+{% endblock %}

@@ -1,15 +1,171 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: inter;
+    /* outline: solid red 1px; */
+}
+
+.container{
+    height: 780px;
+    max-height: 100%;
+}
+
+.main_content{
+    width: 95%;
+    /* outline: solid red; */
+}
+
+
+/* La section du carroussel (La fenêtre) */
+.carrousel_section{
+    padding-top: 20px;
+    width: 55%; 
+    height: 90vh;
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    color: #fff;
+}
+
+.carrousel_section h1{
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+
+
+/* Le train contenant les wagons */
+.carrousel_container {
+    display: flex;
+    width: 200%; 
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Chaque wagon individuel */
+.carrousel_slide {
+    width: 50%;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(12, 12, 12, 0.041);
+    /* outline: solid green; */
+    position: relative;
+}
+
+.carrousel-caption{
+    position: absolute;
+    top: 10px;
+    left: 5px;
+}
+
+
+.carrousel_slide h2{
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.carrousel_slide p.sub_title{
+    font-size: 1.09em;
+    margin-bottom: 20px;
+}
+
+.carrousel_slide h3{
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.caption_info_text_container{
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.caption_info_text_content{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.caption_info_text_content span.icone_container{
+    background-color: white;
+    background-color: #e50914;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.caption_info_text_content span.icone_container img{
+    width: 25px;
+    height: 25px;
+}
+
+
+.caption_info_text_content p{
+    display: flex;
+    flex-direction: column;
+    font-size: 0.89em;
+}
+
+.caption_info_text_content p span{
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 3px;
+}
+
+
+
+/* Indicateurs (Points) */
+.carousel_dots {
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background-color: #cccccc; /* Couleur plus visible par défaut */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background-color: #272727; /* Devient noir quand actif */
+    width: 25px;
+    border-radius: 10px;
+}
+
+
+/* La section, je réduis ici comparé à login pour que tout s'affiche en 100vh */
+.section_or{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* 
+   Je mets les form_div en display grid pour que les champs de formulaires puissent
+    sans problème s'afficher sans problème ensemble (avec display flex, ça fait un peu n'importe quoi
+*/
 .form_div{
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
 }
 
-.logup_section{
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-.section_or{
-   margin-top: 15px;
-   margin-bottom: 15px;
+/* Et, ça, c'est la police du code indicatif que je réduis pour que, ça suffisse bien */
+#country_code{
+    font-size: 0.87em;
 }

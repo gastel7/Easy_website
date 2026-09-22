@@ -1,29 +1,149 @@
+{% extends 'core/base.html' %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+
+{% block title %} Inscription {% endblock %}
+
+
+{% block css %} 
     <link rel="stylesheet" href="{% static 'css/account/login.css' %}">
     <link rel="stylesheet" href="{% static 'css/account/logup.css' %}">
-    <link rel="stylesheet" href="{% static 'core/css/header.css' %}">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
     <style>
-        .helptext, ul{
+        .logup_section .helptext, .logup_section ul{
             display: none;
         }
     </style>
+{% endblock %}
 
-</head>
-<body>
-    {% include "core/includes/header.html" %}
-    <main class="container">
-        <div class="main_content">
+{% block main %} 
+    <main class="container" style="position: relative;">
+        <img id="bg-image" style="width: 100%; height: 100%; object-fit: cover;" src="{% static 'core/images/easy_background_org_section.jpeg' %}" alt="Background">
+
+
+        <div style="background-color: black; height: 91%; width: 100%; position: absolute; opacity: 0.6;"></div>
+
+
+        <div class="main_content" style="position: absolute; top: 90px;">
             <!-- Logo et info -->
-            <h1>Inscription</h1>
+            <aside class="carrousel_section">
+                <h1>Inscription</h1>
+                
+                <section class="carrousel_container" id="carrousel-container">
+                    <!-- Organisateur -->
+                    <section class="carrousel_slide">
+                        
+                        <div class="carrousel-caption">
+                            <h2>Organisez. Partagez. Developpez !</h2>
+
+                            <p class="sub_title">
+                                Rejoignez la plateforme qui vous permet de gérer vos événements en toute simplicité.
+                                Touchez un plus grand public et faîtes de chaque événement une réussite.
+                            </p>
+
+                            <h3>Pourquoi devenir Organisateur chez <strong>Easy</strong> ?</h3>
+
+                            <ul class="caption_info_text_container">
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="50" height="50" src="https://img.icons8.com/FFFFFF/ios-filled/50/commercial.png" alt="commercial"/>
+                                    </span>     
+                                    
+                                    Publiez vos évenements facilement
+                                </li>
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="50" height="50" src="https://img.icons8.com/FFFFFF/ios-filled/50/calendar--v1.png" alt="calendar--v1"/>
+                                    </span>     
+                                    
+                                    Gérez vos billets et vos ventes en temps réel
+                                </li>
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="64" height="64" src="https://img.icons8.com/FFFFFF/glyph-neue/64/conference-call.png" alt="conference-call"/>
+                                    </span>     
+                                    
+                                    Atteignez des milliers de personnes
+                                </li>
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="50" height="50" src="https://img.icons8.com/FFFFFF/ios-filled/50/technical-support.png" alt="technical-support"/>
+                                    </span>     
+                                    
+                                    Bénéficiez d'un accompagnement personnalisé
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Participant -->
+                    <section class="carrousel_slide">
+                        <div class="carrousel-caption">
+                            <h2>Trouvez. Réservez. Vivez l'expérience !</h2>
+
+                            <p class="sub_title">
+                                Découvrez les meilleurs événements au Congo, 
+                                réservez vos billets en toute simplicité et vivez des moments inoubliables !
+                            </p>
+
+                            <h3>Pourquoi utiliser <strong>Easy</strong> en tant que participant ?</h3>
+
+
+                            <!--  -->
+                            <ul class="caption_info_text_container">
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="50" height="50" src="https://img.icons8.com/FFFFFF/ios-filled/50/calendar--v1.png" alt="calendar--v1"/>
+                                    </span>     
+                                    
+                                    <p>
+                                        <span>Accès aux événements</span>
+                                        Concerts, festivals, spectacles, conférences,...
+                                    </p>
+                                </li>
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="50" height="50" src="https://img.icons8.com/FFFFFF/ios-filled/50/two-tickets.png" alt="two-tickets"/>
+                                    </span>     
+                                    
+                                    <p>
+                                        <span>Réservations facile</span>
+                                        En quelques clics, c'est réservé !
+                                    </p>
+                                    
+                                </li>
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="66" height="66" src="https://img.icons8.com/FFFFFF/external-smashingstocks-glyph-smashing-stocks/66/external-secure-payment-accounting-smashingstocks-glyph-smashing-stocks.png" alt="external-secure-payment-accounting-smashingstocks-glyph-smashing-stocks"/>
+                                    </span>     
+                                    
+                                    <p>
+                                        <span>Paiements sécurisé</span>
+                                        Vos transactions en toute confiance
+                                    </p>
+                                </li>
+                                <li class="caption_info_text_content">
+                                    <span class="icone_container">
+                                        <img width="48" height="48" src="https://img.icons8.com/FFFFFF/sf-regular-filled/48/alarm.png" alt="alarm"/>
+                                    </span>     
+                                    
+                                    <p>
+                                        <span>Ne manquez rien</span>
+                                        Soyez informez en temps réel des prochains évenements
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </section>
+
+                <!-- Points de navigation -->
+                <div class="carousel_dots">
+                    <span class="dot active" onclick="goToSlide(0)"></span>
+                    <span class="dot" onclick="goToSlide(1)"></span>
+                </div>
+            </aside>
              
 
             <!-- Formulaire d'inscription -->
@@ -99,15 +219,15 @@
                         <div class="container-input">
                             {{ form.tel.label_tag }}
 
-                            <div style="display: flex; justify-content: space-between;">
-                                <select name="country_code" id="country_code" style="width: 100px; padding-left: 5px;">
+                            <div style="display: flex; justify-content: space-between; width: 100%; gap: 5px;">
+                                <select name="country_code" id="country_code" style="width: 35%; padding-left: 5px;">
                                     <option value="+33">FR (+33)</option>
                                     <option value="+1">USA (+1)</option>
                                     <option value="+44">UK (+44)</option>
                                     <!-- Ajoutez d'autres pays selon vos besoins -->
                                 </select> 
 
-                                <div class="input_field" style="width: 210px;">
+                                <div class="input_field" style="width: 65%">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="currentColor"><path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12ZM241-600l66-66-17-94h-89q5 41 14 81t26 79Zm358 358q39 17 79.5 27t81.5 13v-88l-94-19-67 67ZM241-600Zm358 358Z"/></svg>
 
                                     {{ form.tel }}
@@ -119,7 +239,7 @@
                     <!-- Le mot de passe et la confirmation de mot de passe -->
                     <div class="form_div">
                         <div class="container-input">
-                            <label for="id_password1">Password:</label>
+                            <label for="id_password1">Mot de passe:</label>
                             <div class="helptext" id="id_password1_helptext"><ul><li>Your password can’t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can’t be a commonly used password.</li><li>Your password can’t be entirely numeric.</li></ul></div>
                             
                             
@@ -197,8 +317,55 @@
             </section>
         </div>        
     </main>
+{% endblock %}
+
+{% block js %}
 
     <script src="{% static 'js/account/toggle_password.js' %}"></script>
     <script src="{% static 'js/account/switch_functions.js' %}"></script>
-</body>
-</html>
+
+    <script>
+        const container = document.getElementById('carrousel-container');
+        const dots = document.querySelectorAll('.dot');
+        // On récupère l'élément HTML de l'image d'arrière-plan
+        const bgImage = document.getElementById('bg-image'); 
+
+        let currentIndex = 0;
+        const totalSlides = 2;
+
+        // Définition des chemins d'images (Adapté pour Django)
+        const bgOrganisateur = "{% static 'core/images/easy_background_org_section.jpeg' %}";
+        // Remplace 'nom_de_ton_image_concert.jpg' par le vrai nom du fichier de ta deuxième image
+        const bgParticipant = "{% static 'core/images/easy_background_part_section.jpeg' %}"; 
+
+        function goToSlide(index) {
+            currentIndex = index;
+            
+            // 1. Déplacement du carrousel de texte
+            container.style.transform = `translateX(-${currentIndex * 50}%)`;
+            
+            // 2. CHANGEMENT DYNAMIQUE DE L'IMAGE D'ARRIÈRE-PLAN
+            if (currentIndex === 0) {
+                bgImage.src = bgOrganisateur;
+            } else {
+                bgImage.src = bgParticipant;
+            }
+            
+            // 3. Mise à jour visuelle des petits points de navigation
+            dots.forEach((dot, i) => {
+                if (i === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // Défilement automatique toutes les 5 secondes
+        setInterval(() => {
+            let nextIndex = (currentIndex + 1) % totalSlides;
+            goToSlide(nextIndex);
+        }, 10000);
+
+    </script>
+{% endblock %}

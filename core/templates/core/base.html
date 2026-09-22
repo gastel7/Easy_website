@@ -1,12 +1,44 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'core/css/header.css' %}">
+
+    <title> 
+        {% block title %} Page d'acceuil {% endblock %}
+    </title>
+
+    <link rel="shortcut icon" href="{% static 'core/images/logo.png' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="{% static 'core/css/header__footer.css' %}">
+
+    {% block css %}
+        <style>
+            main{
+                padding-top: 90px;
+                min-height: 100vh;
+            }
+        </style>
+    {% endblock %}
 </head>
 <body>
-    
+    <!-- Le footer -->
+    {% include "core/includes/header.html" %}
+
+
+    {% block main %}
+        <main>
+
+        </main>
+    {% endblock %}
+
+    <!-- Le header -->
+    {% include "core/includes/footer.html" %}
+
+
+    {% block js %}
+    {% endblock %}
 </body>
 </html>

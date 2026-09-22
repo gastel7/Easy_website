@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+
+{% block title %} À propos de nous {% endblock %}
+
+
+{% block css %} 
+    <link rel="stylesheet" href="{% static 'core/css/easy/a_propos.css' %}">
+    <style>
+        main{
+            padding-top: 90px;
+            min-height: 100vh;
+        }
+    </style>
+{% endblock %}
+
+{% block main %} 
+    <main>
+        <!-- Section : à propos -->
+        <section class="about">
+            <section class="about_text"></section>
+
+            <section class="about_video"></section>
+        </section>
+
+
+        <!-- Section : Notre vision -->
+        <section class="our_vision"></section>
+
+        <!-- Section Our Team -->
+        <section class="our_team"></section>
+    </main>
+{% endblock %}
+
+
+
+{% block js %}
+
+{% endblock %}
