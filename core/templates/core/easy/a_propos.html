@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'core/css/easy/a_propos.css' %}">
     <style>
         main{
-            padding-top: 90px;
+            padding-top: 100px;
             min-height: 100vh;
         }
     </style>
@@ -20,22 +20,209 @@
     <main>
         <!-- Section : à propos -->
         <section class="about">
-            <section class="about_text"></section>
+            <section class="about_text">
+                <h1>À propos de <span style="color: #e50914;">Easy</span></h1>
 
-            <section class="about_video"></section>
+                <section class="about_text_content">
+                    <!-- 1er paragraphe -->
+                    <p>
+                        <strong>Easy</strong> est une plateforme en ligne innovante conçue au <strong>Congo Brazzaville</strong> 
+                        pour découvrir, réserver et vivre des expériences inoubliables.
+                    </p>
+
+                    <!-- 2e paragraphe -->
+                    <p>
+                        <strong>Notre mission</strong> est de rapprocher les passionnés d'événements, 
+                        des organisateurs, tout en offrant une expérience fluide, sécurisée 
+                        et accessible à tous.
+                    </p>
+
+
+                    <!-- 3e paragraphe -->
+                    <p>
+                        Que vous soyez amateurs de concerts, passionné de conférence, ou à la recherche d'activités,
+                        <strong>Easy</strong> vous accompagne à chaque étape.
+                    </p>
+                </section>
+
+
+                <!-- Les statistiques -->
+                <section class="about_stats">
+                    <div class="stat">
+                        <span class="stat__number">100K+</span>
+                        <span class="stat__label">Événements</span>
+                    </div>
+
+                    <div class="stat">
+                        <span class="stat__number">50K+</span>
+                        <span class="stat__label">Utilisateurs</span>
+                    </div>
+
+                    <div class="stat">
+                        <span class="stat__number">200+</span>
+                        <span class="stat__label">Organisateurs</span>
+                    </div>
+
+                    <div class="stat">
+                        <span class="stat__number">100%</span>
+                        <span class="stat__label">Sécurisé</span>
+                    </div>
+                </section>
+            </section>
+
+            <section class="about_video">
+                <div class="about_container_video">
+                    <video controls width="600" style="border-radius: 10px;">
+                        <source src="{% static 'core/videos/mdr.mp4' %}" type="video/mp4">
+                        Votre navigateur ne prend pas en charge la lecture de vidéos.
+                    </video>
+                </div>
+            </section>
         </section>
 
 
         <!-- Section : Notre vision -->
-        <section class="our_vision"></section>
+        <section class="our_vision">
+            <div class="our_vision_content">
+                <!-- L'icone du ticket -->
+                <div class="our_vision_container_icon">
+                    <img src="{% static 'core/images/tickets_sans_bg.png' %}" alt="">
+                </div>
+
+
+                <!-- Le texte -->
+                <section class="our_vision_text">
+                    <h2>Notre vision</h2>
+
+                    <p>
+                        Créer un lien durable entre les utilisateurs et les organisateurs d'événements, en Afrique et au-delà, pour une communauté plus connecté et plus dynamique.
+                    </p>
+
+                    <p>Devenir le leader de la billeterie en ligne <strong style="font-weight: normal;">dans le monde </strong> en offrant la meilleure expérience utilisateur.</p>
+                </section>
+            </div>
+        </section>
 
         <!-- Section Our Team -->
-        <section class="our_team"></section>
+                <!-- Section Our Team -->
+        <section class="our_team">
+            <section class="our_team_text">
+                <h2>Notre équipe</h2>
+                <p>
+                    <strong>Easy</strong> c'est aussi une équipe diversifiée de professionnels passionnés aux
+                    compétences uniques, engagés afin de vous offrir des expériences inoubliables.
+                </p>
+            </section>
+
+            <section class="carrousel_container">
+                <button class="carousel_btn prev_btn" id="prevBtn">&#10094;</button>
+
+                <section class="carrousel">
+                    <div class="carrousel_track" id="carrouselTrack">
+                        
+                        {% for member in users %}
+                            <div class="card">
+                                <div class="image_profil">
+                                    {% if member.user.civilite == "Homme" %}
+                                        <img src="{% static 'core/images/homme.png' %}" alt="">
+                                    {% else %}
+                                        <img src="{% static 'core/images/image.png' %}" alt="">
+                                    {% endif %}
+                                </div>
+
+                                <div class="text_profil">
+                                    <p class="user_full_name">{{ member.user.first_name }} {{ member.user.last_name }}</p>
+                                    <p class="user_statut">{{ member.easy_role }}</p>
+                                    <p class="user_description">{{ member.description }}</p>
+                                    <p class="user_description">{{ member.id }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        
+                    </div>
+                </section>
+
+                <button class="carousel_btn next_btn" id="nextBtn">&#10095;</button>
+            </section>
+        </section>
+
+
     </main>
 {% endblock %}
 
 
 
-{% block js %}
 
+
+{% block js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const track = document.getElementById('carrouselTrack');
+        const cards = document.querySelectorAll('.our_team .card');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        
+        if (cards.length <= 4) {
+            if(prevBtn) prevBtn.style.display = 'none';
+            if(nextBtn) nextBtn.style.display = 'none';
+            return;
+        }
+
+        // Nombre réel de colonnes de 2 cartes
+        const totalColumns = Math.ceil(cards.length / 2);
+        
+        // On ajuste dynamiquement selon la place disponible à l'écran (environ 4 colonnes visibles à la fois)
+        // Si les deux derniers n'apparaissent pas, on réduit la restriction en passant à totalColumns - 3
+        const maxScrollIndex = Math.max(0, totalColumns - 3); 
+
+        let currentColumnIndex = 0;
+        let autoSlideInterval;
+
+        function slideToColumn(index) {
+            // Si on dépasse la fin, on revient proprement au début (Index 0)
+            if (index > maxScrollIndex) {
+                currentColumnIndex = 0;
+            } else if (index < 0) {
+                currentColumnIndex = maxScrollIndex;
+            } else {
+                currentColumnIndex = index;
+            }
+            
+            // Récupération précise de la largeur de la première carte (290px)
+            const cardWidth = cards[0].getBoundingClientRect().width || cards[0].offsetWidth;
+            const gap = 35; 
+            
+            // Calcul et application du décalage en pixels
+            const amountToMove = currentColumnIndex * (cardWidth + gap);
+            track.style.transform = `translateX(-${amountToMove}px)`;
+        }
+
+        function startAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(() => {
+                slideToColumn(currentColumnIndex + 1);
+            }, 4000); // 4 secondes
+        }
+
+        // Actions au clic sur les flèches
+        prevBtn.addEventListener('click', () => {
+            slideToColumn(currentColumnIndex - 1);
+            startAutoSlide();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            slideToColumn(currentColumnIndex + 1);
+            startAutoSlide();
+        });
+
+        // Lancement initial
+        startAutoSlide();
+
+        // recalcul en cas de redimensionnement de l'écran
+        window.addEventListener('resize', () => {
+            slideToColumn(currentColumnIndex);
+        });
+    });
+</script>
 {% endblock %}
+

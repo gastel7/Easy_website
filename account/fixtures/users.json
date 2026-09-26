@@ -1,0 +1,252 @@
+[
+  {
+    "model": "account.user",
+    "pk": 5,
+    "fields": {
+      "username": "moderateur_1",
+      "email": "modo1@example.com",
+      "role": "modérateur",
+      "civilite": "Homme",
+      "first_name": "Jean",
+      "last_name": "Dupont",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "description": "Au contact quotidien des organisateurs à Brazzaville et partout au Congo, À pour mission de dénicher pour vous les meilleurs événements et activités du moment. ",
+      "easy_role": "Responsable Partenariats"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 6,
+    "fields": {
+      "username": "moderateur_2",
+      "email": "modo2@example.com",
+      "role": "modérateur",
+      "civilite": "Femme",
+      "first_name": "Alice",
+      "last_name": "Martin",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 6,
+    "fields": {
+      "user": 6,
+      "description": "Votre satisfaction est ma priorité. Je vous accompagne à chaque étape de votre réservation pour que votre expérience Easy soit inoubliable.",
+      "easy_role": "Responsable Expérience Client"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 7,
+    "fields": {
+      "username": "moderateur_3",
+      "email": "modo3@example.com",
+      "role": "modérateur",
+      "civilite": "Homme",
+      "first_name": "Lucas",
+      "last_name": "Bernard",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 7,
+    "fields": {
+      "user": 7,
+      "description": "Conçoit les stratégies pour faire grandir la notoriété d'Easy au Congo (publicités payantes, partenariats avec des influenceurs locaux, campagnes d'affichage",
+      "easy_role": "Responsable Marketing Digital "
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 8,
+    "fields": {
+      "username": "moderateur_4",
+      "email": "modo4@example.com",
+      "role": "modérateur",
+      "civilite": "Femme",
+      "first_name": "Chloé",
+      "last_name": "Petit",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 8,
+    "fields": {
+      "user": 8,
+      "description": "Rédige les descriptions d'événements qui donnent envie, ou écrit des articles de blog sur la culture et les sorties au Congo.",
+      "easy_role": "Rédacteur Web"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 9,
+    "fields": {
+      "username": "moderateur_5",
+      "email": "modo5@example.com",
+      "role": "modérateur",
+      "civilite": "Homme",
+      "first_name": "Thomas",
+      "last_name": "Durand",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 9,
+    "fields": {
+      "user": 9,
+      "description": "Vérifie que les événements postés par les organisateurs respectent les règles d'Easy et valide (ou refuse) les avis et commentaires laissés par le public.",
+      "easy_role": "Modérateur"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 10,
+    "fields": {
+      "username": "moderateur_6",
+      "email": "modo6@example.com",
+      "role": "modérateur",
+      "civilite": "Femme",
+      "first_name": "Léa",
+      "last_name": "Dubois",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 10,
+    "fields": {
+      "user": 10,
+      "description": "Vérifie que les événements postés par les organisateurs respectent les règles d'Easy et valide (ou refuse) les avis et commentaires laissés par le public.",
+      "easy_role": "Modérateur"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 11,
+    "fields": {
+      "username": "moderateur_7",
+      "email": "modo7@example.com",
+      "role": "modérateur",
+      "civilite": "Homme",
+      "first_name": "Hugo",
+      "last_name": "Moreau",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 11,
+    "fields": {
+      "user": 11,
+      "description": "Répond aux questions sur WhatsApp, par mail ou par téléphone quand un utilisateur a un problème avec son ticket ou son paiement.",
+      "easy_role": "Chargé de Support Client"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 12,
+    "fields": {
+      "username": "moderateur_8",
+      "email": "modo8@example.com",
+      "role": "modérateur",
+      "civilite": "Femme",
+      "first_name": "Manon",
+      "last_name": "Laurent",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 12,
+    "fields": {
+      "user": 12,
+      "description": "Répond aux questions sur WhatsApp, par mail ou par téléphone quand un utilisateur a un problème avec son ticket ou son paiement.",
+      "easy_role": "Chargé de Support Client"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 13,
+    "fields": {
+      "username": "moderateur_9",
+      "email": "modo9@example.com",
+      "role": "modérateur",
+      "civilite": "Homme",
+      "first_name": "Enzo",
+      "last_name": "Simon",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 13,
+    "fields": {
+      "user": 13,
+      "description": "Répond aux questions sur WhatsApp, par mail ou par téléphone quand un utilisateur a un problème avec son ticket ou son paiement.",
+      "easy_role": "Chargé de Support Client"
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 14,
+    "fields": {
+      "username": "moderateur_10",
+      "email": "modo10@example.com",
+      "role": "modérateur",
+      "civilite": "Femme",
+      "first_name": "Emma",
+      "last_name": "Michel",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-01-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "account.easymember",
+    "pk": 14,
+    "fields": {
+      "user": 14,
+      "description": "Conçoit les stratégies pour faire grandir la notoriété d'Easy au Congo (publicités payantes, partenariats avec des influenceurs locaux, campagnes d'affichage).",
+      "easy_role": "Responsable Marketing Digital"
+    }
+  }
+]

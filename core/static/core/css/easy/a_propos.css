@@ -1,8 +1,300 @@
-
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: inter;
+    font-family: inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+main {
+    background-color: #000208;
+    color: white;
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+
+.about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 20px;
+    gap: 30px;
+    min-height: 430px;
+    padding-top: 40px;
+}
+
+.about_text {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about_text h1 {
+    font-size: 2.5em;
+}
+
+.about_text_content p {
+    margin-bottom: 20px;
+}
+
+.about_stats {
+    display: flex;
+    padding-top: 2rem;
+    gap: 3rem;
+    border-top: 2px #e50914 solid;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stat__number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e50914;
+    line-height: 1;
+}
+
+.stat__label {
+    font-size: 0.9rem;
+    color: grey;
+    letter-spacing: 0.5px;
+}
+
+/* Vidéo About */
+.about_video {
+    height: 380px;
+}
+
+.about_container_video {
+    height: 100%;
+}
+
+.about_container_video video {
+    height: 100%;
+    border-radius: 10px;
+}
+
+/* ==========================================
+   3. SECTION : OUR VISION (NOTRE VISION)
+   ========================================== */
+.our_vision {
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    padding-top: 60px;
+}
+
+.our_vision_content {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    background-color: rgba(128, 128, 128, 0.068);
+    border: solid 2px grey;
+}
+
+.our_vision_container_icon {
+    width: 100px; 
+    height: 100px; 
+}
+
+.our_vision_container_icon img {
+    width: 100%; 
+    height: 100%;
+}
+
+.our_vision_text {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    border-left: solid 3px grey;
+    padding-left: 20px;
+}
+
+.our_vision_text h2 {
+    color: #e50914;
+    font-size: 2.5em;
+    margin-bottom: 5px;
+}
+
+.our_vision_text p {
+    font-size: 0.9rem;
+}
+
+/* ==========================================
+   4. SECTION : OUR TEAM (NOTRE ÉQUIPE)
+   ========================================== */
+.our_team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding:60px 20px;
+    padding-bottom: 90px;
+    background-color: #272727; 
+}
+
+.our_team_text {
+    text-align: center;
+}
+
+.our_team_text h2 {
+    color: #e50914;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+.our_team_text p {
+    font-size: 1.1em;
+    padding: 0 50px;
+    line-height: 25px;
+}
+
+/* ==========================================
+   5. STRUCTURE DU CARROUSEL (2 LIGNES / GLISSEMENT PAR COLONNE)
+   ========================================== */
+.carrousel_container {
+    position: relative;
+    width: 100%;
+    max-width: 1300px;
+    padding: 0 60px; /* Espace nécessaire pour intégrer proprement les flèches absolues sur les côtés */
+    margin: 0 auto;
+}
+
+/* Fenêtre de vision (masque les éléments hors-champ) */
+.carrousel {
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Bande unique ordonnée en grille verticale infinie vers la droite */
+.carrousel_track {
+    display: grid;
+    grid-template-rows: repeat(2, auto); /* Force la création de 2 lignes de cartes */
+    grid-auto-flow: column;             /* Aligne les profils colonne par colonne de haut en bas puis de gauche à droite */
+    gap: 35px;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    width: max-content;
+}
+
+/* Boutons flèches directionnels */
+.carousel_btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #e50914;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+.prev_btn {
+    left: 0;
+}
+
+.next_btn {
+    right: 0;
+}
+
+/* Animations au survol des flèches */
+.carousel_btn:hover {
+    background-color: #b3070f;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel_btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* ==========================================
+   6. CARTES DE PROFIL (MEMBRES)
+   ========================================== */
+.our_team .card {
+    display: flex;
+    flex-direction: column;
+    width: 290px;
+    align-items: center;
+    background-color: #e5e5e5;
+    border-radius: 30px;
+    color: #000105;
+    padding: 20px;
+    padding-bottom: 0;
+}
+
+.our_team .card .image_profil {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+}
+
+.our_team .card .image_profil img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    outline: solid grey 2px;
+}
+
+.our_team .card .text_profil {
+    display: flex;
+    flex-direction: column;
+    border-top-color: transparent;
+    padding: 20px 0;
+}
+
+.our_team .card .text_profil .user_full_name {
+    text-transform: capitalize;
+    font-size: 1.3rem;
+    font-weight: bold;
+    font-family: sans-serif;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.our_team .card .text_profil .user_statut {
+    color: #e50914;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: center;
+    align-content: center;
+    min-height: 45px;
+}
+
+.our_team .card .text_profil .user_description {
+    text-align: center;
+}
+
+/* Réseaux Sociaux */
+.our_team .user_socials_media {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.our_team .user_socials_media li svg {
+    width: 18px;
+    height: 18px;
+}
+
+.our_team .user_socials_media a {
+    text-decoration: none;
+    color: #dee1e8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-bottom: 5px;
+}
