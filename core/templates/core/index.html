@@ -1,0 +1,252 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Easy | Accueil{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <style>
+        .hero {
+            background: linear-gradient(120deg, rgba(13, 17, 23, 0.82), rgba(228, 25, 43, 0.72)),
+                        url('{% static "core/images/easy_background_part_section.jpeg" %}') center/cover no-repeat;
+            color: #fff;
+            padding: 120px 5% 80px;
+        }
+        .hero__inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 32px;
+            align-items: center;
+        }
+        .eyebrow {
+            display: inline-block;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 4vw, 4.5rem);
+            margin: 18px 0 16px;
+            line-height: 1.08;
+        }
+        .hero p {
+            font-size: 1.05rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 620px;
+        }
+        .cta-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+        .btn-primary, .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 22px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+        .btn-primary {
+            background: #e50914;
+            color: white;
+        }
+        .btn-primary:hover { background: #c70711; }
+        .btn-secondary {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+        .hero-card {
+            background: rgba(14, 18, 26, 0.7);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+        }
+        .hero-card__label {
+            color: #d8dce3;
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .hero-card h3 {
+            margin: 0 0 16px;
+            font-size: 1.8rem;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+        .metric {
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .metric strong {
+            display: block;
+            font-size: 1.4rem;
+            color: #fff;
+        }
+        .section {
+            max-width: 1180px;
+            margin: 54px auto;
+            padding: 0 5%;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+        .section-header h2 {
+            margin: 0;
+            font-size: clamp(1.7rem, 3vw, 2.4rem);
+        }
+        .section-header a {
+            color: #e50914;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+        .event-card {
+            background: #fff;
+            border: 1px solid #eef0f4;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 16px 32px rgba(18, 24, 38, 0.05);
+        }
+        .event-card__image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        .event-card__body {
+            padding: 20px;
+        }
+        .event-card__meta {
+            color: #7a7f89;
+            font-size: 0.81rem;
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .event-card h3 {
+            margin: 0 0 10px;
+            font-size: 1.3rem;
+        }
+        .event-card p {
+            color: #5a6270;
+            margin: 0 0 16px;
+        }
+        .event-card__footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .price-tag {
+            font-weight: 700;
+            color: #111827;
+        }
+        @media (max-width: 900px) {
+            .hero__inner, .events-grid { grid-template-columns: 1fr; }
+            .section-header { align-items: start; flex-direction: column; }
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <main>
+        <section class="hero">
+            <div class="hero__inner">
+                <div>
+                    <span class="eyebrow">FIND IT • BOOK IT • LIVE IT</span>
+                    <h1>Des événements qui restent dans la mémoire.</h1>
+                    <p>
+                        Découvrez les meilleurs concerts, conférences et expériences culturelles du Congo-Brazzaville,
+                        réservez en quelques clics et vivez chaque instant sans stress.
+                    </p>
+                    <div class="cta-row">
+                        <a href="{% url 'core:event-list' %}" class="btn-primary">Voir les événements</a>
+                        <a href="{% url 'core:a-propos' %}" class="btn-secondary">Découvrir Easy</a>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <span class="hero-card__label">Cette semaine</span>
+                    <h3>Expérience Easy</h3>
+                    <div class="metric-grid">
+                        <div class="metric">
+                            <strong>100K+</strong>
+                            <span>Tickets validés</span>
+                        </div>
+                        <div class="metric">
+                            <strong>200+</strong>
+                            <span>Partenaires</span>
+                        </div>
+                        <div class="metric">
+                            <strong>24/7</strong>
+                            <span>Réservation</span>
+                        </div>
+                        <div class="metric">
+                            <strong>4.9/5</strong>
+                            <span>Expérience</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>Événements à ne pas manquer</h2>
+                <a href="{% url 'core:event-list' %}">Voir tout</a>
+            </div>
+            <div class="events-grid">
+                {% for event in featured_events %}
+                    <article class="event-card">
+                        {% if event.image %}
+                            <div class="event-card__image" style="background-image: url('{{ event.image.url }}');"></div>
+                        {% else %}
+                            <div class="event-card__image" style="background: linear-gradient(135deg, #111827, #e50914);"></div>
+                        {% endif %}
+                        <div class="event-card__body">
+                            <div class="event-card__meta">
+                                <span>{{ event.get_category_display }}</span>
+                                <span>•</span>
+                                <span>{{ event.event_date|date:'d M Y' }}</span>
+                            </div>
+                            <h3>{{ event.title }}</h3>
+                            <p>{{ event.short_description|default:event.description|truncatechars:120 }}</p>
+                            <div class="event-card__footer">
+                                <span class="price-tag">{{ event.price }} FCFA</span>
+                                <a href="{% url 'core:event-detail' event.slug %}" class="btn-primary">Détails</a>
+                            </div>
+                        </div>
+                    </article>
+                {% empty %}
+                    <p>Aucun événement publié pour le moment.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+{% endblock %}

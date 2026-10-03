@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <style>
+        main { padding-top: 110px; min-height: 100vh; }
+        .form-shell { max-width: 860px; margin: 0 auto; padding: 0 5% 60px; }
+        .form-panel {
+            background: white; border: 1px solid #edf1f5; border-radius: 24px; padding: 28px;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+        }
+        .form-panel h1 { margin-top: 0; margin-bottom: 24px; font-size: clamp(2rem, 3vw, 2.6rem); }
+        .field-group { margin-bottom: 20px; }
+        .field-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .field-group input, .field-group textarea, .field-group select {
+            width: 100%; border: 1px solid #dfe5ec; border-radius: 12px; padding: 12px 14px; font-size: 1rem;
+            box-sizing: border-box;
+        }
+        .field-group textarea { min-height: 140px; resize: vertical; }
+        .checkbox-row { display: flex; align-items: center; gap: 10px; }
+        .btn-row { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border: none;
+            border-radius: 12px; cursor: pointer; font-weight: 700; text-decoration: none;
+        }
+        .btn.primary { background: #e50914; color: white; }
+        .btn.secondary { background: #f3f4f6; color: #111827; }
+        .errorlist { margin: 8px 0 0; padding-left: 18px; color: #b91c1c; }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <main>
+        <div class="form-shell">
+            <div class="form-panel">
+                <h1>{{ title }}</h1>
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="field-group">
+                            {{ field.label_tag }}
+                            {% if field.field.widget.input_type == 'checkbox' %}
+                                <div class="checkbox-row">
+                                    {{ field }}
+                                    <span>Publier cet événement</span>
+                                </div>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                            {% if field.errors %}
+                                <ul class="errorlist">
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="btn-row">
+                        <button type="submit" class="btn primary">Enregistrer</button>
+                        <a href="{% url 'core:event-list' %}" class="btn secondary">Annuler</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}
