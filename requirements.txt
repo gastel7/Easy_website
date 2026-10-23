@@ -3,13 +3,13 @@ certifi==2026.10.19
 cffi==2.1.1
 charset-normalizer==3.5.2
 cryptography==50.0.2
-Django==6.1
+Django==6.1.1
 django-allauth==65.20.1
 django-countries==9.1.0
 idna==3.20
 oauthlib==4.0.0
 phonenumbers==9.0.39
-pillow==12.3.0
+pillow==13.0.0
 pycparser==3.12
 PyJWT==2.15.1
 python-dotenv==1.2.4
