@@ -1,0 +1,115 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Événements Easy{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <style>
+        main { padding-top: 110px; min-height: 100vh; }
+        .page-shell { max-width: 1180px; margin: 0 auto; padding: 0 5% 60px; }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .page-header h1 { margin: 0; font-size: clamp(2rem, 3vw, 3rem); }
+        .action-btn {
+            display: inline-block;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            border-radius: 999px;
+            padding: 12px 18px;
+            font-weight: 600;
+        }
+        .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+        .card {
+            background: white; border: 1px solid #edf1f5; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+        }
+        .card-image {
+            height: 200px; background-size: cover; background-position: center;
+            background: linear-gradient(135deg, #111827, #e50914);
+        }
+        .card-body { padding: 20px; }
+        .meta { color: #6b7280; font-size: 0.8rem; margin-bottom: 10px; }
+        .card h2 { margin: 0 0 10px; font-size: 1.35rem; }
+        .card p { margin: 0 0 16px; color: #4b5563; }
+        .card-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+        .price { font-weight: 700; }
+        .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-link {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 10px 14px; border-radius: 10px; text-decoration: none; font-weight: 600;
+            background: #f3f4f6; color: #111827;
+        }
+        .btn-link.primary { background: #e50914; color: white; }
+        .pagination { display: flex; gap: 10px; list-style: none; padding: 0; margin-top: 30px; }
+        .pagination a, .pagination span {
+            padding: 10px 14px; border-radius: 10px; text-decoration: none; color: #111827; background: #f3f4f6;
+        }
+        .pagination .active span { background: #111827; color: white; }
+        @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .page-header { flex-direction: column; align-items: flex-start; } }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <main>
+        <div class="page-shell">
+            <div class="page-header">
+                <h1>Événements</h1>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'core:event-create' %}" class="action-btn">+ Créer un événement</a>
+                {% endif %}
+            </div>
+
+            <div class="grid">
+                {% for event in events %}
+                    <article class="card">
+                        {% if event.image %}
+                            <div class="card-image" style="background-image: url('{{ event.image.url }}');"></div>
+                        {% else %}
+                            <div class="card-image"></div>
+                        {% endif %}
+                        <div class="card-body">
+                            <div class="meta">{{ event.get_category_display }} · {{ event.event_date|date:'d M Y à H:i' }}</div>
+                            <h2>{{ event.title }}</h2>
+                            <p>{{ event.short_description|default:event.description|truncatechars:120 }}</p>
+                            <div class="card-footer">
+                                <span class="price">{{ event.price }} FCFA</span>
+                                <div class="btn-row">
+                                    <a href="{% url 'core:event-detail' event.slug %}" class="btn-link primary">Détails</a>
+                                    {% if user.is_authenticated and user == event.organizer or user.is_superuser or user.role == 'modérateur' %}
+                                        <a href="{% url 'core:event-update' event.pk %}" class="btn-link">Modifier</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                {% empty %}
+                    <p>Aucun événement n'est encore disponible.</p>
+                {% endfor %}
+            </div>
+
+            {% if page_obj.has_other_pages %}
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li><a href="?page={{ page_obj.previous_page_number }}">Précédent</a></li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="active"><span>{{ num }}</span></li>
+                        {% else %}
+                            <li><a href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">Suivant</a></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}
