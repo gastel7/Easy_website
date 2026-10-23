@@ -1,0 +1,99 @@
+@media screen and (max-width: 575px){
+    header{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .about {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .about_container_video {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }   
+
+    .about_stats {
+        display: flex;
+        padding-top: 1rem;
+        gap: 1.5rem;
+        border-top: 2px #e50914 solid;
+    }
+
+    .stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+       
+    .stat__number {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #e50914;
+        line-height: 1;
+    } 
+
+    .stat__label {
+        font-size: 0.7rem;
+        color: grey;
+        letter-spacing: 0.5px;
+    }
+
+    .our_vision_container_icon {
+        display: none;
+    }
+
+
+    .our_vision_text {
+        border-left: none;
+        padding-left: 0;
+    }
+}
+
+
+/* Grands Smartphones / Mini-tablettes */
+@media (min-width: 576px) and (max-width: 767px){
+    .about {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .about_container_video{
+        width: 95%;
+    }
+
+    .our_vision_container_icon img {
+        width: 100px;
+    }
+}
+
+
+/* Baseline Tablettes (iPad, etc.) */
+@media (min-width: 768px) and (max-width: 991px){
+    .our_vision_container_icon img {
+        object-fit: contain;
+    }
+
+    .about {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .about_video {
+        height: 500px;
+    }
+
+    .about_container_video{
+        width: 95%;
+    }
+}
+
+
+/*  Ordinateurs portables / Petits écrans */
+@media (min-width: 992px) and (max-width: 1199px){
+    .about_container_video {   
+        width: 100%;
+    }
+}

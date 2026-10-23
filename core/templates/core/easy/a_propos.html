@@ -8,12 +8,8 @@
 
 {% block css %} 
     <link rel="stylesheet" href="{% static 'core/css/easy/a_propos.css' %}">
-    <style>
-        main{
-            padding-top: 100px;
-            min-height: 100vh;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'core/css/easy/carrousel.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/responsive/responsive__a_propos.css' %}">
 {% endblock %}
 
 {% block main %} 
@@ -72,8 +68,8 @@
 
             <section class="about_video">
                 <div class="about_container_video">
-                    <video controls width="600" style="border-radius: 10px;">
-                        <source src="{% static 'core/videos/mdr.mp4' %}" type="video/mp4">
+                    <video controls>
+                        <source src="{% static 'core/videos/easy.mp4' %}" type="video/mp4">
                         Votre navigateur ne prend pas en charge la lecture de vidéos.
                     </video>
                 </div>
@@ -97,14 +93,11 @@
                     <p>
                         Créer un lien durable entre les utilisateurs et les organisateurs d'événements, en Afrique et au-delà, pour une communauté plus connecté et plus dynamique.
                     </p>
-
-                    <p>Devenir le leader de la billeterie en ligne <strong style="font-weight: normal;">dans le monde </strong> en offrant la meilleure expérience utilisateur.</p>
                 </section>
             </div>
         </section>
 
         <!-- Section Our Team -->
-                <!-- Section Our Team -->
         <section class="our_team">
             <section class="our_team_text">
                 <h2>Notre équipe</h2>
@@ -115,11 +108,8 @@
             </section>
 
             <section class="carrousel_container">
-                <button class="carousel_btn prev_btn" id="prevBtn">&#10094;</button>
-
                 <section class="carrousel">
                     <div class="carrousel_track" id="carrouselTrack">
-                        
                         {% for member in users %}
                             <div class="card">
                                 <div class="image_profil">
@@ -138,15 +128,10 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        
                     </div>
                 </section>
-
-                <button class="carousel_btn next_btn" id="nextBtn">&#10095;</button>
             </section>
         </section>
-
-
     </main>
 {% endblock %}
 
@@ -155,74 +140,7 @@
 
 
 {% block js %}
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const track = document.getElementById('carrouselTrack');
-        const cards = document.querySelectorAll('.our_team .card');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        
-        if (cards.length <= 4) {
-            if(prevBtn) prevBtn.style.display = 'none';
-            if(nextBtn) nextBtn.style.display = 'none';
-            return;
-        }
-
-        // Nombre réel de colonnes de 2 cartes
-        const totalColumns = Math.ceil(cards.length / 2);
-        
-        // On ajuste dynamiquement selon la place disponible à l'écran (environ 4 colonnes visibles à la fois)
-        // Si les deux derniers n'apparaissent pas, on réduit la restriction en passant à totalColumns - 3
-        const maxScrollIndex = Math.max(0, totalColumns - 3); 
-
-        let currentColumnIndex = 0;
-        let autoSlideInterval;
-
-        function slideToColumn(index) {
-            // Si on dépasse la fin, on revient proprement au début (Index 0)
-            if (index > maxScrollIndex) {
-                currentColumnIndex = 0;
-            } else if (index < 0) {
-                currentColumnIndex = maxScrollIndex;
-            } else {
-                currentColumnIndex = index;
-            }
-            
-            // Récupération précise de la largeur de la première carte (290px)
-            const cardWidth = cards[0].getBoundingClientRect().width || cards[0].offsetWidth;
-            const gap = 35; 
-            
-            // Calcul et application du décalage en pixels
-            const amountToMove = currentColumnIndex * (cardWidth + gap);
-            track.style.transform = `translateX(-${amountToMove}px)`;
-        }
-
-        function startAutoSlide() {
-            clearInterval(autoSlideInterval);
-            autoSlideInterval = setInterval(() => {
-                slideToColumn(currentColumnIndex + 1);
-            }, 4000); // 4 secondes
-        }
-
-        // Actions au clic sur les flèches
-        prevBtn.addEventListener('click', () => {
-            slideToColumn(currentColumnIndex - 1);
-            startAutoSlide();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            slideToColumn(currentColumnIndex + 1);
-            startAutoSlide();
-        });
-
-        // Lancement initial
-        startAutoSlide();
-
-        // recalcul en cas de redimensionnement de l'écran
-        window.addEventListener('resize', () => {
-            slideToColumn(currentColumnIndex);
-        });
-    });
-</script>
+    
 {% endblock %}
+
 

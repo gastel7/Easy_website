@@ -1,6 +1,171 @@
-{% if user.is_authenticated %} Bonjour {{user.username }} {% endif%}
+{% extends 'account/profile/espace/base_espace.html' %}
 
-<br><br><br><br>
+{% load static %}
 
-<a href="{% url 'account:logout' %}">Se déconnecter</a>
 
+{% block title %} Mon profil {% endblock %}
+
+{% block espace_fil %}<span>Mon espace</span>{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/account/profile.css' %}">
+{% endblock %}
+
+{% block espace_contenu %}
+    <section class="espace-accueil">
+        <p class="espace-surtitre">Compte</p>
+        <h1>Bonjour {{ user.first_name|default:user.username }}</h1>
+    </section>
+
+
+    <!-- Formulaire du profil -->
+    <section style="padding-top: 30px;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Bascule entre les deux sections -->
+            <div class="profil-subtabs">
+                <button type="button" class="profil-subtab active" data-target="personnel">
+                    Informations personnelles
+                </button>
+                <button type="button" class="profil-subtab" data-target="professionnel">
+                    Informations professionnelles
+                </button>
+            </div>
+
+            <!-- ═══════ SECTION 1 : informations personnelles (affichée au départ) ═══════ -->
+            <div class="profil-section" data-section="personnel">
+                <!-- Photo de profil -->
+                <div class="profil-photo-row">
+                    <div class="profil_avatar avatar-lg" id="avatarPreview">
+                        {% if request.user.profile_picture %}
+                            <img id="avatarPreviewImg" src="{{ request.user.profile_picture.url }}" alt="Photo de {{ request.user.first_name|default:request.user.username }}">
+                        {% else %}
+                            <span id="avatarPreviewInitials">{{ request.user.username|upper|slice:":2" }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="profil-photo-infos">
+                        <p class="photo-label">Photo de profil</p>
+                        <p class="photo-hint">JPG ou PNG, 2 Mo maximum.</p>
+                        <label for="id_profile_picture" class="btn-importer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                            Importer
+                        </label>
+                        <input type="file" name="profile_picture" id="id_profile_picture" accept="image/png, image/jpeg">
+                    </div>
+                </div>
+
+
+                <section class="form_content">
+                    <p>
+                        <label>Nom d'utilisateur</label>
+                        {{ form.username }}
+                    </p>
+                </section>
+
+                <section class="form_content">
+                    <p>
+                        <label>Prénom</label>
+                        {{ form.first_name }}
+                    </p>
+                    <p>
+                        <label>Nom</label>
+                        {{ form.last_name }}
+                    </p>
+                </section>
+
+                <section class="form_content">
+                    <p>
+                        <label>Civilité</label>
+                        {{ form.civilite }}
+                    </p>
+
+                    <p>
+                        <label>Date de naissance</label>
+                        {{ form.birth_date }}
+                    </p>
+                </section>
+
+                <section class="form_content">
+                    <p>
+                        <label>Numéro de téléphone</label>
+                        {{ form.tel }}
+                    </p>
+
+                    <p>
+                        <label>Email</label>
+                        {{ form.email }}
+                    </p>
+                </section>
+
+                <section class="form_content">
+                    <p>
+                        <label>Nationalité</label>
+                        {{ form.nationalite }}
+                    </p>
+
+                    <p>
+                        <label>Adresse</label>
+                        {{ form.adresse }}
+                    </p>
+                </section>
+
+                <section class="btn_container">
+                    <button class="btn-submit" type="submit">Enregistrer</button>
+                </section>
+            </div>
+
+
+            <!-- ═══════ SECTION 2 : informations professionnelles (cachée au départ) ═══════ -->
+            <div class="profil-section" data-section="professionnel" hidden>
+                <section class="form_content">
+                    <p>
+                        <span class="photo-hint">Il n'y a rien à configurer ici pour le moment</span>
+                    </p>
+                </section>
+                {# TODO : remplacer ce texte par les champs professionnels #}
+            </div>            
+        </form>
+    </section>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        // ── Bascule personnel / professionnel ─────────────────────────────
+        // Chaque section porte un data-section ; on n'affiche que celle de l'onglet choisi.
+        const subtabs = document.querySelectorAll('.profil-subtab');
+        const sections = document.querySelectorAll('[data-section]');
+
+        subtabs.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const cible = btn.dataset.target;
+
+                subtabs.forEach(function (b) { b.classList.toggle('active', b === btn); });
+
+                sections.forEach(function (section) {
+                    section.hidden = section.dataset.section !== cible;
+                });
+            });
+        });
+
+
+        // ── Aperçu instantané de la photo importée ────────────────────────
+        const fileInput = document.getElementById('id_profile_picture');
+        const avatarPreview = document.getElementById('avatarPreview');
+
+        if (fileInput && avatarPreview) {
+            fileInput.addEventListener('change', function () {
+                const file = this.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarPreview.innerHTML = `<img src="${e.target.result}" alt="Aperçu photo de profil">`;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+{% endblock %}

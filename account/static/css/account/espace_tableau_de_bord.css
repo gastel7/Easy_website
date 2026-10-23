@@ -1,0 +1,98 @@
+/* ==========================================================================
+   Tableau de bord : cartes de chiffres et listes
+   S'appuie sur les variables définies dans .espace-layout (espace.css)
+   ========================================================================== */
+
+.espace-carte {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px;
+    background: var(--espace-surface);
+    border: 1px solid var(--espace-bord);
+    border-radius: 16px;
+}
+
+.espace-carte-label {
+    font-size: 13px;
+    color: var(--espace-muted);
+}
+
+.espace-carte-chiffre {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--espace-texte);
+}
+
+.espace-carte-chiffre small {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--espace-muted);
+}
+
+.espace-carte-pastille {
+    align-self: flex-start;
+    max-width: 100%;
+    margin-top: 4px;
+    padding: 3px 10px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #fff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: var(--espace-primary);
+    border-radius: 999px;
+}
+
+.espace-liste {
+    padding: 20px;
+    background: var(--espace-surface);
+    border: 1px solid var(--espace-bord);
+    border-radius: 16px;
+}
+
+.espace-liste-entete h2 {
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.espace-liste-ligne {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    color: var(--espace-texte);
+    text-decoration: none;
+    border-top: 1px solid var(--espace-bord);
+}
+
+.espace-liste-ligne:hover strong {
+    color: var(--espace-primary);
+}
+
+.espace-liste-ligne strong {
+    display: block;
+    font-size: 14px;
+}
+
+.espace-liste-ligne small {
+    font-size: 12px;
+    color: var(--espace-muted);
+}
+
+.espace-liste-droite {
+    flex: none;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--espace-muted);
+    background: var(--espace-survol);
+    border-radius: 999px;
+}
+
+.espace-vide {
+    margin: 16px 0 4px;
+    font-size: 14px;
+    text-align: center;
+    color: var(--espace-muted);
+}

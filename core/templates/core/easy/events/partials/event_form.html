@@ -1,0 +1,181 @@
+<ol class="event-steps" data-steps>
+    <li class="is-active"><span>1</span><small>Informations</small></li>
+    <li><span>2</span><small>Images et vidéo</small></li>
+    <li><span>3</span><small>Billets</small></li>
+    <li><span>4</span><small>Publication</small></li>
+</ol>
+
+
+<!-- Étape 1 : informations -->
+<div class="step is-active" data-step="1">
+    <section class="form-content-sub">
+        <div class="form_div">
+            {{ form.titre.label_tag }}
+            <div class="container-input">{{ form.titre }}</div>
+            {{ form.titre.errors }}
+        </div>
+    </section>
+
+    <section class="form-content-sub">
+        <div class="form_div">
+            {{ form.categorie.label_tag }}
+            <div class="container-input">{{ form.categorie }}</div>
+            {{ form.categorie.errors }}
+        </div>
+        <div class="form_div">
+            {{ form.statut.label_tag }}
+            <div class="container-input">{{ form.statut }}</div>
+            {{ form.statut.errors }}
+        </div>
+    </section>
+
+    <section class="form-content-sub">
+        <div class="form_div">
+            {{ form.lieu.label_tag }}
+            <div class="container-input">{{ form.lieu }}</div>
+            {{ form.lieu.errors }}
+        </div>
+        <div class="form_div">
+            {{ form.adresse.label_tag }}
+            <div class="container-input">{{ form.adresse }}</div>
+            {{ form.adresse.errors }}
+        </div>
+    </section>
+
+    <section class="form-content-sub">
+        <div class="form_div">
+            {{ form.ville.label_tag }}
+            <div class="container-input">{{ form.ville }}</div>
+            {{ form.ville.errors }}
+        </div>
+        <div class="form_div">
+            {{ form.pays.label_tag }}
+            <div class="container-input">{{ form.pays }}</div>
+            {{ form.pays.errors }}
+        </div>
+    </section>
+
+    <section class="form-content-sub">
+        <div class="form_div">
+            {{ form.nombre_de_places.label_tag }}
+            <div class="container-input">{{ form.nombre_de_places }}</div>
+            {{ form.nombre_de_places.errors }}
+        </div>
+        <div class="form_div">
+            {{ form.age_minimum.label_tag }}
+            <div class="container-input">{{ form.age_minimum }}</div>
+            {{ form.age_minimum.errors }}
+        </div>
+    </section>
+
+    <section class="form-content-sub">
+        <div class="form_div">
+            {{ form.date_debut.label_tag }}
+            <div class="container-input">{{ form.date_debut }}</div>
+            {{ form.date_debut.errors }}
+        </div>
+        <div class="form_div">
+            {{ form.date_fin.label_tag }}
+            <div class="container-input">{{ form.date_fin }}</div>
+            {{ form.date_fin.errors }}
+        </div>
+    </section>
+
+    <section>
+        <div class="form_div">
+            {{ form.description.label_tag }}
+            <div class="container-input">{{ form.description }}</div>
+            {{ form.description.errors }}
+        </div>
+    </section>
+</div>
+
+
+<!-- Étape 2 : affiche, vidéo et images supplémentaires -->
+<div class="step" data-step="2">
+    <section class="form-content-sub stack-sm">
+        <div class="form_div">
+            {{ form.image_principale.label_tag }}
+            <div class="container-input dropzone dropzone--main">
+                {{ form.image_principale }}
+                <div class="dropzone-ui">
+                    <span>Glissez-déposez une image ici<br>ou cliquez pour sélectionner</span>
+                    <small>Formats acceptés : JPG, PNG, WEBP (max 5 Mo)</small>
+                </div>
+            </div>
+            {{ form.image_principale.errors }}
+        </div>
+
+        <div class="form_div">
+            {{ form.video.label_tag }}
+            <div class="container-input dropzone dropzone--video">
+                {{ form.video }}
+                <div class="dropzone-ui">
+                    <span>Glissez-déposez une vidéo ici<br>ou cliquez pour sélectionner</span>
+                    <small>Formats acceptés : MP4, MOV, AVI (max 50 Mo)</small>
+                </div>
+            </div>
+            {{ form.video.errors }}
+        </div>
+    </section>
+
+    <div class="form_div">
+        <label for="images-picker">Images supplémentaires <span>(4 maximum, facultatives)</span></label>
+        <div class="container-input dropzone dropzone--multi">
+            <input type="file" id="images-picker" data-images-picker accept="image/*" multiple>
+            <div class="dropzone-ui">
+                <span>Glissez-déposez jusqu'à 4 images ici<br>ou cliquez pour sélectionner</span>
+                <small>Formats acceptés : JPG, PNG, WEBP (max 5 Mo chacune)</small>
+            </div>
+        </div>
+        <p class="images-message" data-images-message hidden>Vous ne pouvez sélectionner que 4 images.</p>
+    </div>
+
+    <div class="images-slots">
+        <div class="img-slot" data-slot="image_2">
+            <div hidden>{{ form.image_2 }}</div>
+            <img class="img-slot-thumb" data-slot-thumb alt="" {% if form.instance.image_2 %}src="{{ form.instance.image_2.url }}"{% endif %}>
+            <button type="button" class="file-remove" data-slot-remove aria-label="Retirer l'image 2" hidden>×</button>
+        </div>
+        <div class="img-slot" data-slot="image_3">
+            <div hidden>{{ form.image_3 }}</div>
+            <img class="img-slot-thumb" data-slot-thumb alt="" {% if form.instance.image_3 %}src="{{ form.instance.image_3.url }}"{% endif %}>
+            <button type="button" class="file-remove" data-slot-remove aria-label="Retirer l'image 3" hidden>×</button>
+        </div>
+        <div class="img-slot" data-slot="image_4">
+            <div hidden>{{ form.image_4 }}</div>
+            <img class="img-slot-thumb" data-slot-thumb alt="" {% if form.instance.image_4 %}src="{{ form.instance.image_4.url }}"{% endif %}>
+            <button type="button" class="file-remove" data-slot-remove aria-label="Retirer l'image 4" hidden>×</button>
+        </div>
+        <div class="img-slot" data-slot="image_5">
+            <div hidden>{{ form.image_5 }}</div>
+            <img class="img-slot-thumb" data-slot-thumb alt="" {% if form.instance.image_5 %}src="{{ form.instance.image_5.url }}"{% endif %}>
+            <button type="button" class="file-remove" data-slot-remove aria-label="Retirer l'image 5" hidden>×</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Étape 3 : billets -->
+<div class="step" data-step="3">
+    {{ ticket_formset.management_form }}
+    {{ ticket_formset.non_form_errors }}
+
+    <div class="ticket-list" data-ticket-list data-prefix="{{ ticket_formset.prefix }}">
+        {% for ticket in ticket_formset %}
+            {% include 'core/easy/events/partials/event_ticket.html' %}
+        {% endfor %}
+    </div>
+
+    <button type="button" class="btn btn-outline" id="ticket-add" data-ticket-add>+ Ajouter un type de billet</button>
+
+    <template id="ticket-template">
+        {% include 'core/easy/events/partials/event_ticket.html' with ticket=ticket_formset.empty_form %}
+    </template>
+</div>
+
+<!-- Étape 4 : publication -->
+<div class="step" data-step="4">
+    <h2>Publier l'événement</h2>
+    <p class="publish-note">Vérifie l'aperçu, puis publie ton événement. Tu pourras le modifier ensuite.</p>
+</div>

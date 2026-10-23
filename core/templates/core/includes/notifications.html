@@ -1,0 +1,33 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'core/css/easy/notifications.css' %}">
+
+{% if messages %}
+    <div class="notif-stack" id="notif-stack" aria-live="polite">
+        {% for message in messages %}
+            <div class="notif notif--{{ message.level_tag }}" role="status" data-notif>
+                <span class="notif-icon" aria-hidden="true">
+                    {% if message.level_tag == 'success' %}
+                        <svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg>
+                    {% else %}
+                        <svg viewBox="0 0 24 24"><path d="M12 7v6M12 17h.01"/></svg>
+                    {% endif %}
+                </span>
+
+                <div class="notif-body">
+                    <strong class="notif-title">
+                        {% if message.level_tag == 'success' %}Succès
+                        {% elif message.level_tag == 'error' %}Action impossible
+                        {% elif message.level_tag == 'warning' %}Attention
+                        {% else %}Information{% endif %}
+                    </strong>
+                    <p class="notif-text">{{ message }}</p>
+                </div>
+
+                <button type="button" class="notif-close" data-notif-close aria-label="Fermer">×</button>
+                <span class="notif-progress" aria-hidden="true"></span>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<script src="{% static 'core/js/easy/notifications.js' %}" defer></script>

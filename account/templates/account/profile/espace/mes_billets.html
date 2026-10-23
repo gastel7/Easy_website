@@ -1,0 +1,73 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+
+{% load static %}
+
+
+{% block title %} Mes billets {% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/account/mes_billets.css' %}">
+{% endblock %}
+
+
+{% block espace_fil %}<span>Mes billets</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <section class="espace-accueil">
+        <p class="espace-surtitre">Mes billets</p>
+        <h1>Vos réservations</h1>
+        <p class="espace-lead">Vos billets, regroupés par événement.</p>
+    </section>
+
+    <nav class="billets-filtres" aria-label="Filtrer les billets">
+        {% for filtre in filtres %}
+            <a href="?statut={{ filtre.code }}" class="billets-filtre {% if filtre_actif == filtre.code %}is-active{% endif %}">
+                {{ filtre.label }} <span>{{ filtre.nombre }}</span>
+            </a>
+        {% endfor %}
+    </nav>
+
+    {% regroup billets by category.event as evenements %}
+
+    {% for groupe in evenements %}
+        <section class="billets-evenement">
+            <header class="billets-evenement-entete">
+                <h2><a href="{% url 'core:detail-event' groupe.grouper.id %}">{{ groupe.grouper.titre }}</a></h2>
+                <p>{{ groupe.grouper.date_debut|date:"d M Y à H:i" }} · {{ groupe.grouper.lieu|default:groupe.grouper.ville }}</p>
+            </header>
+
+            {% for billet in groupe.list %}
+                <article class="billet-ligne">
+                    <div class="billet-infos">
+                        <strong>{{ billet.category.nom }}</strong>
+                        <small>{{ billet.category.get_type_de_ticket_display }} · {{ billet.prix_achat|floatformat:"0g" }} FCFA · acheté le {{ billet.date_achat|date:"d/m/Y" }}</small>
+                    </div>
+
+                    <span class="billet-statut billet-statut--{{ billet.statut }}">{{ billet.get_statut_display }}</span>
+
+                    <div class="billet-actions">
+                        {% if billet.statut == 'en_attente' %}
+                            <a href="#" class="billet-btn billet-btn--primaire">Payer</a>{# TODO : page de paiement #}
+                            <a href="#" class="billet-btn">Annuler</a>{# TODO : annulation #}
+                        {% elif billet.statut == 'valide' %}
+                            <a href="#" class="billet-btn billet-btn--primaire">Voir mon QR code</a>{# TODO : QR code #}
+                        {% elif billet.statut == 'scanne' %}
+                            <small>Utilisé le {{ billet.date_scan|date:"d/m/Y à H:i" }}</small>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    {% empty %}
+        <div class="billets-vide">
+            {% if filtre_actif == 'tous' %}
+                <p>Vous n'avez pas encore de billet.</p>
+            {% else %}
+                <p>Aucun billet dans cette catégorie.</p>
+            {% endif %}
+            <a href="{% url 'core:events-list' %}" class="billet-btn billet-btn--primaire">Découvrir les événements</a>
+        </div>
+    {% endfor %}
+{% endblock %}

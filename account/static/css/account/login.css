@@ -1,3 +1,5 @@
+/* Ça, c'est login.css */
+
 *{
     margin: 0;
     padding: 0;
@@ -158,11 +160,6 @@ body{
     height: 20px;
 }
 
-
-/*  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    ZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAA
-*/
 
 
 /* Greeting Section :  La section de salutation */
@@ -549,4 +546,13 @@ body.dark .toggle-password{
 
 .container-input.not_choiced {
     display: none;
+}
+
+
+.header_sub_banner{
+    display: none;
+}
+
+body{
+    padding-top: 0;
 }

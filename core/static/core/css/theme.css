@@ -1,0 +1,178 @@
+/* ==========================================================================
+   Liaison entre theme.css (global) et les styles de l'espace et des événements.
+   Chaque variable a une valeur de secours sombre : si theme.css n'est pas
+   chargé, l'espace reste sombre au lieu de devenir blanc.
+   ========================================================================== */
+
+
+/* 1. Thème clair */
+html[data-theme="light"] {
+    color-scheme: light;
+
+    --bg-page: #f3f3f3;
+    --bg-section-alt: #e5e5e5;
+    --surface: #ffffff;
+    --surface-soft: #f7f7f7;
+    --surface-hover: #f0f0f0;
+    --field-bg: #ececec;
+
+    --border: #e5e5e5;
+    --border-strong: #a1a1aa;
+
+    --text: #272727;
+    --text-strong: #0b0b0f;
+    --text-muted: #5f5f66;
+    --placeholder: #9a9aa3;
+
+    --tab-inactive: #5f5f66;
+    --tab-hover: #0b0b0f;
+    --tab-active-bg: #ffffff;
+
+    --header-bg: #0b0b0f;
+    --header-text: #ffffff;
+    --header-border: rgba(255, 255, 255, 0.08);
+    --menu-bg: #ffffff;
+    --menu-text: #0b0b0f;
+    --footer-bg: #0b0b0f;
+    --footer-text: #ffffff;
+    --footer-link: #dee1e8;
+
+    --white: #ffffff;
+    --black: #0b0b0f;
+    --show-logo-on-dark: block;
+    --show-logo-on-light: none;
+}
+
+
+/* 2. Espace et pages événements */
+html[data-theme] .espace-layout,
+html[data-theme] .events-page,
+html[data-theme] .event-detail {
+    --espace-bg: var(--bg-page, #000208);
+    --espace-fond-menu: var(--menu-bg, #161619);
+    --espace-surface: var(--surface, #161619);
+    --espace-survol: var(--surface-hover, #2a2a2f);
+    --espace-bord: var(--border, #34343a);
+    --espace-texte: var(--text-strong, #ffffff);
+    --espace-muted: var(--text-muted, #a1a1aa);
+    --espace-primary: var(--red, #e50914);
+
+    /* Barre du haut : sombre par défaut (thème sombre) */
+    --espace-entete-bg: var(--header-bg, #0b0b0f);
+    --espace-entete-texte: var(--header-text, #ffffff);
+    --espace-entete-bord: var(--header-border, rgba(255, 255, 255, 0.08));
+
+    --noir: var(--bg-page, #000208);
+    --carte: var(--surface, #161619);
+    --carte-claire: var(--field-bg, #272727);
+    --bord: var(--border, #34343a);
+    --texte: var(--text-strong, #ffffff);
+    --texte-doux: var(--text-muted, #a1a1aa);
+    --rouge: var(--red, #e50914);
+    --rouge-fonce: var(--red-hover, #b3070f);
+
+    background: var(--bg-page, #000208);
+    color: var(--text, #e5e5e5);
+}
+
+/* Thème clair : barre du haut claire, séparée du contenu par une bordure */
+html[data-theme="light"] .espace-layout {
+    --espace-entete-bg: var(--surface, #ffffff);
+    --espace-entete-texte: var(--text-strong, #0b0b0f);
+    --espace-entete-bord: var(--border, #e5e5e5);
+}
+
+html[data-theme] .espace-lien.is-active {
+    background: var(--espace-survol);
+}
+
+html[data-theme="light"] .vue-bascule {
+    background: var(--field-bg);
+    border-color: var(--border);
+}
+
+html[data-theme] .events-page .date-badge,
+html[data-theme] .event-detail .date-badge {
+    color: var(--black, #0b0b0f);
+    background: var(--white, #ffffff);
+}
+
+
+/* 3. Barre du haut de l'espace */
+html[data-theme] .espace-header {
+    background: var(--espace-entete-bg);
+    color: var(--espace-entete-texte);
+    border-bottom: 1px solid var(--espace-entete-bord);
+}
+
+html[data-theme] .espace-header .espace-fil {
+    color: var(--espace-entete-texte);
+    opacity: 0.7;
+}
+
+html[data-theme] .espace-header .espace-fil a {
+    color: inherit;
+}
+
+html[data-theme] .espace-header .espace-profil {
+    color: var(--espace-entete-texte);
+}
+
+html[data-theme] .espace-header .espace-profil small {
+    color: var(--espace-entete-texte);
+    opacity: 0.7;
+}
+
+html[data-theme] .espace-header .espace-icone-btn,
+html[data-theme] .espace-header .espace-menu-btn,
+html[data-theme] .espace-header .theme-toggle {
+    color: var(--espace-entete-texte);
+    border-color: var(--espace-entete-bord);
+}
+
+html[data-theme] .espace-header .espace-switch {
+    background: var(--espace-survol);
+}
+
+html[data-theme] .espace-header .espace-switch-btn:not(.is-active) {
+    color: var(--espace-muted);
+}
+
+
+/* 4. Bouton de thème */
+.theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    color: var(--header-text, #ffffff);
+    background: transparent;
+    border: 1px solid var(--header-border, rgba(255, 255, 255, 0.12));
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.theme-icone-lune {
+    display: none;
+}
+
+[data-theme="light"] .theme-icone-lune {
+    display: block;
+}
+
+[data-theme="light"] .theme-icone-soleil {
+    display: none;
+}
+
+

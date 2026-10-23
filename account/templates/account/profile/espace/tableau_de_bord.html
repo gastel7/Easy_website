@@ -1,0 +1,60 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+
+{% load static %}
+
+
+{% block title %} Tableau de bord {% endblock %}
+
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/account/espace_tableau_de_bord.css' %}">
+{% endblock %}
+
+
+{% block espace_fil %}<span>Tableau de bord</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <section class="espace-accueil">
+        <p class="espace-surtitre">Tableau de bord {% if espace_mode == 'organisateur' %}organisateur{% else %}participant{% endif %}</p>
+        <h1>Bonjour {{ user.first_name|default:user.username }}</h1>
+        <p class="espace-lead">Voici un aperçu de votre activité.</p>
+    </section>
+
+    <div class="espace-cartes">
+        {% for carte in cartes %}
+            <article class="espace-carte">
+                <span class="espace-carte-label">{{ carte.label }}</span>
+                <strong class="espace-carte-chiffre">
+                    {{ carte.valeur }}{% if carte.unite %} <small>{{ carte.unite }}</small>{% endif %}
+                </strong>
+                {% if carte.pastille %}
+                    <span class="espace-carte-pastille">{{ carte.pastille }}</span>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </div>
+
+    <div class="espace-listes">
+        {% for liste in listes %}
+            <section class="espace-liste">
+                <div class="espace-liste-entete">
+                    <h2>{{ liste.titre }}</h2>
+                </div>
+
+                {% for ligne in liste.lignes %}
+                    <a href="{{ ligne.url }}" class="espace-liste-ligne">
+                        <div>
+                            <strong>{{ ligne.titre }}</strong>
+                            <small>{{ ligne.sous_titre }}</small>
+                        </div>
+                        <span class="espace-liste-droite">{{ ligne.droite }}</span>
+                    </a>
+                {% empty %}
+                    <p class="espace-vide">{{ liste.vide }}</p>
+                {% endfor %}
+            </section>
+        {% endfor %}
+    </div>
+{% endblock %}

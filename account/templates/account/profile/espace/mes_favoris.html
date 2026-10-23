@@ -1,0 +1,38 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+
+{% load static %}
+
+
+{% block title %} Favoris {% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'core/css/easy/events_list.css' %}">
+{% endblock %}
+
+
+{% block espace_fil %}<span>Favoris</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <div class="events-page">
+        <section class="espace-accueil">
+            <p class="espace-surtitre">Favoris</p>
+            <h1>Vos événements favoris</h1>
+            <p class="espace-lead">Les événements que vous avez mis de côté.</p>
+        </section>
+
+        <div class="grid">
+            {% for event in evenements %}
+                {% include 'core/easy/events/partials/card_event.html' %}
+            {% empty %}
+                <p class="vide">Aucun favori pour le moment. Cliquez sur le cœur d'un événement pour le retrouver ici.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'core/js/easy/favoris.js' %}" defer></script>
+{% endblock %}

@@ -8,7 +8,7 @@
 main {
     background-color: #000208;
     color: white;
-    padding-top: 100px;
+    padding-top: 40px;
     min-height: 100vh;
 }
 
@@ -26,15 +26,17 @@ main {
     padding: 0 20px;
     display: flex;
     flex-direction: column;
+    flex-wrap: balance;
     gap: 20px;
 }
 
 .about_text h1 {
-    font-size: 2.5em;
+    font-size: 2.5rem;
 }
 
 .about_text_content p {
     margin-bottom: 20px;
+    /* padding-right: 250px; */
 }
 
 .about_stats {
@@ -42,6 +44,7 @@ main {
     padding-top: 2rem;
     gap: 3rem;
     border-top: 2px #e50914 solid;
+    flex-wrap: wrap;
 }
 
 .stat {
@@ -70,16 +73,18 @@ main {
 
 .about_container_video {
     height: 100%;
+    width: 600px;
 }
 
 .about_container_video video {
     height: 100%;
     border-radius: 10px;
+    width: 100%;
 }
 
-/* ==========================================
-   3. SECTION : OUR VISION (NOTRE VISION)
-   ========================================== */
+
+
+/* Section : Our Vision */
 .our_vision {
     padding: 20px;
     display: flex;
@@ -126,9 +131,9 @@ main {
     font-size: 0.9rem;
 }
 
-/* ==========================================
-   4. SECTION : OUR TEAM (NOTRE ÉQUIPE)
-   ========================================== */
+
+
+/* Section : Our team */
 .our_team {
     display: flex;
     flex-direction: column;
@@ -140,7 +145,10 @@ main {
 }
 
 .our_team_text {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .our_team_text h2 {
@@ -153,75 +161,13 @@ main {
     font-size: 1.1em;
     padding: 0 50px;
     line-height: 25px;
+    text-align: center;
 }
+
+
 
 /* ==========================================
-   5. STRUCTURE DU CARROUSEL (2 LIGNES / GLISSEMENT PAR COLONNE)
-   ========================================== */
-.carrousel_container {
-    position: relative;
-    width: 100%;
-    max-width: 1300px;
-    padding: 0 60px; /* Espace nécessaire pour intégrer proprement les flèches absolues sur les côtés */
-    margin: 0 auto;
-}
-
-/* Fenêtre de vision (masque les éléments hors-champ) */
-.carrousel {
-    width: 100%;
-    overflow: hidden;
-}
-
-/* Bande unique ordonnée en grille verticale infinie vers la droite */
-.carrousel_track {
-    display: grid;
-    grid-template-rows: repeat(2, auto); /* Force la création de 2 lignes de cartes */
-    grid-auto-flow: column;             /* Aligne les profils colonne par colonne de haut en bas puis de gauche à droite */
-    gap: 35px;
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    width: max-content;
-}
-
-/* Boutons flèches directionnels */
-.carousel_btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #e50914;
-    color: white;
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s ease, transform 0.2s ease;
-    z-index: 10;
-}
-
-.prev_btn {
-    left: 0;
-}
-
-.next_btn {
-    right: 0;
-}
-
-/* Animations au survol des flèches */
-.carousel_btn:hover {
-    background-color: #b3070f;
-    transform: translateY(-50%) scale(1.1);
-}
-
-.carousel_btn:active {
-    transform: translateY(-50%) scale(0.95);
-}
-
-/* ==========================================
-   6. CARTES DE PROFIL (MEMBRES)
+   6. CARTES DE PROFIL (Tes styles inchangés)
    ========================================== */
 .our_team .card {
     display: flex;
@@ -233,7 +179,17 @@ main {
     color: #000105;
     padding: 20px;
     padding-bottom: 0;
+    flex-shrink: 0; /* Empêche les cartes de s'écraser horizontalement */
+    transition: transform 0.3s ease;
 }
+
+/* Optionnel : Léger effet visuel de pop au survol d'une carte */
+.our_team .card:hover {
+    transform: scale(1.03);
+    cursor: pointer;
+}
+
+
 
 .our_team .card .image_profil {
     width: 180px;
@@ -298,3 +254,4 @@ main {
     gap: 5px;
     padding-bottom: 5px;
 }
+

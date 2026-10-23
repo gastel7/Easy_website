@@ -1,0 +1,151 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %} Contact {% endblock %}
+
+
+{% block css %} 
+    <link rel="stylesheet" href="{% static 'core/css/easy/contact.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/responsive/responsive__a_propos.css' %}">
+{% endblock %}
+
+
+{% block main %} 
+    <main>
+        <div class="contact_page">
+            <!-- La section qui contient les informations de contact -->
+            <section class="contact_text">
+                <!-- Texte de contact -->
+                <div class="contact_text_title">
+                    <h1>Contactez-nous</h1>
+
+                    <p>Un question, un besoin d'information ?</p>
+                    <p>Notre équipe est là pour vous !</p>
+                </div>
+
+
+                <!-- Infos contact -->
+                <div class="contact_text_infos">
+                    <!-- Le numéro de téléphone -->
+                    <section>
+                        <div class="contact_text_infos_icone">
+                            <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/e50914/phone.png" alt="phone"/>
+                        </div>
+
+                        <div>
+                            <p>Téléphone</p>
+                            <span>+242 05 380 74 94 </span>
+                        </div>
+                    </section>
+
+                    <!-- Email -->
+                    <section>
+                        <div class="contact_text_infos_icone">
+                            <img width="64" height="64" src="https://img.icons8.com/sf-black-filled/64/e50914/new-post.png" alt="new-post"/>
+                        </div>
+
+                        <div>
+                            <p>Email</p>
+                            <span>easycongo0@gmail.com</span>
+                        </div>
+                    </section>
+
+                    <!-- Adresse -->
+                    <section>
+                        <div class="contact_text_infos_icone">
+                            <img width="50" height="50" src="https://img.icons8.com/ios-filled/50/e50914/marker.png" alt="marker"/>
+                        </div>
+
+                        <div>
+                            <p>Adresse</p>
+                            <span>Brazzaville, République du Congo</span>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Suivez-nous -->
+                <div class="contact_text_socials">
+                    <p>Nos réseaux</p>
+
+                    <div>
+                        <!-- whatsapp -->
+                        <a href="https://wa.me/242053807494" target="_blank">
+                            <img width="30" height="30" src="https://img.icons8.com/ios-filled/30/e50914/whatsapp.png" alt="whatsapp"/>
+                        </a>
+
+                        <!-- facebook -->
+                        <a href="https://www.facebook.com/Easy-Congo-100882646168091" target="_blank">
+                            <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/e50914/facebook-new.png" alt="facebook-new"/>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/easycongo0/" target="_blank">
+                            <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/e50914/instagram-new.png" alt="instagram-new"/>
+                        </a>
+
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/company/easy-congo/" target="_blank">
+                            <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/e50914/linkedin.png" alt="linkedin"/>
+                        </a>
+
+                        <!-- Youtube -->
+                        <a href="https://www.youtube.com/@easycongo0" target="_blank">
+                            <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/e50914/youtube-play.png" alt="youtube-play"/>
+                        </a>
+
+                        <!-- tiktok -->
+                        <a href="https://www.tiktok.com/@easycongo0" target="_blank">
+                            <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/e50914/tiktok--v1.png" alt="tiktok--v1"/>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- La section qui contient le formulaire -->
+            <section class="contact_form">
+                <h2>Envoyez-nous un message</h2>
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <!-- Nom complet et email -->
+                    <section class="contact_form_name_email">
+                        <div>
+                            <label for="full_name">Nom Complet</label>
+                            <input type="text" id="full_name" name="full_name" required placeholder="Votre nom complet">
+                        </div>
+
+                        <div>
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="email@exemple.com">
+                        </div>
+                    </section>
+                    
+                    <section class="contact_form_subject">
+                        <label for="subject">Sujet</label>
+                        <input type="text" id="subject" name="subject" required placeholder="Sujet">
+                    </section>
+
+                    <section class="contact_form_message">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Bonjour, je vous contacte pour..."></textarea>
+                    </section>
+
+                    <div>
+                        <button id="whatsapp-btn" type="submit">Envoyer</button>
+                    </div>
+                </form>
+
+                <!-- Le message qui apparait lorsque le formulaire est bien rempli -->
+                <div id="success-message" style="display: none;" class="success-alert">
+                    <h3> Message préparé !</h3>
+                    <p>Vous allez être redirigé vers WhatsApp pour finaliser l'envoi.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'core/js/easy/contact.js' %}"></script>
+{% endblock %}

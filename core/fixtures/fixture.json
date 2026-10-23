@@ -1,0 +1,406 @@
+[
+  {
+    "model": "user_account.user",
+    "pk": 101,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$TGy0tUVHlmDQ7Xug$bWtt97zT3z/FbvsMuAKq8n7kt2PKvrJ4eLM8dR0NM0A=",
+      "username": "fally_production",
+      "first_name": "Fally",
+      "last_name": "Production",
+      "email": "fally@test.local",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00+01:00"
+    }
+  },
+  {
+    "model": "user_account.user",
+    "pk": 102,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$TGy0tUVHlmDQ7Xug$bWtt97zT3z/FbvsMuAKq8n7kt2PKvrJ4eLM8dR0NM0A=",
+      "username": "organisateur_test",
+      "first_name": "Organisateur",
+      "last_name": "Test",
+      "email": "organisateur@test.local",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00+01:00"
+    }
+  },
+  {
+    "model": "user_account.user",
+    "pk": 103,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$TGy0tUVHlmDQ7Xug$bWtt97zT3z/FbvsMuAKq8n7kt2PKvrJ4eLM8dR0NM0A=",
+      "username": "acheteur_1",
+      "first_name": "Acheteur",
+      "last_name": "Un",
+      "email": "acheteur1@test.local",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00+01:00"
+    }
+  },
+  {
+    "model": "user_account.user",
+    "pk": 104,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$TGy0tUVHlmDQ7Xug$bWtt97zT3z/FbvsMuAKq8n7kt2PKvrJ4eLM8dR0NM0A=",
+      "username": "acheteur_2",
+      "first_name": "Acheteur",
+      "last_name": "Deux",
+      "email": "acheteur2@test.local",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-01T00:00:00+01:00"
+    }
+  },
+  {
+    "model": "core.events",
+    "pk": 101,
+    "fields": {
+      "organisateur": 101,
+      "titre": "Fally Ipupa Live Tour",
+      "categorie": "concert",
+      "etat": "a_venir",
+      "description": "Le grand retour de Fally Ipupa à Brazzaville pour un concert exceptionnel. Venez vivre une expérience unique avec le meilleur de la rumba congolaise.",
+      "lieu": "Pavillon du Congo",
+      "adresse": "Avenue Amilcar Cabral",
+      "ville": "Brazzaville",
+      "pays": "Congo",
+      "date_debut": "2026-11-21T20:00:00+01:00",
+      "statut": "public",
+      "nombre_de_places": 1000,
+      "age_minimum": 12,
+      "created_at": "2026-09-01T10:00:00+01:00",
+      "updated_at": "2026-09-01T10:00:00+01:00"
+    }
+  },
+  {
+    "model": "core.events",
+    "pk": 102,
+    "fields": {
+      "organisateur": 102,
+      "titre": "Soirée Afro Vibes",
+      "categorie": "concert",
+      "etat": "a_venir",
+      "description": "Une soirée 100% afro, la plus attendue de Brazzaville.",
+      "lieu": "Canal Olympia",
+      "adresse": "Centre-ville",
+      "ville": "Brazzaville",
+      "pays": "Congo",
+      "date_debut": "2026-12-05T22:00:00+01:00",
+      "statut": "public",
+      "nombre_de_places": 80,
+      "age_minimum": 18,
+      "created_at": "2026-09-05T10:00:00+01:00",
+      "updated_at": "2026-09-05T10:00:00+01:00"
+    }
+  },
+  {
+    "model": "core.events",
+    "pk": 103,
+    "fields": {
+      "organisateur": 102,
+      "titre": "Conférence Leadership & Innovation",
+      "categorie": "conference",
+      "etat": "a_venir",
+      "description": "Une conférence sur le leadership et l'entrepreneuriat, animée par des experts.",
+      "lieu": "Hôtel Ledger Plaza",
+      "adresse": "Boulevard Denis Sassou N'Guesso",
+      "ville": "Brazzaville",
+      "pays": "Congo",
+      "date_debut": "2026-11-10T09:00:00+01:00",
+      "statut": "public",
+      "nombre_de_places": 200,
+      "age_minimum": 0,
+      "created_at": "2026-09-10T10:00:00+01:00",
+      "updated_at": "2026-09-10T10:00:00+01:00"
+    }
+  },
+  {
+    "model": "core.events",
+    "pk": 104,
+    "fields": {
+      "organisateur": 102,
+      "titre": "Match AC Léopards",
+      "categorie": "sport",
+      "etat": "annule",
+      "description": "Match annulé, test de refus de réservation.",
+      "lieu": "Stade Alphonse Massamba-Débat",
+      "adresse": "Avenue de la Paix",
+      "ville": "Brazzaville",
+      "pays": "Congo",
+      "date_debut": "2026-11-01T16:00:00+01:00",
+      "statut": "public",
+      "nombre_de_places": 500,
+      "age_minimum": 0,
+      "created_at": "2026-09-15T10:00:00+01:00",
+      "updated_at": "2026-09-15T10:00:00+01:00"
+    }
+  },
+  {
+    "model": "core.events",
+    "pk": 105,
+    "fields": {
+      "organisateur": 102,
+      "titre": "Soirée privée",
+      "categorie": "concert",
+      "etat": "a_venir",
+      "description": "Soirée privée sur invitation.",
+      "lieu": "Lieu communiqué aux invités",
+      "adresse": "",
+      "ville": "Brazzaville",
+      "pays": "Congo",
+      "date_debut": "2026-12-20T21:00:00+01:00",
+      "statut": "prive",
+      "nombre_de_places": 40,
+      "age_minimum": 18,
+      "created_at": "2026-10-01T10:00:00+01:00",
+      "updated_at": "2026-10-01T10:00:00+01:00"
+    }
+  },
+  {
+    "model": "core.events",
+    "pk": 106,
+    "fields": {
+      "organisateur": 102,
+      "titre": "Exposition Photo 2026",
+      "categorie": "exposition",
+      "etat": "termine",
+      "description": "Exposition photo terminée, test de refus de réservation et de billet scanné.",
+      "lieu": "Centre culturel",
+      "adresse": "Avenue de l'Indépendance",
+      "ville": "Brazzaville",
+      "pays": "Congo",
+      "date_debut": "2026-03-10T10:00:00+01:00",
+      "statut": "public",
+      "nombre_de_places": 150,
+      "age_minimum": 0,
+      "created_at": "2026-01-15T10:00:00+01:00",
+      "updated_at": "2026-01-15T10:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 201,
+    "fields": {
+      "event": 101,
+      "nom": "Standard",
+      "prix": "5000.00",
+      "type_de_ticket": "standard",
+      "quantite_disponible": 300,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-11-21T20:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 202,
+    "fields": {
+      "event": 101,
+      "nom": "VIP",
+      "prix": "10000.00",
+      "type_de_ticket": "vip",
+      "quantite_disponible": 150,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-11-21T20:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 203,
+    "fields": {
+      "event": 101,
+      "nom": "VVIP",
+      "prix": "25000.00",
+      "type_de_ticket": "vvip",
+      "quantite_disponible": 50,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-11-21T20:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 204,
+    "fields": {
+      "event": 102,
+      "nom": "Standard",
+      "prix": "7000.00",
+      "type_de_ticket": "standard",
+      "quantite_disponible": 2,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-12-05T22:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 205,
+    "fields": {
+      "event": 102,
+      "nom": "Early Bird",
+      "prix": "5000.00",
+      "type_de_ticket": "early_bird",
+      "quantite_disponible": 20,
+      "date_debut_vente": "2026-08-01T00:00:00+01:00",
+      "date_fin_vente": "2026-10-30T23:59:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 206,
+    "fields": {
+      "event": 103,
+      "nom": "Gratuit",
+      "prix": "0.00",
+      "type_de_ticket": "gratuit",
+      "quantite_disponible": 150,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-11-10T09:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 207,
+    "fields": {
+      "event": 103,
+      "nom": "Donation",
+      "prix": "0.00",
+      "type_de_ticket": "donation",
+      "quantite_disponible": 50,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-11-10T09:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 208,
+    "fields": {
+      "event": 104,
+      "nom": "Standard",
+      "prix": "3000.00",
+      "type_de_ticket": "standard",
+      "quantite_disponible": 100,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-11-01T16:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 209,
+    "fields": {
+      "event": 105,
+      "nom": "Invitation",
+      "prix": "10000.00",
+      "type_de_ticket": "standard",
+      "quantite_disponible": 20,
+      "date_debut_vente": "2026-09-01T00:00:00+01:00",
+      "date_fin_vente": "2026-12-20T21:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.ticketcategory",
+    "pk": 210,
+    "fields": {
+      "event": 106,
+      "nom": "Entrée",
+      "prix": "1000.00",
+      "type_de_ticket": "standard",
+      "quantite_disponible": 100,
+      "date_debut_vente": "2026-01-01T00:00:00+01:00",
+      "date_fin_vente": "2026-03-10T18:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.userticket",
+    "pk": 301,
+    "fields": {
+      "category": 204,
+      "user": 103,
+      "code_unique": "Xk9pTq2mLw7RzVb4Ns1A",
+      "statut": "valide",
+      "prix_achat": "7000.00",
+      "reference_paiement": "",
+      "date_achat": "2026-10-02T10:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.userticket",
+    "pk": 302,
+    "fields": {
+      "category": 204,
+      "user": 104,
+      "code_unique": "Yh3dQw8sKp5LtGx2Rm6B",
+      "statut": "valide",
+      "prix_achat": "7000.00",
+      "reference_paiement": "PAY-TEST-0002",
+      "date_achat": "2026-10-03T11:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.userticket",
+    "pk": 303,
+    "fields": {
+      "category": 201,
+      "user": 103,
+      "code_unique": "Zc7vNb1jHk4WqTe9Lp0C",
+      "statut": "en_attente",
+      "prix_achat": "5000.00",
+      "reference_paiement": "",
+      "date_achat": "2026-10-14T18:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.userticket",
+    "pk": 304,
+    "fields": {
+      "category": 202,
+      "user": 104,
+      "code_unique": "Ap5mRt8yUi2ZxDo6Vn3E",
+      "statut": "valide",
+      "prix_achat": "10000.00",
+      "reference_paiement": "PAY-TEST-0004",
+      "date_achat": "2026-10-05T09:30:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.userticket",
+    "pk": 305,
+    "fields": {
+      "category": 201,
+      "user": 104,
+      "code_unique": "Bn6kLe3qWo9PsFa1Ty4G",
+      "statut": "annule",
+      "prix_achat": "5000.00",
+      "reference_paiement": "",
+      "date_achat": "2026-10-06T12:00:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.userticket",
+    "pk": 306,
+    "fields": {
+      "category": 210,
+      "user": 103,
+      "code_unique": "Cd2fGh7vJm5RkUe8Qa0H",
+      "statut": "scanne",
+      "prix_achat": "1000.00",
+      "reference_paiement": "",
+      "date_achat": "2026-02-20T14:00:00+01:00",
+      "date_scan": "2026-03-10T10:15:00+01:00"
+    }
+  },
+  {
+    "model": "tickets.userticket",
+    "pk": 307,
+    "fields": {
+      "category": 206,
+      "user": 103,
+      "code_unique": "Dg4jKl9bNo1XrYi3Wz6I",
+      "statut": "valide",
+      "prix_achat": "0.00",
+      "reference_paiement": "",
+      "date_achat": "2026-10-10T08:00:00+01:00"
+    }
+  }
+]

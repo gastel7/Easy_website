@@ -1,0 +1,46 @@
+<!-- La card de l'aperçu -->
+<aside class="event-preview" aria-label="Aperçu de l'événement">
+    <h3 class="preview-title">
+        <!-- Ici, le svg "œil" -->
+        Aperçu de l'événement
+    </h3>
+
+    <div class="preview-cover">
+        <span class="preview-badge" data-pv="categorie">Événement</span>
+        <img data-pv-cover alt="" hidden>
+        <span class="preview-cover-empty" data-pv-cover-empty>Aucune image principale</span>
+    </div>
+
+    <h4 class="preview-name" data-pv="titre">Titre de l'événement</h4>
+
+    <ul class="preview-meta">
+        <li style="display: grid; grid-template-columns: 1fr; gap: 0.5rem;">
+            <!-- Ici, le svg calendrier -->
+            <span data-pv="dates"></span>
+       
+            <!-- Ici, le svg horloge -->
+            <span data-pv="heures"></span>
+        </li>
+        <li class="is-wide">
+            <!-- Ici, le svg lieu -->
+            <span data-pv="lieu"></span>
+        </li>
+        <li>
+            <!-- Ici, le svg users -->
+            <span data-pv="places"></span>
+        </li>
+        <li>
+            <!-- Ici, le svg user -->
+            <span data-pv="age"></span>
+        </li>
+    </ul>
+
+    <span class="status" data-pv="statut" data-state="off"></span>
+
+    <p class="preview-desc" data-pv="description"></p>
+
+    <div class="preview-gallery" data-pv-gallery-wrap hidden>
+        <h4>Galerie d'images</h4>
+        <div class="preview-gallery-grid" data-pv-gallery></div>
+    </div>
+</aside>

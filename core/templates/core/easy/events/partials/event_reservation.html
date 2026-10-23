@@ -1,0 +1,52 @@
+{% load l10n %}
+
+<form method="post" action="{% url 'tickets:reserver' event.id %}" class="reserve" data-reserve data-max-commande="10">
+    {% csrf_token %}
+
+    {% for categorie in categories %}
+        <div class="reserve-ticket {% if categorie.etat_vente != 'ouvert' %}is-indisponible{% endif %}"
+             data-ticket data-id="{{ categorie.id }}"
+             data-prix="{{ categorie.prix|default:0|unlocalize }}"
+             data-max="{% if categorie.etat_vente == 'ouvert' %}{{ categorie.max_achat }}{% else %}0{% endif %}">
+
+            <div class="reserve-ticket-info">
+                <strong>{{ categorie.nom }}</strong>
+                <span class="reserve-type">{{ categorie.get_type_de_ticket_display }}</span>
+
+                <p class="reserve-prix">
+                    {% if categorie.prix %}{{ categorie.prix|floatformat:"0g" }} FCFA{% else %}Gratuit{% endif %}
+                </p>
+            </div>
+
+            {% if categorie.etat_vente == 'ouvert' %}
+                <div class="reserve-stepper">
+                    <button type="button" data-moins aria-label="Retirer un billet {{ categorie.nom }}">−</button>
+                    <output data-quantite>0</output>
+                    <button type="button" data-plus aria-label="Ajouter un billet {{ categorie.nom }}">+</button>
+
+                    {# Envoyée avec le formulaire : quantite_<id> #}
+                    <input type="hidden" name="quantite_{{ categorie.id }}" value="0" data-quantite-champ>
+                </div>
+            {% elif categorie.etat_vente == 'complet' %}
+                <span class="reserve-etat">Complet</span>
+            {% elif categorie.etat_vente == 'bientot' %}
+                <span class="reserve-etat">Vente le {{ categorie.date_debut_vente|date:"d/m" }}</span>
+            {% else %}
+                <span class="reserve-etat">Vente terminée</span>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p class="reserve-vide">Les billets ne sont pas encore disponibles.</p>
+    {% endfor %}
+
+    {% if categories %}
+        <p class="reserve-limite" data-limite hidden>Maximum 10 billets par commande.</p>
+
+        <div class="reserve-total">
+            <span>Total</span>
+            <strong data-total>0 FCFA</strong>
+        </div>
+
+        <button type="submit" class="btn-link primary reserve-bouton" data-reserver disabled>Réserver mon billet</button>
+    {% endif %}
+</form>

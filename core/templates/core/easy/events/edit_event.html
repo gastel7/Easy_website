@@ -1,0 +1,61 @@
+{% extends 'core/easy/events/new_event.html' %}
+
+{% load static %}
+
+
+{% block title %} Mise à jour de l'événement {{ event.titre }} {% endblock %}
+
+
+{% block css %} 
+    <link rel="stylesheet" href="{% static 'core/css/easy/event.css' %}">
+{% endblock %}
+
+{% block main %} 
+    <main class="event-page">
+        <!-- data-step : sert aux étapes sur mobile -->
+        <div class="event-layout" data-step="1">
+
+            <div class="event-card">
+                <div class="event-head">
+                    <a class="event-back" href="{% url 'core:events-list' %}">Événements</a>
+
+                    <h2>Mise à jour de l'événement {{ event.titre }}</h2>
+
+                    <p class="event-lead">Modifiez les détails de votre événement pour tenir votre communauté informée des dernières nouveautés.</p>
+                </div>
+
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
+                    {% include 'core/easy/events/partials/event_form.html' %} 
+
+                    <div class="form-actions">
+                        <!-- PC -->
+                        <a class="btn btn-outline" data-cancel href="{% url 'core:events-list' %}">Annuler</a>
+                        
+                        
+                        {% block btnValidate %} 
+                            <button type="submit" class="btn btn-primary" data-submit>
+                                Mettre à jour
+                            </button>
+                        {% endblock %} 
+
+
+                        <!-- Mobile -->
+                        <button type="button" class="btn btn-outline" data-prev>← Précédent</button>
+                        <button type="button" class="btn btn-primary" data-next>Suivant →</button>
+                    </div>
+                </form>
+            </div>
+
+            {% include 'core/easy/events/partials/event_preview.html' %}
+        </div>
+    </main>
+{% endblock %}
+
+
+
+{% block js %}
+    <script src="{% static 'core/js/easy/event.js' %}" defer></script>
+{% endblock %}

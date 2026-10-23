@@ -1,0 +1,2 @@
+{# Payant si au moins un billet a un prix. Il faut un event annoté avec prix_max (voir les vues). Rien s'il n'y a pas encore de billet. #}
+{% if event.prix_max is None %}{% elif event.prix_max > 0 %}<span class="price" style="background-color: white;">Payant</span>{% else %}<span class="price is-gratuit">Gratuit</span>{% endif %}

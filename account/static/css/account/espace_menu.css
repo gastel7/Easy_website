@@ -1,0 +1,113 @@
+/* ==========================================================================
+   Menu de l'espace : icônes et mode réduit (ordinateur)
+   À charger APRÈS espace.css
+   ========================================================================== */
+
+/* Icônes SVG : elles prennent la couleur du texte du lien */
+.espace-icone {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.espace-lien {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+.espace-logo-court {
+    display: none;
+}
+
+/* Le bouton de réduction n'existe que sur ordinateur */
+.espace-reduire-btn {
+    display: grid;
+}
+
+@media (max-width: 899px) {
+    .espace-reduire-btn {
+        display: none;
+    }
+}
+
+/* Mode réduit : seulement sur ordinateur */
+@media (min-width: 900px) {
+    .espace-layout {
+        transition: grid-template-columns 0.2s ease;
+    }
+
+    .espace-layout.is-reduit {
+        grid-template-columns: 72px minmax(0, 1fr);
+    }
+
+    .espace-layout.is-reduit .espace-sidebar {
+        padding: 20px 10px;
+    }
+
+    .espace-layout.is-reduit .espace-lien {
+        justify-content: center;
+        gap: 0;
+        padding: 11px 0;
+    }
+
+    .espace-layout.is-reduit .espace-lien-texte,
+    .espace-layout.is-reduit .espace-logo-texte {
+        display: none;
+    }
+
+    .espace-layout.is-reduit .espace-logo {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        margin: 0 auto 18px;
+        color: #fff;
+        /* background: var(--espace-primary); */
+        border-radius: 12px;
+    }
+
+    .espace-layout.is-reduit .espace-logo-court {
+        display: block;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    /* Les titres de section deviennent un simple trait */
+    .espace-layout.is-reduit .espace-sidebar-titre {
+        height: 1px;
+        margin: 12px 8px;
+        padding: 0;
+        font-size: 0;
+        background: var(--espace-bord);
+    }
+}
+
+/* Logo : complet sur le menu, réduit en mode icônes */
+.espace-logo {
+    display: block;
+    margin: 0 10px 18px;
+}
+
+.espace-logo-complet {
+    display: block;
+    width: 150px;
+    height: auto;
+}
+
+@media (min-width: 900px) {
+    .espace-layout.is-reduit .espace-logo {
+        width: 52px;
+        margin: 0 auto 18px;
+    }
+
+    .espace-layout.is-reduit .espace-logo-complet {
+        width: 52px;
+    }
+}
