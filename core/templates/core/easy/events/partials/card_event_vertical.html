@@ -1,0 +1,41 @@
+{# Carte verticale du carrousel (liste « à ne pas manquer » et « événements similaires ») #}
+<article class="card card-vertical">
+    <a class="card-image" href="{% url 'core:detail-event' event.id %}" {% if event.image_principale %}style="background-image: url('{{ event.image_principale.url }}');"{% endif %} aria-label="{{ event.titre }}">
+        <span class="date-badge"><strong>{{ event.date_debut|date:"d" }}</strong>{{ event.date_debut|date:"M" }}</span>
+    
+        
+        <div style="position: absolute; bottom: 10px; left: 10px;">
+            {% include 'core/easy/events/partials/gratuit_payant.html' %}
+        </div>
+    </a>
+
+    <button type="button" class="btn-favori {% if event.id in ids_favoris %}is-active{% endif %}" data-favori data-url="{% url 'core:toggle-favori' event.id %}" aria-label="Ajouter aux favoris" aria-pressed="{% if event.id in ids_favoris %}true{% else %}false{% endif %}"></button>
+
+    <div class="card-body">
+        <span class="meta-categorie">{{ event.get_categorie_display }}</span>
+        <h3><a href="{% url 'core:detail-event' event.id %}">{{ event.titre }}</a></h3>
+
+        <div class="card-infos">
+            <p>{{ event.lieu }}{% if event.lieu and event.ville %}, {% endif %}{{ event.ville }}</p>
+            <p>{{ event.date_debut|time:"H:i" }}</p>
+        </div>
+
+        <div class="btn-row" style="margin-top: 10px">
+            <a href="{% url 'core:detail-event' event.id %}" class="btn-link primary" title="Voir les détails">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#fff"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-480H200v480Zm133.5-124.5Q269-369 240-440q29-71 93.5-115.5T480-600q82 0 146.5 44.5T720-440q-29 71-93.5 115.5T480-280q-82 0-146.5-44.5Zm248.5-42q46-26.5 72-73.5-26-47-72-73.5T480-540q-56 0-102 26.5T306-440q26 47 72 73.5T480-340q56 0 102-26.5ZM480-440Zm42.5 42.5Q540-415 540-440t-17.5-42.5Q505-500 480-500t-42.5 17.5Q420-465 420-440t17.5 42.5Q455-380 480-380t42.5-17.5Z"/></svg>
+            </a>
+            
+            
+            
+            {% if user.is_superuser or user.role == 'admin' or user.role == 'modérateur' or user == event.organisateur %}
+                <a href="{% url 'core:edit-event' event.id %}" class="btn-link" title="Modifier">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#fff"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/></svg>                </a>
+                
+
+                <button title="Supprimer" type="button" class="btn-link" data-supprimer data-action="{% url 'core:delete-event' event.id %}" data-titre="{{ event.titre }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#fff"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                </button>
+            {% endif %}
+        </div>
+    </div>
+</article>

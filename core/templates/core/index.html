@@ -11,6 +11,7 @@
                         url('{% static "core/images/easy_background_part_section.jpeg" %}') center/cover no-repeat;
             color: #fff;
             padding: 120px 5% 80px;
+            padding-top: 50px;
         }
         .hero__inner {
             max-width: 1180px;
@@ -187,7 +188,7 @@
                         réservez en quelques clics et vivez chaque instant sans stress.
                     </p>
                     <div class="cta-row">
-                        <a href="{% url 'core:event-list' %}" class="btn-primary">Voir les événements</a>
+                        <a href="{% url 'core:events-list' %}" class="btn-primary">Voir les événements</a>
                         <a href="{% url 'core:a-propos' %}" class="btn-secondary">Découvrir Easy</a>
                     </div>
                 </div>
@@ -219,10 +220,10 @@
         <section class="section">
             <div class="section-header">
                 <h2>Événements à ne pas manquer</h2>
-                <a href="{% url 'core:event-list' %}">Voir tout</a>
+                <a href="{% url 'core:events-list' %}">Voir tout</a>
             </div>
             <div class="events-grid">
-                {% for event in featured_events %}
+                {% for event in events %}
                     <article class="event-card">
                         {% if event.image %}
                             <div class="event-card__image" style="background-image: url('{{ event.image.url }}');"></div>
@@ -231,15 +232,15 @@
                         {% endif %}
                         <div class="event-card__body">
                             <div class="event-card__meta">
-                                <span>{{ event.get_category_display }}</span>
+                                <span>{{ event.categorie }}</span>
                                 <span>•</span>
-                                <span>{{ event.event_date|date:'d M Y' }}</span>
+                                <span>{{ event.date_debut|date:'d M Y' }}</span>
                             </div>
                             <h3>{{ event.title }}</h3>
                             <p>{{ event.short_description|default:event.description|truncatechars:120 }}</p>
                             <div class="event-card__footer">
                                 <span class="price-tag">{{ event.price }} FCFA</span>
-                                <a href="{% url 'core:event-detail' event.slug %}" class="btn-primary">Détails</a>
+                                <a href="{% url 'core:detail-event' event.id %}" class="btn-primary">Détails</a>
                             </div>
                         </div>
                     </article>

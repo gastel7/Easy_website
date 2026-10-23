@@ -1,0 +1,34 @@
+{% extends base_template %}
+
+{% load static %}
+
+
+{% block title %} Liste des événements {% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'core/css/easy/events_list.css' %}">
+{% endblock %}
+
+
+{% block main %}
+    <main class="events-page" data-csrf="{{ csrf_token }}">
+        {% include 'core/easy/events/partials/events_list_contenu.html' %}
+    </main>
+{% endblock %}
+
+
+{% block espace_fil %}<span>Événements</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <div class="events-page">
+        {% include 'core/easy/events/partials/events_list_contenu.html' %}
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'core/js/easy/favoris.js' %}" defer></script>
+    <script src="{% static 'core/js/easy/event_list.js' %}" defer></script>
+{% endblock %}

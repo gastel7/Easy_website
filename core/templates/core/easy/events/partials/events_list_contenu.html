@@ -1,0 +1,131 @@
+<div class="page-shell">
+
+    <!-- ===== Le haut de page : titre + recherche ===== -->
+    <div class="hero">
+        <!-- <p class="breadcrumb"><a href="{% url 'core:index' %}">Accueil</a> › Événements</p> -->
+
+        <div class="page-header">
+            <h1>Tous les événements.<br><span>Tous au même endroit.</span></h1>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'core:add-event' %}" class="action-btn">+ Créer un événement</a>
+            {% endif %}
+        </div>
+
+        <p class="hero-lead">Explore, réserve et vis les meilleures expériences près de chez toi ou partout au Congo Brazzaville.</p>
+
+        <form class="search-bar" method="get" action="{% url 'core:events-list' %}">
+            <input type="search" name="q" value="{{ q }}" placeholder="Rechercher un événement, artiste, lieu..." aria-label="Rechercher">
+            <input type="text" name="ville" value="{{ ville }}" placeholder="Où ?" aria-label="Ville">
+            <input type="date" name="date" value="{{ jour }}" aria-label="Date">
+            <input type="hidden" name="vue" value="{{ vue }}">
+            <button type="submit" class="btn-link primary">Rechercher</button>
+        </form>
+    </div>
+
+
+    <!-- ===== Les catégories ===== -->
+    <nav class="tabs" aria-label="Catégories">
+        <a href="{% querystring categorie=None page=None %}" class="tab {% if not categorie %}is-active{% endif %}">Tous</a>
+
+        {% for valeur, nom in categories %}
+            <a href="{% querystring categorie=valeur page=None %}" class="tab {% if categorie == valeur %}is-active{% endif %}">{{ nom }}</a>
+        {% endfor %}
+    </nav>
+
+
+    <!-- ===== Événements à ne pas manquer (sans filtre, page 1) ===== -->
+    {% if a_la_une %}
+        <section class="section">
+            <div class="section-head">
+                <h2>Événements à ne pas manquer</h2>
+            </div>
+
+            <div class="carousel" data-carousel>
+                <div class="carousel-track">
+                    {% for event in a_la_une %}
+                        {% include 'core/easy/events/partials/card_event_vertical.html' %}
+                    {% endfor %}
+                </div>
+
+                <button type="button" class="carousel-btn" data-carousel-next aria-label="Voir la suite">›</button>
+            </div>
+        </section>
+    {% endif %}
+
+
+    <section>
+        <!-- ===== Parcourir par date ===== -->
+        <h2 class="section-title">Parcourir par date</h2>
+
+        <div class="chips">
+            <a href="{% querystring periode=None date=None page=None %}" class="chip {% if not periode and not jour %}is-active{% endif %}">Toutes les dates</a>
+            <a href="{% querystring periode='aujourdhui' date=None page=None %}" class="chip {% if periode == 'aujourdhui' %}is-active{% endif %}">Aujourd'hui</a>
+            <a href="{% querystring periode='weekend' date=None page=None %}" class="chip {% if periode == 'weekend' %}is-active{% endif %}">Ce week-end</a>
+            <a href="{% querystring periode='semaine_prochaine' date=None page=None %}" class="chip {% if periode == 'semaine_prochaine' %}is-active{% endif %}">Semaine prochaine</a>
+            <a href="{% querystring periode='mois' date=None page=None %}" class="chip {% if periode == 'mois' %}is-active{% endif %}">Ce mois</a>
+        </div>
+
+
+        <!-- ===== Tous les événements ===== -->
+        <div class="section-head">
+            <h2>Tous les événements <small>({{ nb_resultats }})</small></h2>
+
+            <div class="section-outils">
+                <label class="tri">Trier par
+                    <select data-tri>
+                        <option value="recents" {% if tri != 'date' %}selected{% endif %}>Les plus récents</option>
+                        <option value="date" {% if tri == 'date' %}selected{% endif %}>Date de l'événement</option>
+                    </select>
+                </label>
+
+                <div class="vue-bascule" role="group" aria-label="Affichage">
+                    <a href="{% querystring vue='liste' page=None %}" class="vue-bouton {% if vue == 'liste' %}is-active{% endif %}" aria-label="Affichage en liste" title="Liste">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>
+                    </a>
+                    <a href="{% querystring vue='grille' page=None %}" class="vue-bouton {% if vue == 'grille' %}is-active{% endif %}" aria-label="Affichage en grille" title="Grille">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if vue == 'grille' %}
+            <div class="grid grid--cartes">
+                {% for event in events %}
+                    {% include 'core/easy/events/partials/card_event_vertical.html' %}
+                {% empty %}
+                    <p class="vide">Aucun événement ne correspond à ta recherche.</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="grid">
+                {% for event in events %}
+                    {% include 'core/easy/events/partials/card_event.html' %}
+                {% empty %}
+                    <p class="vide">Aucun événement ne correspond à ta recherche.</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if page_obj.has_other_pages %}
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href="{% querystring page=page_obj.previous_page_number %}">Précédent</a></li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="active"><span>{{ num }}</span></li>
+                    {% else %}
+                        <li><a href="{% querystring page=num %}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li><a href="{% querystring page=page_obj.next_page_number %}">Suivant</a></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    </section>
+</div>
+
+{% include 'core/easy/events/partials/modal_suppression.html' %}

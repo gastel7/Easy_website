@@ -14,7 +14,6 @@ function switchTab(input) {
 
 
 
-
 function switchEmailOrPhone(input) {
     // Enlever la classe active de tous les rôles
     document.querySelectorAll('.email_or_phone-item').forEach(item => {

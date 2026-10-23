@@ -1,0 +1,44 @@
+<div class="ticket-card" data-ticket-card>
+    <div class="ticket-card-head">
+        <strong data-ticket-number>Billet</strong>
+        <button type="button" class="ticket-remove" data-ticket-remove>Supprimer</button>
+    </div>
+
+    {{ ticket.id }}{{ ticket.event }}
+    <div class="ticket-delete">{{ ticket.DELETE }}</div>
+
+    <div class="ticket-grid">
+        <div class="form_div">
+            {{ ticket.nom.label_tag }}
+            <div class="container-input">{{ ticket.nom }}</div>
+            {{ ticket.nom.errors }}
+        </div>
+        <div class="form_div">
+            {{ ticket.type_de_ticket.label_tag }}
+            <div class="container-input">{{ ticket.type_de_ticket }}</div>
+            {{ ticket.type_de_ticket.errors }}
+        </div>
+        <div class="form_div">
+            {{ ticket.prix.label_tag }}
+            <div class="container-input">{{ ticket.prix }}</div>
+            {{ ticket.prix.errors }}
+        </div>
+        <div class="form_div">
+            {{ ticket.quantite_disponible.label_tag }}
+            <div class="container-input">{{ ticket.quantite_disponible }}</div>
+            {{ ticket.quantite_disponible.errors }}
+        </div>
+        <div class="form_div">
+            {{ ticket.date_debut_vente.label_tag }}
+            <div class="container-input">{{ ticket.date_debut_vente }}</div>
+            {{ ticket.date_debut_vente.errors }}
+        </div>
+        <div class="form_div">
+            {{ ticket.date_fin_vente.label_tag }}
+            <div class="container-input">{{ ticket.date_fin_vente }}</div>
+            {{ ticket.date_fin_vente.errors }}
+        </div>
+    </div>
+
+    {{ ticket.non_field_errors }}
+</div>

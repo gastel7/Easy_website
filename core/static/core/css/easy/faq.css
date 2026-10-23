@@ -1,0 +1,128 @@
+main {
+    min-height: 85vh;
+    padding-top: 30px;
+    background-color: #f4f4f4;
+    padding-bottom: 20px;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.faq_page {
+    width: 92%;
+    height: 100%;
+    gap: 2%;
+
+    display: flex;
+    align-items: center;
+}
+
+.section_questions {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    height: 100%;
+}
+
+.section_questions_content {
+    background-color: #fff;
+    padding: 0 30px;
+    border-radius: 20px;
+    width: 630px;
+}
+
+.section_questions_content_sub {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Le titre cliquable de la question */
+.section_questions_content_sub section.open {
+    padding: 20px 0;
+    border-bottom: solid 1px grey;
+    cursor: pointer;
+}
+
+/* Gestion du cas particulier pour le 6ème élément (le dernier) */
+.section_questions_content_sub:nth-of-type(6) section.open {
+    border-bottom: none;
+}
+
+.section_questions_content_sub:nth-of-type(6) section.open.clicked {
+    border-bottom: solid grey 1px;
+}
+
+/* Fait tourner la flèche au clic */
+.section_questions_content_sub section.open.clicked svg {
+    transform: rotate(180deg);
+}
+
+/* Ajoute une transition fluide sur la flèche */
+.section_questions_content_sub section.open svg {
+    transition: transform 0.3s ease;
+}
+
+/* LE CONTENEUR DE LA RÉPONSE : Gère la transition d'ouverture ET de fermeture */
+.section_questions_content_sub .div_faq_answer {
+    max-height: 0;            /* Totalement caché et replié par défaut */
+    opacity: 0;               /* Invisible par défaut */
+    overflow: hidden;
+    /* Transition sur la hauteur et l'opacité (0.35s pour l'ouverture et la fermeture) */
+    transition: max-height 0.35s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Quand le JS ajoute la classe au clic */
+.section_questions_content_sub .div_faq_answer.text_open {
+    max-height: 300px;        /* Une valeur max supérieure à la taille de ton texte pour lui laisser la place de s'ouvrir */
+    opacity: 1;               /* Devient visible */
+}
+
+/* Le texte à l'intérieur */
+.section_questions_content_sub p {
+    align-content: center;
+    padding: 20px 0;          /* Garde les marges internes propres */
+}
+
+.section_questions_content_sub section.open div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section_questions_content_sub section.open div h2 {
+    font-size: 1.1rem;
+}
+
+/* Contact us */
+.contact_us {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}  
+
+.contact_us_content {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 520px;
+    height: 210px;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.contact_us_content h2 {
+    font-size: 1.30rem;
+}   
+
+.contact_us_content a {
+    background-color: #e50914;
+    border-radius: 10px;
+    padding: 12px 20px;
+    width: max-content;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}

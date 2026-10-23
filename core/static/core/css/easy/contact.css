@@ -1,0 +1,214 @@
+main{
+    padding-top: 40px;
+    min-height: 100vh;
+    /* padding-top: 150px; */
+    background-color: #f4f4f4;
+    padding-bottom: 20px;
+}
+
+.contact_page{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0 30px;
+}
+
+/* .contact_text, .contact_form{
+    width: 50%;
+} */
+
+.contact_text{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-evenly; */
+    gap: 10%;
+    width: 33%;
+}
+
+.contact_text_title h1{
+    font-size: 2.8rem;
+    margin-bottom: 5px;
+}
+
+.contact_text_title p{
+    font-size: 1.09rem;
+    line-height: 1.4rem;
+}
+
+.contact_text_infos{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact_text_infos section{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact_text_infos section p{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.contact_text_infos section span{
+    font-size: 1.1rem;
+}
+
+.contact_text_infos_icone{
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    outline: solid red 2px;
+    background-color: black;
+}
+
+.contact_text_infos_icone img{
+    width: 25px;
+    height: 25px;
+}
+
+
+/* Le lien des réseaux sociaux */
+.contact_text_socials{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contact_text_socials p{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.contact_text_socials div{
+    display: flex;
+    gap: 10px;
+}
+
+.contact_text_socials div a{
+    outline: solid grey 1px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.contact_text_socials div a:hover{
+    outline-color: #e50914;
+}
+
+.contact_text_socials div a img{
+    width: 25px;
+    height: 25px;
+}
+
+
+
+
+/* Le formulaire de contact */
+.contact_form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #f4f4f4;
+    background-color: #fff;
+    box-shadow: black 0 1px 1px;
+    /* outline: solid red 2px; */
+    padding: 20px 25px;
+    border-radius: 12px;
+    width: 62%;
+}
+
+.contact_form h2{
+    font-size: 1.55rem;
+}
+
+.contact_form form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact_form form section{
+    width: 100%;
+    display: flex;
+    column-gap: 15px;
+    row-gap: 10px;
+}
+
+
+.contact_form form section.contact_form_name_email div{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    row-gap: 10px;
+}
+
+
+/* 
+    fiche avec mot de passe du wifi
+    son mot de passe qu'accès à l'ordinateur
+    mot de passe de la boite mail
+*/
+
+.contact_form form section.contact_form_subject, 
+.contact_form form section.contact_form_message{
+    flex-direction: column;
+}
+
+
+.contact_form form section input, .contact_form form section textarea{
+    border: none;
+    outline: solid 1px black;
+    background-color: #f4f4f4;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.contact_form form button{
+    background-color: #e50914;
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+}
+
+
+/* Sur petit écran (ex: moins de 991px) */
+@media screen and (max-width: 991px){
+    .contact_page{
+        row-gap: 30%;
+    }
+
+    .contact_text, .contact_form{
+        width: 100%; 
+    }
+}
+
+
+@media screen and (max-width: 685px){
+    .contact_form form section.contact_form_name_email{
+        flex-direction: column;
+        width: 100%
+    }
+
+    .contact_form form section.contact_form_name_email div{
+        width: 100%
+    }
+}

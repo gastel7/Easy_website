@@ -1,0 +1,665 @@
+/* ==========================================================================
+   Pages « liste » et « détail » des événements (thème sombre EASY)
+   Utilisé par : le site public (main.events-page), l'espace (div.events-page)
+   et la page détail (.event-detail).
+
+   Où modifier quoi :
+   - Couleurs                         -> variables de .events-page
+   - Haut de page et recherche        -> .page-header, .search-bar
+   - Onglets catégories et dates      -> .tabs, .chips
+   - Barre « Trier par » et bascule   -> .section-outils, .vue-bascule
+   - Carrousel                        -> .carousel, .card-vertical
+   - Grille (cartes verticales)       -> .grid--cartes
+   - Liste (cartes horizontales)      -> .grid, .card  (affichage par défaut)
+   - Badges, boutons, cœur favori     -> .date-badge, .price, .btn-link, .btn-favori
+   - Pagination                       -> .pagination
+   - Modal de suppression             -> modal_suppression.css
+   ========================================================================== */
+
+
+/* ----- Variables et base ----- */
+
+.events-page,
+.event-detail {
+    --noir: #0b0b0f;
+    --carte: #141418;
+    --carte-claire: #1c1c22;
+    --bord: rgba(255, 255, 255, 0.09);
+    --texte: #f4f4f5;
+    --texte-doux: #a1a1aa;
+    --rouge: #e50914;
+    --rouge-fonce: #b90710;
+
+    background: var(--noir);
+    color: var(--texte);
+}
+
+/* Page publique : décalée sous le header du site */
+main.events-page {
+    min-height: 100vh;
+    padding-top: 50px;
+}
+
+.events-page *,
+.event-detail * {
+    box-sizing: border-box;
+}
+
+.events-page a,
+.event-detail a {
+    color: inherit;
+}
+
+.events-page [hidden],
+.event-detail [hidden] {
+    display: none !important;
+}
+
+.page-shell {
+    padding: 0 5% 60px;
+}
+
+/* Dans l'espace, le menu fournit déjà la marge */
+.espace-contenu .page-shell {
+    padding: 0;
+}
+
+
+/* ----- Haut de page ----- */
+
+.breadcrumb {
+    margin: 0 0 18px;
+    font-size: 0.85rem;
+    color: var(--texte-doux);
+}
+
+.breadcrumb a {
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    color: var(--rouge);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 14px;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.1;
+}
+
+.page-header h1 span {
+    color: var(--rouge);
+}
+
+.hero-lead {
+    max-width: 520px;
+    margin: 0 0 26px;
+    line-height: 1.5;
+    color: var(--texte-doux);
+}
+
+.action-btn {
+    display: inline-block;
+    flex: none;
+    padding: 12px 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--texte);
+    border: 1.5px solid var(--rouge);
+    border-radius: 999px;
+}
+
+.action-btn:hover {
+    background: var(--rouge);
+}
+
+.search-bar {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr auto;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 22px;
+    background: var(--carte);
+    border: 1px solid var(--bord);
+    border-radius: 16px;
+}
+
+.search-bar input {
+    min-width: 0;
+    padding: 12px 14px;
+    font: inherit;
+    color: var(--texte);
+    background: var(--carte-claire);
+    border: 1px solid var(--bord);
+    border-radius: 10px;
+    color-scheme: dark;
+}
+
+.search-bar input:focus-visible {
+    outline: 2px solid var(--rouge);
+    outline-offset: 1px;
+}
+
+
+/* ----- Onglets et pastilles ----- */
+
+.tabs,
+.chips {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tabs {
+    padding: 10px;
+    margin-bottom: 34px;
+    background: var(--carte);
+    border: 1px solid var(--bord);
+    border-radius: 16px;
+}
+
+.chips {
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.tab,
+.chip {
+    flex: none;
+    padding: 11px 18px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--texte-doux);
+    background: var(--carte-claire);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.tab:hover,
+.chip:hover {
+    color: var(--texte);
+    border-color: var(--bord);
+}
+
+.tab.is-active,
+.chip.is-active {
+    color: #fff;
+    background: var(--rouge);
+}
+
+
+/* ----- Titres de section et barre d'outils ----- */
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+}
+
+.section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.section-head h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.section-head small {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--texte-doux);
+}
+
+.section-outils {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+
+.tri {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--texte-doux);
+}
+
+.tri select {
+    padding: 8px 10px;
+    font: inherit;
+    color: var(--texte);
+    background: var(--carte-claire);
+    border: 1px solid var(--bord);
+    border-radius: 8px;
+}
+
+/* Bascule liste / grille */
+.vue-bascule {
+    display: inline-flex;
+    padding: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+}
+
+.vue-bouton {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 30px;
+    color: var(--texte-doux);
+    text-decoration: none;
+    border-radius: 999px;
+}
+
+.vue-bouton:hover {
+    color: var(--texte);
+}
+
+.vue-bouton.is-active {
+    color: #fff;
+    background: var(--rouge);
+}
+
+.vue-bouton svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* ----- Carrousel ----- */
+
+.carousel {
+    position: relative;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 38%;
+    right: -14px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--texte);
+    background: var(--carte-claire);
+    border: 1px solid var(--bord);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.carousel-btn:hover {
+    background: var(--rouge);
+}
+
+.card-vertical {
+    position: relative;
+    flex: 0 0 230px;
+    display: flex;
+    flex-direction: column;
+    scroll-snap-align: start;
+}
+
+.card-vertical .card-image {
+    height: 150px;
+}
+
+.card-vertical .card-body {
+    /* display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px; */
+    height: 100%;
+    display: grid;
+
+}
+
+.card-vertical h3 {
+    /* min-height: 2.6em; */
+    height: max-content;
+}
+
+.card-vertical .card-infos {
+    display: block;
+    /* height: 80px; */
+}
+
+.card-vertical .btn-link {
+    margin-top: auto;
+}
+
+.card-vertical .btn-favori {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.card-vertical .card-footer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px 16px;
+}
+
+
+/* ----- Grilles de cartes ----- */
+
+.grid {
+    display: grid;
+    gap: 14px;
+}
+
+/* Grille : cartes verticales, plusieurs par ligne */
+.grid--cartes {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.grid--cartes .card-vertical {
+    flex: none;
+}
+
+.card {
+    overflow: hidden;
+    background: var(--carte);
+    border: 1px solid var(--bord);
+    border-radius: 16px;
+}
+
+/* Liste : cartes horizontales (affichage par défaut) */
+article.card:not(.card-vertical) {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr) auto;
+    align-items: stretch;
+}
+
+.card-image {
+    position: relative;
+    display: block;
+    min-height: 150px;
+    background-color: var(--carte-claire);
+    background-image: linear-gradient(135deg, #111827, #e50914);
+    background-position: center;
+    background-size: cover;
+}
+
+.card-body {
+    min-width: 0;
+    padding: 18px 20px;
+}
+
+.meta-categorie {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--rouge);
+}
+
+.card h3 {
+    margin: 6px 0 8px;
+    font-size: 1.15rem;
+    line-height: 1.25;
+}
+
+.card h3 a {
+    text-decoration: none;
+}
+
+.card h3 a:hover {
+    color: var(--rouge);
+}
+
+.card-description {
+    margin: 0 0 12px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--texte-doux);
+}
+
+.card-infos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--texte-doux);
+}
+
+.card-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 16px 18px;
+}
+
+.vide {
+    padding: 30px 0;
+    text-align: center;
+    color: var(--texte-doux);
+}
+
+
+/* ----- Boutons et badges ----- */
+
+.price {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--rouge);
+    border: 1px solid var(--rouge);
+    border-radius: 999px;
+}
+
+.price.is-gratuit {
+    color: var(--texte);
+    background: var(--carte-claire);
+    border-color: var(--bord);
+}
+
+.btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 8px;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--texte);
+    background: var(--carte-claire);
+    border: 1px solid var(--bord);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-link:hover {
+    border-color: var(--rouge);
+}
+
+.btn-link.primary {
+    color: #fff;
+    background: var(--rouge);
+    border-color: var(--rouge);
+}
+
+.btn-link.primary:hover {
+    background: var(--rouge-fonce);
+}
+
+.btn-link:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Date en pastille (jour et mois) */
+.date-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: grid;
+    justify-items: center;
+    min-width: 46px;
+    padding: 6px 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+    color: var(--noir);
+    background: #fff;
+    border-radius: 10px;
+}
+
+.date-badge strong {
+    font-size: 1.15rem;
+}
+
+/* Cœur des favoris, dessiné en CSS (pas de svg dans le HTML) */
+.btn-favori {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: #fff;
+    background: rgba(11, 11, 15, 0.6);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.btn-favori::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background: currentColor;
+    -webkit-mask: var(--coeur) center / contain no-repeat;
+    mask: var(--coeur) center / contain no-repeat;
+    --coeur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'/%3E%3C/svg%3E");
+}
+
+.btn-favori.is-active {
+    color: var(--rouge);
+}
+
+.btn-favori.is-active::before {
+    --coeur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z'/%3E%3C/svg%3E");
+}
+
+
+/* ----- Pagination ----- */
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+    padding: 0;
+    list-style: none;
+}
+
+.pagination a,
+.pagination span {
+    display: inline-block;
+    padding: 10px 14px;
+    color: var(--texte);
+    text-decoration: none;
+    background: var(--carte-claire);
+    border-radius: 10px;
+}
+
+.pagination a:hover {
+    background: var(--carte);
+    outline: 1px solid var(--rouge);
+}
+
+.pagination .active span {
+    color: #fff;
+    background: var(--rouge);
+}
+
+
+/* ----- Mobile ----- */
+
+@media (max-width: 900px) {
+    main.events-page {
+        padding-top: 90px;
+    }
+
+    .page-header {
+        flex-direction: column;
+    }
+
+    .search-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .carousel-btn {
+        right: 4px;
+    }
+
+    article.card:not(.card-vertical) {
+        grid-template-columns: 120px minmax(0, 1fr);
+    }
+
+    article.card:not(.card-vertical) .card-image {
+        grid-row: span 2;
+        min-height: 0;
+    }
+
+    article.card:not(.card-vertical) .card-description {
+        display: none;
+    }
+
+    article.card:not(.card-vertical) .card-footer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        grid-column: 2;
+        padding: 0 18px 16px;
+    }
+}

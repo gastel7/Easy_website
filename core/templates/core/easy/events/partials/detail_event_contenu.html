@@ -1,0 +1,202 @@
+<div class="page-shell">
+
+    {% if not user.is_authenticated %}
+        <p class="breadcrumb">
+            <a href="{% url 'core:index' %}">Accueil</a> ›
+            <a href="{% url 'core:events-list' %}">Événements</a> ›
+            {{ event.titre }}
+        </p>
+    {% endif %}
+
+    <div class="event-detail-layout">
+
+        <!-- ============ Colonne de gauche ============ -->
+        <div class="event-detail-main">
+
+            <section class="event-detail-hero">
+                {% if event.image_principale %}
+                    <img src="{{ event.image_principale.url }}" alt="{{ event.titre }}">
+                {% endif %}
+
+                <button type="button" class="btn-favori {% if event.id in ids_favoris %}is-active{% endif %}" data-favori data-url="{% url 'core:toggle-favori' event.id %}" aria-label="Ajouter aux favoris" aria-pressed="{% if event.id in ids_favoris %}true{% else %}false{% endif %}"></button>
+
+                <div class="event-detail-hero-content">
+                    <span class="date-badge"><strong>{{ event.date_debut|date:"d" }}</strong>{{ event.date_debut|date:"M" }}<small>{{ event.date_debut|date:"Y" }}</small></span>
+
+                    <span class="event-detail-categorie">{{ event.get_categorie_display }}</span>
+                    <h1>{{ event.titre }}</h1>
+
+                    <p>
+                        {{ event.date_debut|time:"H:i" }}{% if event.date_fin and event.un_seul_jour %} – {{ event.date_fin|time:"H:i" }}{% endif %}
+                        {% if event.lieu or event.ville %} · {{ event.lieu }}{% if event.lieu and event.ville %}, {% endif %}{{ event.ville }}{% endif %}
+                    </p>
+
+                    {% if nb_interesses %}
+                        <p class="event-detail-interesses">{{ nb_interesses }} personne{{ nb_interesses|pluralize }} intéressée{{ nb_interesses|pluralize }}</p>
+                    {% endif %}
+                </div>
+            </section>
+
+
+            <section class="event-detail-infos">
+                <h2>À propos de l'événement</h2>
+
+                {% if event.description %}
+                    <p>{{ event.description|linebreaksbr }}</p>
+                {% endif %}
+
+                <dl class="event-detail-facts">
+                    <div>
+                        <dt>Date</dt>
+                        <dd>
+                            {% if event.un_seul_jour %}
+                                {{ event.date_debut|date:"d F Y" }}
+                            {% else %}
+                                {{ event.date_debut|date:"d F" }} – {{ event.date_fin|date:"d F Y" }}
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Heure</dt>
+                        <dd>{{ event.date_debut|time:"H:i" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Lieu</dt>
+                        <dd>{{ event.lieu|default:event.ville|default:"—" }}</dd>
+                    </div>
+                    <div>
+                        <dt>Âge minimum</dt>
+                        <dd>{% if event.age_minimum %}{{ event.age_minimum }} ans{% else %}Tout public{% endif %}</dd>
+                    </div>
+                </dl>
+
+                <p class="event-detail-places">
+                    Places restantes : <strong>{{ places_restantes }}</strong> sur {{ event.nombre_de_places }}
+                    · {{ event.nombre_de_vues }} vue{{ event.nombre_de_vues|pluralize }}
+                </p>
+            </section>
+
+
+            <!-- L'organisateur -->
+            <section class="event-detail-orga">
+                {% if event.organisateur.profile_picture %}
+                    <img src="{{ event.organisateur.profile_picture.url }}" alt="">
+                {% else %}
+                    <span class="event-detail-orga-initiale">{{ event.organisateur.username|slice:":1"|upper }}</span>
+                {% endif %}
+
+                <div>
+                    <strong>{{ event.organisateur.get_full_name|default:event.organisateur.username }}</strong>
+                    <p>{{ nb_evenements_organisateur }} événement{{ nb_evenements_organisateur|pluralize }} organisé{{ nb_evenements_organisateur|pluralize }}</p>
+                </div>
+
+                <a href="{% url 'core:events-list' %}?organisateur={{ event.organisateur_id }}" class="btn-link">Voir ses événements</a>
+            </section>
+
+
+            <!-- Les artistes -->
+            {% if intervenants %}
+                <section class="event-detail-bloc">
+                    <h2>Artistes à l'affiche</h2>
+
+                    <ul class="event-detail-artistes">
+                        {% for intervenant in intervenants %}
+                            <li>
+                                {% if intervenant.photo %}
+                                    <img src="{{ intervenant.photo.url }}" alt="{{ intervenant.nom_intervenant }}">
+                                {% else %}
+                                    <span class="event-detail-orga-initiale">{{ intervenant.nom_intervenant|slice:":1"|upper }}</span>
+                                {% endif %}
+                                <span>{{ intervenant.nom_intervenant }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% endif %}
+
+
+            <!-- Le lieu -->
+            {% if adresse_carte %}
+                <section class="event-detail-bloc">
+                    <h2>Lieu de l'événement</h2>
+
+                    <div class="event-detail-lieu">
+                        <div>
+                            <strong>{{ event.lieu|default:event.ville }}</strong>
+                            <p>{{ event.adresse }}{% if event.adresse and event.ville %}, {% endif %}{{ event.ville }}{% if event.pays %}, {{ event.pays }}{% endif %}</p>
+
+                            <a class="btn-link" href="https://www.google.com/maps/search/?api=1&query={{ adresse_carte|urlencode }}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+
+
+            <!-- Galerie et vidéo -->
+            {% if galerie %}
+                <section class="event-detail-bloc">
+                    <h2>Galerie</h2>
+
+                    <ul class="event-detail-galerie">
+                        {% for image in galerie %}
+                            <li><a href="{{ image.url }}" target="_blank" rel="noopener noreferrer"><img src="{{ image.url }}" alt="{{ event.titre }} — photo {{ forloop.counter }}" loading="lazy"></a></li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% endif %}
+
+            {% if event.video %}
+                <section class="event-detail-bloc">
+                    <h2>Vidéo</h2>
+                    <video controls preload="metadata" src="{{ event.video.url }}"></video>
+                </section>
+            {% endif %}
+        </div>
+
+
+        <!-- ============ Colonne de droite ============ -->
+        <aside class="event-detail-side">
+
+            <section class="event-detail-reserve">
+                <h2>Réserve ton billet</h2>
+
+                {% if user.is_authenticated %}
+                    {% include 'core/easy/events/partials/event_reservation.html' %}
+                {% else %}
+                    <p>Connecte-toi pour réserver tes billets.</p>
+                    <a href="{{ login_url }}" class="btn-link primary">Se connecter</a>
+                {% endif %}
+            </section>
+
+
+            <section class="event-detail-share">
+                <h2>Partager l'événement</h2>
+
+                <div class="event-detail-share-btns">
+                    <a class="btn-link" href="https://wa.me/?text={{ event.titre|urlencode:'' }}%20{{ url_partage|urlencode:'' }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                    <a class="btn-link" href="https://www.facebook.com/sharer/sharer.php?u={{ url_partage|urlencode:'' }}" target="_blank" rel="noopener noreferrer">Facebook</a>
+                    <button type="button" class="btn-link" data-copier-lien data-url="{{ url_partage }}">Copier le lien</button>
+                </div>
+            </section>
+        </aside>
+    </div>
+
+
+    <!-- Événements similaires -->
+    {% if similaires %}
+        <section class="event-detail-similaires">
+            <div class="section-head"><h2>Événements similaires</h2></div>
+
+            <div class="carousel" data-carousel>
+                <div class="carousel-track">
+                    {% for event in similaires %}
+                        {% include 'core/easy/events/partials/card_event_vertical.html' %}
+                    {% endfor %}
+                </div>
+
+                <button type="button" class="carousel-btn" data-carousel-next aria-label="Voir la suite">›</button>
+            </div>
+        </section>
+    {% endif %}
+
+</div>

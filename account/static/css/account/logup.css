@@ -1,33 +1,56 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: inter;
-    /* outline: solid red 1px; */
-}
+/* Ça, c'est logup.css (chargé APRÈS login.css) */
 
+/* =========================================================
+   1. STRUCTURE GÉNÉRALE
+   Plus aucune hauteur fixe : la page grandit avec son contenu.
+   ========================================================= */
 .container{
-    height: 780px;
-    max-height: 100%;
+    position: relative;
+    /* height: 100vh; */
+    /* min-height: 100dvh;   évite le saut de hauteur de la barre d'adresse sur mobile */
+    overflow: hidden;
 }
 
+/* Image d'arrière-plan : couvre tout le conteneur, quelle que soit sa hauteur */
+.bg_image{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+/* Filtre sombre : même taille que l'image, donc il ne déborde plus */
+.bg_overlay{
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+/* Le contenu repasse dans le flux normal (plus de position: absolute) */
 .main_content{
+    position: relative;
+    z-index: 2;
     width: 95%;
-    /* outline: solid red; */
+    max-width: 1300px;
+    padding: 30px 0;
+    gap: 40px;
 }
 
 
-/* La section du carroussel (La fenêtre) */
+/* =========================================================
+   2. LE CARROUSEL
+   ========================================================= */
 .carrousel_section{
-    padding-top: 20px;
-    width: 55%; 
-    height: 90vh;
+    flex: 1 1 55%;
+    min-width: 0;
     position: relative;
     overflow: hidden;
-
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 30px;
     color: #fff;
 }
 
@@ -36,34 +59,25 @@
     font-weight: bolder;
 }
 
-
 /* Le train contenant les wagons */
-.carrousel_container {
+.carrousel_container{
     display: flex;
-    width: 200%; 
-    height: 100%;
+    width: 200%;
     transition: transform 0.5s ease-in-out;
 }
 
-/* Chaque wagon individuel */
-.carrousel_slide {
+
+
+/* Chaque wagon : sa hauteur dépend maintenant de son contenu */
+.carrousel_slide{
     width: 50%;
     flex-shrink: 0;
-    box-sizing: border-box;
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: rgba(12, 12, 12, 0.041);
-    /* outline: solid green; */
-    position: relative;
 }
 
+/* Plus de position: absolute, c'est ce qui rendait la hauteur incontrôlable */
 .carrousel-caption{
-    position: absolute;
-    top: 10px;
-    left: 5px;
+    padding-right: 20px;
 }
-
 
 .carrousel_slide h2{
     font-size: 2em;
@@ -94,20 +108,19 @@
 }
 
 .caption_info_text_content span.icone_container{
-    background-color: white;
     background-color: #e50914;
     padding: 8px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .caption_info_text_content span.icone_container img{
     width: 25px;
     height: 25px;
 }
-
 
 .caption_info_text_content p{
     display: flex;
@@ -121,51 +134,59 @@
     margin-bottom: 3px;
 }
 
-
-
-/* Indicateurs (Points) */
-.carousel_dots {
-    position: absolute;
-    bottom: 5px;
-    left: 20px;
+/* Points de navigation (maintenant des <button>, dans le flux) */
+.carousel_dots{
     display: flex;
     gap: 10px;
-    z-index: 10;
 }
 
-.dot {
+.dot{
     width: 10px;
     height: 10px;
-    background-color: #cccccc; /* Couleur plus visible par défaut */
+    padding: 0;
+    border: none;
     border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.dot.active {
-    background-color: #272727; /* Devient noir quand actif */
+.dot.active{
     width: 25px;
     border-radius: 10px;
+    background-color: #e50914;
 }
 
 
-/* La section, je réduis ici comparé à login pour que tout s'affiche en 100vh */
+/* La section : Logup */
+.logup_section{
+    flex: 1 1 45%;
+    min-width: 0;
+    max-width: 620px;
+}
+
 .section_or{
     margin-top: 15px;
     margin-bottom: 15px;
 }
 
-/* 
-   Je mets les form_div en display grid pour que les champs de formulaires puissent
-    sans problème s'afficher sans problème ensemble (avec display flex, ça fait un peu n'importe quoi
-*/
+
 .form_div{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    column-gap: 20px;
 }
 
-/* Et, ça, c'est la police du code indicatif que je réduis pour que, ça suffisse bien */
-#country_code{
-    font-size: 0.87em;
+.form_div > .container-input{
+    min-width: 0;
+}
+
+
+
+.header_sub_banner{
+    display: none;
+}
+
+body{
+    padding-top: 0;
 }

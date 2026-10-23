@@ -1,0 +1,133 @@
+/* ==========================================================================
+   Notifications : affichage des messages Django
+   Le contenu vient de messages.success(), messages.error()... Seul l'affichage change.
+   ========================================================================== */
+
+.notif-stack {
+    position: fixed;
+    top: 88px; /* sous le header : à ajuster selon base.html */
+    right: 24px;
+    z-index: 1000;
+    display: grid;
+    gap: 10px;
+    width: min(380px, calc(100vw - 32px));
+}
+
+.notif {
+    --notif-color: #2563eb;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: 12px;
+    padding: 14px 14px 17px;
+    overflow: hidden;
+    background: #fff;
+    color: #0b0b0f;
+    border-left: 4px solid var(--notif-color);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(11, 11, 15, 0.18);
+    animation: notif-entree 0.35s ease both;
+}
+
+/* Un type par couleur : success, error, warning, info (debug et autres = info) */
+.notif--success { --notif-color: #12a150; }
+.notif--error   { --notif-color: #e50914; }
+.notif--warning { --notif-color: #f59e0b; }
+.notif--info    { --notif-color: #2563eb; }
+
+.notif-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: var(--notif-color);
+    border-radius: 50%;
+    color: #fff;
+}
+
+.notif-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.notif-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.notif-text {
+    margin: 2px 0 0;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #52525b;
+    overflow-wrap: anywhere;
+}
+
+.notif-close {
+    padding: 0 4px;
+    font: inherit;
+    font-size: 20px;
+    line-height: 1;
+    color: #71717a;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.notif-close:hover {
+    color: #0b0b0f;
+}
+
+/* Barre qui se vide pendant que la notification reste affichée */
+.notif-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--notif-color);
+    transform-origin: left;
+    animation: notif-minuteur var(--notif-duree, 5000ms) linear forwards;
+}
+
+.notif.is-leaving {
+    animation: notif-sortie 0.25s ease forwards;
+}
+
+@keyframes notif-entree {
+    from { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes notif-sortie {
+    to { opacity: 0; transform: translateX(24px); }
+}
+
+@keyframes notif-minuteur {
+    from { transform: scaleX(1); }
+    to   { transform: scaleX(0); }
+}
+
+/* Mobile : pleine largeur en haut */
+@media (max-width: 599px) {
+    .notif-stack {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+        width: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .notif,
+    .notif-progress {
+        animation: none;
+    }
+}

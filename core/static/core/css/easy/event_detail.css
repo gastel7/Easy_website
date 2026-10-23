@@ -1,0 +1,418 @@
+/* ==========================================================================
+   Page détail d'un événement (s'ajoute à events_list.css)
+
+   Où modifier quoi :
+   - Grande image en haut      -> .event-detail-hero
+   - Infos (date, heure...)    -> .event-detail-infos, .event-detail-facts
+   - Organisateur, artistes    -> .event-detail-orga, .event-detail-artistes
+   - Lieu, galerie, vidéo      -> .event-detail-lieu, .event-detail-galerie
+   - Bloc de réservation       -> .event-detail-reserve, .reserve-*
+   - Partage                   -> .event-detail-share
+   ========================================================================== */
+
+.page-shell {
+    padding-top: 30px;
+}
+
+
+.event-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 28px;
+    align-items: start;
+}
+
+.event-detail-main {
+    display: grid;
+    gap: 22px;
+    min-width: 0;
+}
+
+.event-detail-side {
+    position: sticky;
+    top: 110px;
+    display: grid;
+    gap: 18px;
+}
+
+.event-detail-infos,
+.event-detail-orga,
+.event-detail-bloc,
+.event-detail-reserve,
+.event-detail-share {
+    padding: 22px;
+    background: var(--carte);
+    border: 1px solid var(--bord);
+    border-radius: 16px;
+}
+
+.event-detail h2 {
+    margin: 0 0 14px;
+    font-size: 1.25rem;
+}
+
+
+/* ----- Grande image ----- */
+
+.event-detail-hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 400px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #111827, #e50914);
+    border-radius: 20px;
+}
+
+.event-detail-hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-detail-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(11, 11, 15, 0.95) 8%, rgba(11, 11, 15, 0.1) 75%);
+}
+
+.event-detail-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 28px;
+}
+
+.event-detail-hero .btn-favori {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+}
+
+.event-detail-hero .date-badge {
+    position: static;
+    margin-bottom: 14px;
+}
+
+.event-detail-hero .date-badge small {
+    font-weight: 400;
+}
+
+.event-detail-categorie {
+    display: inline-block;
+    margin-bottom: 8px;
+    padding: 3px 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+}
+
+.event-detail-hero h1 {
+    margin: 0 0 12px;
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    line-height: 1.05;
+}
+
+.event-detail-hero p {
+    margin: 0 0 6px;
+    color: #e4e4e7;
+}
+
+.event-detail-interesses {
+    font-size: 0.88rem;
+    color: var(--rouge) !important;
+}
+
+
+/* ----- Infos ----- */
+
+.event-detail-infos > p {
+    margin: 0 0 18px;
+    line-height: 1.6;
+    color: #d4d4d8;
+}
+
+.event-detail-facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 0 16px;
+    padding: 16px;
+    background: var(--carte-claire);
+    border-radius: 12px;
+}
+
+.event-detail-facts dt {
+    font-size: 0.72rem;
+    color: var(--texte-doux);
+}
+
+.event-detail-facts dd {
+    margin: 4px 0 0;
+    font-size: 0.92rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.event-detail-infos .event-detail-places {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--texte-doux);
+}
+
+.event-detail-places strong {
+    color: var(--texte);
+}
+
+
+/* ----- Organisateur et artistes ----- */
+
+.event-detail-orga {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.event-detail-orga > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.event-detail-orga p {
+    margin: 2px 0 0;
+    font-size: 0.82rem;
+    color: var(--texte-doux);
+}
+
+.event-detail-orga img,
+.event-detail-orga-initiale {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.event-detail-orga-initiale {
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    background: var(--rouge);
+}
+
+.event-detail-artistes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.event-detail-artistes li {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    width: 96px;
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+.event-detail-artistes img,
+.event-detail-artistes .event-detail-orga-initiale {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--bord);
+}
+
+
+/* ----- Lieu, galerie, vidéo ----- */
+
+.event-detail-lieu p {
+    margin: 4px 0 14px;
+    font-size: 0.9rem;
+    color: var(--texte-doux);
+}
+
+.event-detail-galerie {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.event-detail-galerie img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.event-detail-bloc video {
+    display: block;
+    width: 100%;
+    max-height: 420px;
+    background: #000;
+    border-radius: 12px;
+}
+
+
+/* ----- Réservation ----- */
+
+.reserve {
+    display: grid;
+    gap: 12px;
+}
+
+.reserve-ticket {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px;
+    background: var(--carte-claire);
+    border: 1px solid var(--bord);
+    border-radius: 12px;
+}
+
+.reserve-ticket.is-indisponible {
+    opacity: 0.55;
+}
+
+.reserve-ticket.is-choisi {
+    border-color: var(--rouge);
+}
+
+.reserve-type {
+    margin-left: 6px;
+    font-size: 0.72rem;
+    color: var(--texte-doux);
+}
+
+.reserve-prix {
+    margin: 6px 0 0;
+    font-weight: 700;
+    color: var(--rouge);
+}
+
+.reserve-etat {
+    flex: none;
+    font-size: 0.8rem;
+    color: var(--texte-doux);
+}
+
+.reserve-stepper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px;
+    background: var(--noir);
+    border: 1px solid var(--bord);
+    border-radius: 10px;
+}
+
+.reserve-stepper button {
+    width: 30px;
+    height: 30px;
+    font: inherit;
+    font-size: 1.1rem;
+    color: var(--texte);
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.reserve-stepper button:hover:not(:disabled) {
+    background: var(--rouge);
+}
+
+.reserve-stepper button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.reserve-stepper output {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.reserve-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 2px;
+    font-size: 1.05rem;
+}
+
+.reserve-total strong {
+    font-size: 1.3rem;
+    color: var(--rouge);
+}
+
+.reserve-bouton {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+}
+
+.reserve-vide {
+    margin: 0;
+    color: var(--texte-doux);
+}
+
+
+.event-detail-reserve p{
+    margin-bottom: 10px;
+}
+
+/* ----- Partage ----- */
+
+.event-detail-share-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.event-detail-similaires {
+    margin-top: 44px;
+}
+
+
+/* ----- Mobile ----- */
+
+@media (max-width: 900px) {
+    .event-detail-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Le bloc de réservation passe juste après l'image */
+    .event-detail-side {
+        position: static;
+        order: -1;
+    }
+
+    .event-detail-hero {
+        min-height: 320px;
+    }
+
+    .event-detail-facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .event-detail-orga {
+        flex-wrap: wrap;
+    }
+}

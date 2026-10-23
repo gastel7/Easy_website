@@ -1,0 +1,263 @@
+*/* ==========================================================================
+   Page « Mon espace » (profil) : formulaire, onglets, photo.
+   Les couleurs viennent de theme.css : la page marche en clair comme en sombre.
+   ========================================================================== */
+
+
+/* Onglets latéraux (si la page les utilise) */
+.parametres-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 30px;
+    align-items: start;
+}
+
+.parametres-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px;
+    background: var(--surface, #161619);
+    border: 1px solid var(--border, #34343a);
+    border-radius: 14px;
+}
+
+.parametres-tabs .tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text, #e5e5e5);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.parametres-tabs .tab:hover {
+    background: var(--surface-hover, #2a2a2f);
+}
+
+.parametres-tabs .tab.active {
+    color: #ffffff;
+    background: var(--red, #e50914);
+}
+
+
+/* Carte du formulaire */
+.parametres-card-title {
+    margin-bottom: 4px;
+    font-size: 20px;
+    color: var(--text-strong, #ffffff);
+}
+
+.parametres-card .subtitle {
+    margin-bottom: 25px;
+    color: var(--text-muted, #a1a1aa);
+}
+
+
+/* Sous-onglets Personnel / Professionnel */
+.profil-subtabs {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 26px;
+    background: var(--field-bg, #272727);
+    border: 1px solid var(--border, #34343a);
+    border-radius: 10px;
+}
+
+.profil-subtab {
+    padding: 9px 16px;
+    font: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-muted, #a1a1aa);
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.profil-subtab:hover {
+    color: var(--text-strong, #ffffff);
+}
+
+.profil-subtab.active {
+    color: #ffffff;
+    background: var(--red, #e50914);
+}
+
+
+/* Messages d'erreur du formulaire */
+.form-error-box {
+    margin-bottom: 20px;
+    padding: 15px;
+    color: var(--text-strong, #ffffff);
+    background: rgba(229, 9, 20, 0.08);
+    border: 1px solid var(--red, #e50914);
+    border-radius: 10px;
+}
+
+.errorlist {
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.85rem;
+    color: var(--red, #e50914);
+}
+
+
+/* Photo de profil */
+.profil-photo-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.avatar-lg,
+.profil_avatar.avatar-lg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    overflow: hidden;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    background: var(--red, #e50914);
+    border-radius: 50%;
+}
+
+.profil_avatar.avatar-lg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-label {
+    margin: 0 0 2px;
+    font-weight: 600;
+    color: var(--text-strong, #ffffff);
+}
+
+.photo-hint {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: var(--text-muted, #a1a1aa);
+}
+
+.btn-importer {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-strong, #ffffff);
+    background: var(--field-bg, #272727);
+    border: 1px solid var(--border-strong, #808080);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.btn-importer:hover {
+    background: var(--surface-hover, #2a2a2f);
+}
+
+/* Le champ fichier reste fonctionnel mais caché : le bouton ci-dessus le déclenche */
+#id_profile_picture {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+
+/* Formulaire : deux colonnes, champs bordés dans les deux thèmes */
+.form_content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 30px;
+    width: 100%;
+    padding: 10px;
+}
+
+.form_content p {
+    display: flex;
+    flex: 1 1 calc(50% - 30px);
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+}
+
+.form_content p label {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-strong, #ffffff);
+}
+
+.form_content p input,
+.form_content p select,
+.form_content p textarea {
+    width: 100%;
+    padding: 11px 14px;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--text-strong, #ffffff);
+    background: var(--field-bg, #272727);
+    border: 1px solid var(--border-strong, #808080);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form_content p input:focus,
+.form_content p select:focus,
+.form_content p textarea:focus {
+    border-color: var(--red, #e50914);
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.18);
+}
+
+/* Bouton « Enregistrer » sans classe, dans le contenu de l'espace */
+button[type="submit"]:not([class]) {
+    margin-top: 10px;
+    padding: 12px 22px;
+    font: inherit;
+    font-weight: 700;
+    color: #ffffff;
+    background: var(--red, #e50914);
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button[type="submit"]:not([class]):hover {
+    background: var(--red-hover, #b3070f);
+}
+
+
+/* Petits écrans : une seule colonne */
+@media (max-width: 700px) {
+    .parametres-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .form_content p {
+        flex-basis: 100%;
+    }
+}
+
+.btn_container{display:flex;justify-content:flex-end;padding:10px}
+.btn-submit{padding:12px 22px;font:inherit;font-weight:700;color:#fff;background:var(--red,#e50914);border:0;border-radius:10px;cursor:pointer}
+.btn-submit:hover{background:var(--red-hover,#b3070f)}
+[hidden]{display:none!important}

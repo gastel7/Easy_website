@@ -1,40 +1,25 @@
 from django import forms
 
-from .models import Event
+from .models import Events
 
 
 class EventForm(forms.ModelForm):
     class Meta:
-        model = Event
+        model = Events
         fields = [
-            'title',
-            'slug',
-            'short_description',
-            'description',
-            'category',
-            'event_date',
-            'location',
-            'venue',
-            'price',
-            'capacity',
-            'available_tickets',
-            'image',
-            'is_published',
-            'status',
+            'titre', 'categorie', 'lieu', 'adresse', 'ville', 'pays', 'date_debut', 'date_fin', 'statut', 'nombre_de_places',
+            'age_minimum', 'description', 'image_principale', 'image_2', 'image_3', 'image_4', 'image_5', 'video'
         ]
+
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'slug': forms.TextInput(attrs={'class': 'form-control'}),
-            'short_description': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
-            'category': forms.Select(attrs={'class': 'form-select'}),
-            'event_date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
-            'venue': forms.TextInput(attrs={'class': 'form-control'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0'}),
-            'capacity': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
-            'available_tickets': forms.NumberInput(attrs={'class': 'form-control', 'min': '0'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'is_published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'status': forms.Select(attrs={'class': 'form-select'}),
+            'titre': forms.TextInput(attrs={'placeholder': "Ex : Conférence sur l'intelligence artificielle"}),
+            'lieu': forms.TextInput(attrs={'placeholder': 'Ex : Centre de conférence de Brazzaville'}),
+            'adresse': forms.TextInput(attrs={'placeholder': 'Ex : Quartier ou le numéro et nom de la rue'}),
+            'ville': forms.TextInput(attrs={'placeholder': 'Ex : Brazzaville'}),
+            'pays': forms.TextInput(attrs={'placeholder': 'Ex : République du Congo'}),
+            'nombre_de_places': forms.NumberInput(attrs={'placeholder': 'Ex : 150'}),
+            'age_minimum': forms.NumberInput(attrs={'placeholder': 'Ex : 18'}),
+            'description': forms.Textarea(attrs={'placeholder': "Décrivez l'événement, les thèmes abordés, les objectifs, etc."}),
+            'date_debut': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'date_fin': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
         }

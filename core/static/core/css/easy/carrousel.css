@@ -1,0 +1,99 @@
+
+/* ==========================================
+   SECTION : OUR TEAM (CARROUSEL INFINI)
+   ========================================== */
+
+.container_carrousel {
+    position: relative;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    overflow: hidden; /* Masque tout ce qui dépasse à droite et à gauche */
+    padding: 20px 0;
+}
+
+/* Fondu visuel sur les côtés pour cacher l'apparition/disparition des cartes */
+.container_carrousel::before,
+.container_carrousel::after {
+    background: linear-gradient(to right, #272727 0%, rgba(39, 39, 39, 0) 100%);
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 150px;
+    z-index: 2;
+    pointer-events: none; /* Permet de survoler les cartes même sous le fondu */
+}
+
+
+.container_carrousel::before { left: 0; top: 0; }
+.container_carrousel::after { right: 0; top: 0; transform: rotateZ(180deg); }
+
+.carrousel {
+    width: 100%;
+}
+
+.carrousel_track {
+    display: flex; /* On passe sur une seule ligne continue pour le défilement fluide */
+    gap: 35px;
+    width: max-content;
+    animation: scrollInfinite 25s linear infinite; /* Animation continue en boucle */
+}
+
+/* ⚠️ L'ASTUCE CRUCIALE : Met en pause l'animation globale dès qu'une carte est survolée */
+.carrousel_track:hover {
+    animation-play-state: paused;
+}
+
+/* Définition de l'animation CSS */
+@keyframes scrollInfinite {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* On recule de la moitié exacte de la largeur totale (grâce au clonage JS) */
+        transform: translateX(calc(-50% - 17.5px)); 
+    }
+}
+
+
+
+
+/* 
+
+    *********** LA PARTIE QUI GÈRE LE CARROUSSEL AU NIVEAU DU HEADER ***********
+
+*/
+.container_carrousel.header_sub {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 0; /* Ajuste la hauteur de ta bande rouge */
+    margin: 0;
+    cursor: pointer;
+}
+
+.container_carrousel.header_sub::before,
+.container_carrousel.header_sub::after {
+    background: none;
+    width: 0;
+}
+
+.container_carrousel.header_sub .text_profil {
+    display: flex;
+    gap: 15px;
+    white-space: nowrap;
+    /* color: #ffffff; */
+    font-weight: 500;
+}
+
+/* .container_carrousel.header_sub .text_carrousel{
+    background-color: #272727;
+    padding: 15px;
+    border-radius: 14px;
+} */
+
+/* IMPORTANT : Pour éviter que ton contenu principal (le reste du site) ne soit masqué sous le header et le carrousel */
+/* 90px (header) + environ 45px (hauteur estimée de la bande rouge) */
+body {
+    padding-top: 135px; 
+
+}

@@ -10,17 +10,26 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Les secrets (clés Google/Facebook, SECRET_KEY) viennent de l'environnement ou d'un
+# fichier .env à la racine du projet (à NE PAS commiter). Voir .env.example plus bas.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / '.env')
+except ImportError:
+    pass
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qzr#%zyx_y1-80@*v6-7=%t+uic4mwh5)4irx=)$m!&#0ej_4v'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,13 +47,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',          # requis par allauth
     'django_countries',
     'phonenumbers',
 
+    # allauth (connexion Google / Facebook)
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 
     # Project apps
-    'account',
+    'account.apps.AccountConfig',    # label "user_account" (cf. account/apps.py)
     'core',
+    'tickets',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',   # requis par allauth
 ]
 
 ROOT_URLCONF = 'easy.urls'
@@ -69,6 +87,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.banner_events',
+                'account.espace.contexte_espace',
             ],
         },
     },
@@ -110,9 +130,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Brazzaville'
 
 USE_I18N = True
 
@@ -123,6 +143,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/'media/'
 
 
 # Email
@@ -135,7 +157,49 @@ MAILERS = {
 }
 
 
-AUTH_USER_MODEL = 'account.User'
-STATIC_URL = 'static/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR/'media/'
+# ---------------------------------------------------------------------------
+# Comptes utilisateurs & connexion
+# ---------------------------------------------------------------------------
+
+AUTH_USER_MODEL = 'user_account.User'    # <app_label>.User, et non plus account.User
+
+AUTHENTICATION_BACKENDS = [
+    'account.backends.EmailOrPhoneBackend',                # email / téléphone / username
+    'allauth.account.auth_backends.AuthenticationBackend', # Google, Facebook
+]
+
+SITE_ID = 1
+
+LOGIN_URL = 'account:login'
+LOGIN_REDIRECT_URL = 'account:profile'   # après une connexion Google/Facebook
+LOGOUT_REDIRECT_URL = 'account:login'
+
+# Le clic sur "Google" part directement chez Google (sans page de confirmation)
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# Si l'email du compte Google existe déjà chez nous, on connecte ce compte.
+# (sûr tant que le fournisseur vérifie les emails : c'est le cas de Google)
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID', ''),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+            'key': '',
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    },
+    'facebook': {
+        'APP': {
+            'client_id': os.environ.get('FACEBOOK_CLIENT_ID', ''),
+            'secret': os.environ.get('FACEBOOK_CLIENT_SECRET', ''),
+            'key': '',
+        },
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile'],
+        'FIELDS': ['id', 'email', 'first_name', 'last_name'],
+    },
+}

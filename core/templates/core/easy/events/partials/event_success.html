@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+
+{% block title %} Événement créé {% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'core/css/easy/event_test.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/easy/event_test_ajouts.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/easy/event_test_etapes.css' %}">
+{% endblock %}
+
+
+{% block main %}
+    <main class="event-page">
+        <section class="event-card event-success">
+            <div class="success-icon" aria-hidden="true">✓</div>
+
+            <h2>Événement créé !</h2>
+
+            <p class="event-lead">
+                Votre événement « {{ event.titre }} » a été enregistré avec succès.
+                Il est maintenant visible sur la plateforme.
+            </p>
+
+            <div class="success-actions">
+                <a class="btn btn-primary" href="{% url 'core:events-list' %}">Voir mes événements</a>
+                <a class="btn btn-outline" href="{{ request.path }}">+ Créer un autre événement</a>
+            </div>
+        </section>
+    </main>
+{% endblock %}

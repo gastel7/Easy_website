@@ -1,0 +1,33 @@
+<article class="card">
+    <!-- On applique uniquement l'URL dynamique en écrasant l'image de fond CSS -->
+    <a class="card-image" href="{% url 'core:detail-event' event.id %}" {% if event.image_principale %}style="background-image: url('{{ event.image_principale.url }}');"{% endif %} aria-label="{{ event.titre }}">
+        <span class="date-badge"><strong>{{ event.date_debut|date:"d" }}</strong>{{ event.date_debut|date:"M" }}</span>
+    </a>
+
+    <div class="card-body">
+        <span class="meta-categorie">{{ event.get_categorie_display }}</span>
+
+        <h3><a href="{% url 'core:detail-event' event.id %}">{{ event.titre }}</a></h3>
+
+        <p class="card-description">{{ event.description|truncatechars:110 }}</p>
+
+        <p class="card-infos">
+            <span>{{ event.lieu }}{% if event.lieu and event.ville %}, {% endif %}{{ event.ville }}</span>
+            <span>{{ event.date_debut|time:"H:i" }}</span>
+        </p>
+    </div>
+
+    <div class="card-footer">
+        <button type="button" class="btn-favori {% if event.id in ids_favoris %}is-active{% endif %}" data-favori data-url="{% url 'core:toggle-favori' event.id %}" aria-label="Ajouter aux favoris" aria-pressed="{% if event.id in ids_favoris %}true{% else %}false{% endif %}"></button>
+
+        {% include 'core/easy/events/partials/gratuit_payant.html' %}
+
+        <div class="btn-row">
+            <a href="{% url 'core:detail-event' event.id %}" class="btn-link primary">Voir les détails</a>
+            {% if user.is_superuser or user.role == 'admin' or user.role == 'modérateur' or user == event.organisateur %}
+                <a href="{% url 'core:edit-event' event.id %}" class="btn-link">Modifier</a>
+                <button type="button" class="btn-link" data-supprimer data-action="{% url 'core:delete-event' event.id %}" data-titre="{{ event.titre }}">Supprimer</button>
+            {% endif %}
+        </div>
+    </div>
+</article>

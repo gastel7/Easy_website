@@ -1,6 +1,6 @@
 [
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 5,
     "fields": {
       "username": "moderateur_1",
@@ -16,7 +16,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 5,
     "fields": {
       "user": 5,
@@ -25,7 +25,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 6,
     "fields": {
       "username": "moderateur_2",
@@ -41,7 +41,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 6,
     "fields": {
       "user": 6,
@@ -50,7 +50,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 7,
     "fields": {
       "username": "moderateur_3",
@@ -66,7 +66,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 7,
     "fields": {
       "user": 7,
@@ -75,7 +75,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 8,
     "fields": {
       "username": "moderateur_4",
@@ -91,7 +91,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 8,
     "fields": {
       "user": 8,
@@ -100,7 +100,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 9,
     "fields": {
       "username": "moderateur_5",
@@ -116,7 +116,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 9,
     "fields": {
       "user": 9,
@@ -125,7 +125,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 10,
     "fields": {
       "username": "moderateur_6",
@@ -141,7 +141,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 10,
     "fields": {
       "user": 10,
@@ -150,7 +150,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 11,
     "fields": {
       "username": "moderateur_7",
@@ -166,7 +166,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 11,
     "fields": {
       "user": 11,
@@ -175,7 +175,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 12,
     "fields": {
       "username": "moderateur_8",
@@ -191,7 +191,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 12,
     "fields": {
       "user": 12,
@@ -200,7 +200,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 13,
     "fields": {
       "username": "moderateur_9",
@@ -216,7 +216,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 13,
     "fields": {
       "user": 13,
@@ -225,7 +225,7 @@
     }
   },
   {
-    "model": "account.user",
+    "model": "user_account.user",
     "pk": 14,
     "fields": {
       "username": "moderateur_10",
@@ -241,7 +241,7 @@
     }
   },
   {
-    "model": "account.easymember",
+    "model": "user_account.easymember",
     "pk": 14,
     "fields": {
       "user": 14,

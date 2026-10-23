@@ -1,0 +1,70 @@
+{% load static %}
+
+<aside class="espace-sidebar" id="espace-sidebar" data-espace-sidebar>
+    <a href="{% url 'account:espace' %}" class="espace-logo" title="Tableau de bord">
+        <img class="espace-logo-complet" src="{% static 'core/images/logo.png' %}" alt="logo de la plateforme">
+    </a>
+
+    <p class="espace-sidebar-titre">Espace</p>
+    <nav class="espace-nav">
+        <a href="{% url 'account:espace' %}" class="espace-lien {% if request.resolver_match.url_name == 'espace' %}is-active{% endif %}" title="Tableau de bord">
+            <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            <span class="espace-lien-texte">Tableau de bord</span>
+        </a>
+
+        {% if espace_mode == 'organisateur' %}
+            {# Mode organisateur : "Mes événements" remplace "Événements", et on ajoute "Ventes" #}
+            <a href="#" class="espace-lien" title="Mes événements">
+                <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>
+                <span class="espace-lien-texte">Mes événements</span>
+            </a>{# TODO : brancher sur la page "Mes événements" #}
+
+            <a href="#" class="espace-lien" title="Ventes">
+                <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+                <span class="espace-lien-texte">Ventes</span>
+            </a>{# TODO : brancher sur la page "Ventes" (et la protéger côté vue : organisateurs uniquement) #}
+        {% else %}
+            {# Mode participant : tous les événements #}
+            <a href="{% url 'core:events-list' %}" class="espace-lien {% if request.resolver_match.url_name == 'events-list' %}is-active{% endif %}" title="Événements">
+                <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <span class="espace-lien-texte">Événements</span>
+            </a>
+        {% endif %}
+
+        <a href="{% url 'account:mes-billets' %}" class="espace-lien {% if request.resolver_match.url_name == 'mes-billets' %}is-active{% endif %}" title="Mes billets">
+            <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9a2 2 0 0 0 0 6v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3a2 2 0 0 0 0-6V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg>
+            <span class="espace-lien-texte">Mes billets</span>
+        </a>
+
+        <a href="{% url 'account:favoris' %}" class="espace-lien {% if request.resolver_match.url_name == 'favoris' %}is-active{% endif %}" title="Favoris">
+            <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            <span class="espace-lien-texte">Favoris</span>
+        </a>
+
+        <a href="{% url 'account:profile' %}" class="espace-lien {% if request.resolver_match.url_name == 'profile' %}is-active{% endif %}" title="Mon espace">
+            <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>
+            <span class="espace-lien-texte">Mon espace</span>
+        </a>
+
+        {% if espace_peut_administrer %}
+            <p class="espace-sidebar-titre">Administration</p>
+
+            <a href="#" class="espace-lien" title="Gestion du site">
+                <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span class="espace-lien-texte">Gestion du site</span>
+            </a>{# TODO #}
+        {% endif %}
+    </nav>
+
+    <div class="espace-sidebar-bas">
+        <a href="#" class="espace-lien" title="Paramètres">
+            <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <span class="espace-lien-texte">Paramètres</span>
+        </a>{# TODO #}
+
+        <a href="{% url 'account:logout' %}" class="espace-lien" title="Déconnexion">
+            <svg class="espace-icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+            <span class="espace-lien-texte">Déconnexion</span>
+        </a>
+    </div>
+</aside>

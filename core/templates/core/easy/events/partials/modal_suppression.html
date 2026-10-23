@@ -1,0 +1,18 @@
+{% load static %}
+
+<div class="modal-suppression" id="modal-suppression" role="dialog" aria-modal="true" aria-labelledby="modal-suppression-titre" hidden>
+    <div class="modal-suppression-box">
+        <h2 id="modal-suppression-titre">Supprimer l'événement ?</h2>
+        <p>Voulez-vous vraiment supprimer <strong data-modal-titre></strong> ? Cette action est irréversible.</p>
+
+        <form method="post" data-modal-form>
+            {% csrf_token %}
+            <div class="modal-suppression-actions">
+                <button type="button" class="modal-suppression-btn modal-suppression-btn--secondary" data-modal-annuler>Annuler</button>
+                <button type="submit" class="modal-suppression-btn modal-suppression-btn--danger">Oui, supprimer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'core/js/easy/modal_suppression.js' %}" defer></script>
