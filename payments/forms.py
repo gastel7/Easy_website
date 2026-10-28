@@ -72,8 +72,8 @@ class CollecteForm(forms.Form):
         numero = normaliser_telephone(self.cleaned_data['telephone'])
         if not numero:
             raise forms.ValidationError(
-                "Numéro invalide. Utilisez le format international, ex : +242061234567.")
-        return numero
+                "Numéro invalide. Utilisez le format international, ex : +242064311769.")
+        return numero 
 
     def clean(self):
         cleaned = super().clean()
