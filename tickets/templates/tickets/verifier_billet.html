@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+
+{% block title %}Vérification du billet | EASY{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'tickets/qr_code.css' %}">
+    <style>main { min-height: 60vh; }</style>
+{% endblock %}
+
+
+{% block main %}
+    <main class="verif-page">
+        <section class="verif-carte {% if utilisable %}is-valide{% elif billet.statut == 'annule' %}is-annule{% else %}is-autre{% endif %}">
+            <p class="verif-surtitre">Vérification de billet</p>
+
+            {% if utilisable %}
+                <p class="verif-etat">Billet valide</p>
+            {% elif billet.statut == 'annule' %}
+                <p class="verif-etat">Billet annulé</p>
+            {% elif billet.statut == 'scanne' %}
+                <p class="verif-etat">Billet déjà utilisé</p>
+            {% else %}
+                <p class="verif-etat">Paiement en attente</p>
+            {% endif %}
+
+            <h1>{{ evenement.titre }}</h1>
+            <p class="verif-ligne">
+                {{ evenement.date_debut|date:"d M Y à H:i" }}
+                {% if evenement.lieu %} · {{ evenement.lieu }}{% endif %}
+            </p>
+
+            <dl class="verif-details">
+                <div><dt>Catégorie</dt><dd>{{ billet.category.nom }}</dd></div>
+                <div><dt>Type</dt><dd>{{ billet.category.get_type_de_ticket_display }}</dd></div>
+                <div><dt>Acheteur</dt><dd>{{ billet.user.get_full_name|default:billet.user.username }}</dd></div>
+                <div><dt>Payé le</dt><dd>{{ billet.prix_achat|floatformat:"0g" }} FCFA · {{ billet.date_achat|date:"d/m/Y à H:i" }}</dd></div>
+                <div><dt>Code</dt><dd class="verif-code">{{ billet.code_unique }}</dd></div>
+                {% if billet.date_scan %}
+                    <div><dt>Scanné le</dt><dd>{{ billet.date_scan|date:"d/m/Y à H:i" }}</dd></div>
+                {% endif %}
+            </dl>
+
+            <p class="verif-pied">Statut : <strong>{{ billet.get_statut_display }}</strong></p>
+        </section>
+    </main>
+{% endblock %}

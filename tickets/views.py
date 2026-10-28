@@ -1,12 +1,19 @@
+import base64
+from decimal import Decimal
+from io import BytesIO
+
+import qrcode
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from core.models import Events
+from payments.models import Paiement
 from .models import TicketCategory, UserTicket
 
 MAX_BILLETS_PAR_COMMANDE = 10
@@ -51,6 +58,8 @@ def reserver_billet(request, event_id):
         messages.error(request, "Choisissez au moins un billet.")
         return retour
 
+    paiement = None
+
     if sum(commande.values()) > MAX_BILLETS_PAR_COMMANDE:
         messages.error(request, f"Vous pouvez réserver {MAX_BILLETS_PAR_COMMANDE} billets au maximum par commande.")
         return retour
@@ -85,22 +94,93 @@ def reserver_billet(request, event_id):
                     )
 
             # 2. Créer les billets. Gratuit : valide tout de suite. Payant : en attente de paiement.
+            billets_payes = []
             for categorie_id, quantite in commande.items():
                 categorie = categories[categorie_id]
                 statut = 'valide' if not categorie.prix else 'en_attente'
                 for _ in range(quantite):
-                    UserTicket.objects.create(category=categorie, user=user, statut=statut)
+                    ticket = UserTicket.objects.create(category=categorie, user=user, statut=statut)
+                    if categorie.prix:
+                        billets_payes.append(ticket)
+
+            # 3. Commande payante : ouvrir le paiement (TamoAPI) et y renvoyer l'acheteur
+            if billets_payes:
+                paiement = Paiement.objects.create(
+                    user=user,
+                    event=event,
+                    montant=sum((ticket.prix_achat for ticket in billets_payes), Decimal('0')),
+                )
+                paiement.billets.set(billets_payes)
     except CommandeRefusee as erreur:
         messages.error(request, str(erreur))
         return retour
 
     recap = ', '.join(f"{quantite} {categories[categorie_id].nom}" for categorie_id, quantite in commande.items())
-    payant = any(categories[categorie_id].prix for categorie_id in commande)
 
-    if payant:
-        # TODO : lancer ici le paiement avec la solution de ton collègue, pour le total des billets payants
-        messages.info(request, f"Commande enregistrée : {recap}. Les billets payants seront validés après paiement.")
-    else:
-        messages.success(request, f"Commande confirmée : {recap}.")
+    if paiement is not None:
+        # Billets payants : la page de paiement lance la collecte Mobile Money (Tamo)
+        messages.success(request, f"Commande enregistrée : {recap}. Réglez-la pour valider vos billets.")
+        return redirect('payments:page', paiement.reference)
 
+    messages.success(request, f"Commande confirmée : {recap}.")
     return retour
+
+
+# ---------------------------------------------------------------------------
+# QR code du billet
+# ---------------------------------------------------------------------------
+
+def _url_de_verification(request, billet):
+    """Lien absolu encodé dans le QR code : lisible par n'importe quel lecteur."""
+    return request.build_absolute_uri(reverse('tickets:verifier', args=[billet.code_unique]))
+
+
+@login_required
+@require_GET
+def qr_code(request, billet_id):
+    """QR code du billet validé (ou déjà scanné)."""
+    billet = get_object_or_404(UserTicket, pk=billet_id, user=request.user)
+
+    if billet.statut not in ('valide', 'scanne'):
+        messages.info(request, "Le QR code est disponible une fois le billet réglé.")
+        return redirect('account:mes-billets')
+
+    url_verification = _url_de_verification(request, billet)
+
+    qr = qrcode.QRCode(
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(url_verification)
+    qr.make(fit=True)
+    image = qr.make_image(fill_color='black', back_color='white')
+
+    tampon = BytesIO()
+    image.save(tampon, format='PNG')
+
+    context = {
+        'billet': billet,
+        'evenement': billet.category.event,
+        'qr_base64': base64.b64encode(tampon.getvalue()).decode('ascii'),
+        'url_verification': url_verification,
+    }
+    return render(request, 'tickets/qr_code.html', context)
+
+
+@require_GET
+def verifier_billet(request, code_unique):
+    """Page publique ouverte par le QR code : valide le billet à l'entrée de l'événement.
+
+    Le code_unique sert de jeton : il est impossible à deviner (32 caractères aléatoires).
+    """
+    billet = get_object_or_404(
+        UserTicket.objects.select_related('category__event', 'user'),
+        code_unique=code_unique,
+    )
+    context = {
+        'billet': billet,
+        'evenement': billet.category.event,
+        'utilisable': billet.est_utilisable or billet.statut == 'scanne',
+    }
+    return render(request, 'tickets/verifier_billet.html', context)

@@ -157,13 +157,13 @@ def donnees_participant(user, maintenant):
         if len(prochains) == NOMBRE_DE_LIGNES:
             break
 
-    # TODO : remplacer '#' par la page de paiement, quand elle existe
+    # « Payer » ouvre la page de paiement de la commande concernée (TamoAPI)
     a_payer = [
         {
             'titre': billet.category.event.titre,
             'sous_titre': f"{billet.category.nom} · {formater_somme(billet.prix_achat)} FCFA",
             'droite': 'À payer',
-            'url': '#',
+            'url': reverse('payments:billet', args=[billet.id]),
         }
         for billet in a_regler.order_by('-date_achat')[:NOMBRE_DE_LIGNES]
     ]

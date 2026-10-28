@@ -1,0 +1,200 @@
+/* ==========================================================================
+   QR code du billet (espace connecté) + page publique de vérification
+   Variables globales de theme.css, avec valeurs de secours.
+   ========================================================================== */
+
+.qr-accueil {
+    margin-bottom: 20px;
+}
+
+.qr-surtitre,
+.verif-surtitre {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--espace-primary, var(--red, #e50914));
+}
+
+.qr-accueil h1 {
+    margin: 4px 0;
+    font-size: 24px;
+}
+
+.qr-lead {
+    margin: 0;
+    font-size: 13px;
+    color: var(--espace-muted, var(--text-muted, #a1a1aa));
+}
+
+.qr-carte {
+    display: grid;
+    gap: 22px;
+    justify-items: center;
+    padding: 26px;
+    text-align: center;
+    background: var(--espace-surface, var(--surface, #161619));
+    border: 1px solid var(--espace-bord, var(--border, #34343a));
+    border-radius: 16px;
+}
+
+@media (min-width: 720px) {
+    .qr-carte {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        justify-items: start;
+        text-align: left;
+    }
+}
+
+.qr-image {
+    width: 220px;
+    height: 220px;
+    padding: 10px;
+    background: #fff;
+    border-radius: 14px;
+}
+
+.qr-infos {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+}
+
+.qr-code {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+}
+
+.qr-code span {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--espace-muted, var(--text-muted, #a1a1aa));
+}
+
+.qr-code strong {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 16px;
+    word-break: break-all;
+}
+
+.qr-aide {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--espace-muted, var(--text-muted, #a1a1aa));
+}
+
+.qr-lien {
+    font-size: 13px;
+    color: var(--espace-primary, var(--red, #e50914));
+    word-break: break-all;
+}
+
+.qr-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.qr-bouton {
+    padding: 9px 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: var(--espace-primary, var(--red, #e50914));
+    border: 1px solid var(--espace-primary, var(--red, #e50914));
+    border-radius: 10px;
+}
+
+.qr-bouton--clair {
+    color: var(--espace-texte, var(--text-strong, #0b0b0f));
+    background: transparent;
+    border-color: var(--espace-bord, var(--border, #34343a));
+}
+
+
+/* --- Page publique de vérification -------------------------------------- */
+
+.verif-page {
+    display: grid;
+    place-items: start center;
+    padding: 40px 5% 60px;
+}
+
+.verif-carte {
+    width: min(560px, 100%);
+    padding: 28px;
+    background: var(--surface, #161619);
+    border: 1px solid var(--border, #34343a);
+    border-top: 4px solid var(--text-muted, #a1a1aa);
+    border-radius: 16px;
+}
+
+.verif-carte.is-valide { border-top-color: #12a150; }
+.verif-carte.is-annule { border-top-color: #e50914; }
+.verif-carte.is-autre  { border-top-color: #f59e0b; }
+
+.verif-etat {
+    margin: 10px 0 4px;
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.verif-carte.is-valide .verif-etat { color: #12a150; }
+.verif-carte.is-annule .verif-etat { color: #e50914; }
+.verif-carte.is-autre .verif-etat  { color: #f59e0b; }
+
+.verif-carte h1 {
+    margin: 0 0 4px;
+    font-size: 20px;
+}
+
+.verif-ligne {
+    margin: 0 0 18px;
+    font-size: 13px;
+    color: var(--text-muted, #a1a1aa);
+}
+
+.verif-details {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+}
+
+.verif-details div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border, #34343a);
+}
+
+.verif-details dt {
+    font-size: 13px;
+    color: var(--text-muted, #a1a1aa);
+}
+
+.verif-details dd {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.verif-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    word-break: break-all;
+}
+
+.verif-pied {
+    margin: 18px 0 0;
+    font-size: 13px;
+    color: var(--text-muted, #a1a1aa);
+}

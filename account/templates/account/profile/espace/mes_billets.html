@@ -49,10 +49,10 @@
 
                     <div class="billet-actions">
                         {% if billet.statut == 'en_attente' %}
-                            <a href="#" class="billet-btn billet-btn--primaire">Payer</a>{# TODO : page de paiement #}
+                            <a href="{% url 'payments:billet' billet.id %}" class="billet-btn billet-btn--primaire">Payer</a>
                             <a href="#" class="billet-btn">Annuler</a>{# TODO : annulation #}
                         {% elif billet.statut == 'valide' %}
-                            <a href="#" class="billet-btn billet-btn--primaire">Voir mon QR code</a>{# TODO : QR code #}
+                            <a href="{% url 'tickets:qr-code' billet.id %}" class="billet-btn billet-btn--primaire">Voir mon QR code</a>
                         {% elif billet.statut == 'scanne' %}
                             <small>Utilisé le {{ billet.date_scan|date:"d/m/Y à H:i" }}</small>
                         {% endif %}

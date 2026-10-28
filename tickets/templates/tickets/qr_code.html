@@ -1,0 +1,50 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+
+{% load static %}
+
+
+{% block title %}QR code du billet{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'tickets/qr_code.css' %}">
+{% endblock %}
+
+
+{% block espace_fil %}<a href="{% url 'account:mes-billets' %}">Mes billets</a> › <span>QR code</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <section class="qr-accueil">
+        <p class="qr-surtitre">Mon billet</p>
+        <h1>{{ evenement.titre }}</h1>
+        <p class="qr-lead">
+            {{ billet.category.nom }} · {{ billet.category.get_type_de_ticket_display }} ·
+            {{ billet.get_statut_display }} · acheté le {{ billet.date_achat|date:"d/m/Y" }}
+        </p>
+    </section>
+
+    <article class="qr-carte">
+        <img class="qr-image" src="data:image/png;base64,{{ qr_base64 }}"
+             alt="QR code du billet {{ billet.code_unique }}">
+
+        <div class="qr-infos">
+            <p class="qr-code">
+                <span>Code du billet</span>
+                <strong>{{ billet.code_unique }}</strong>
+            </p>
+
+            <p class="qr-aide">
+                Présentez ce QR code à l'entrée de l'événement. L'organisateur peut aussi
+                ouvrir le lien ci-dessous pour vérifier le billet.
+            </p>
+
+            <a class="qr-lien" href="{{ url_verification }}">Ouvrir la page de vérification</a>
+
+            <div class="qr-actions">
+                <a class="qr-bouton" href="{% url 'account:mes-billets' %}">Retour à mes billets</a>
+                <a class="qr-bouton qr-bouton--clair" href="{% url 'core:detail-event' evenement.id %}">Voir l'événement</a>
+            </div>
+        </div>
+    </article>
+{% endblock %}

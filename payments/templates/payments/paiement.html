@@ -1,0 +1,136 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+
+{% load static l10n %}
+
+
+{% block title %}Paiement{% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'payments/paiement.css' %}">
+{% endblock %}
+
+
+{% block espace_fil %}<a href="{% url 'account:mes-billets' %}">Mes billets</a> › <span>Paiement</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <section class="paiement-accueil">
+        <p class="paiement-surtitre">Paiement</p>
+        <h1>Régler votre commande</h1>
+        <p class="paiement-lead">Référence {{ paiement.reference }} · en attente depuis le {{ paiement.created_at|date:"d/m/Y à H:i" }}</p>
+    </section>
+
+    <div class="paiement-grille"
+         data-paiement
+         data-url-lancer="{% url 'payments:lancer' paiement.reference %}"
+         data-url-statut="{% url 'payments:statut' paiement.reference %}"
+         data-url-checkout="{% url 'payments:checkout' paiement.reference %}"
+         data-url-billets="{% url 'account:mes-billets' %}"
+         data-statut-initial="{{ paiement.statut }}"
+         data-reference="{{ paiement.reference }}"
+         data-montant="{{ paiement.montant|unlocalize }}"
+         {% if tamo_checkout_actif %}
+         data-checkout
+         data-sdk-url="{{ tamo_sdk_url }}"
+         data-public-key="{{ tamo_public_key }}"
+         data-produit="{{ tamo_produit }}"
+         data-marchand="{{ tamo_marchand }}"
+         data-devise="{{ devise }}"
+         data-description="Billets EASY"
+         {% endif %}>
+
+        <section class="paiement-recap">
+            <header class="paiement-recap-entete">
+                <h2><a href="{% url 'core:detail-event' evenement.id %}">{{ evenement.titre }}</a></h2>
+                <p>
+                    {{ evenement.date_debut|date:"d M Y à H:i" }}
+                    {% if evenement.lieu %} · {{ evenement.lieu }}{% endif %}
+                    {% if evenement.ville %}, {{ evenement.ville }}{% endif %}
+                </p>
+            </header>
+
+            <ul class="paiement-billets">
+                {% for billet in billets %}
+                    <li>
+                        <span class="paiement-billet-nom">
+                            {{ billet.category.nom }}
+                            <small>{{ billet.category.get_type_de_ticket_display }}</small>
+                        </span>
+                        <span class="paiement-billet-prix">{{ billet.prix_achat|floatformat:"0g" }} {{ devise }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <div class="paiement-total">
+                <span>Total à payer</span>
+                <strong>{{ paiement.montant|floatformat:"0g" }} {{ devise }}</strong>
+            </div>
+        </section>
+
+        <section class="paiement-action">
+            <div class="paiement-statut" data-zone-statut data-etat="{{ paiement.statut }}"
+                 {% if not paiement.message %}hidden{% endif %}>
+                <span class="paiement-statut-point" aria-hidden="true"></span>
+                <p data-message>{{ paiement.message|default:"" }}</p>
+            </div>
+
+            {% if not tamo_configure %}
+                <p class="paiement-avertissement">
+                    Le paiement en ligne n'est pas encore activé : les clés TamoAPI
+                    (TAMO_API_TOKEN, TAMO_API_SECRET, TAMO_PRODUCT_ID) ne sont pas configurées
+                    sur ce serveur.
+                </p>
+            {% else %}
+                <form class="paiement-form" data-form-paiement method="post"
+                      action="{% url 'payments:lancer' paiement.reference %}">
+                    {% csrf_token %}
+
+                    <div class="paiement-champ">
+                        <label for="{{ form.telephone.id_for_label }}">{{ form.telephone.label }}</label>
+                        {{ form.telephone }}
+                        {% if form.telephone.errors %}
+                            <small class="paiement-erreur">{{ form.telephone.errors|first }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="paiement-champ">
+                        <label for="{{ form.operateur.id_for_label }}">{{ form.operateur.label }}</label>
+                        {{ form.operateur }}
+                        {% if form.operateur.errors %}
+                            <small class="paiement-erreur">{{ form.operateur.errors|first }}</small>
+                        {% endif %}
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <small class="paiement-erreur">{{ form.non_field_errors|first }}</small>
+                    {% endif %}
+
+                    <button type="submit" class="paiement-bouton" data-lancer
+                            {% if paiement.statut == 'en_cours' %}hidden{% endif %}>
+                        Payer {{ paiement.montant|floatformat:"0g" }} {{ devise }}
+                    </button>
+                </form>
+
+                {% if tamo_checkout_actif %}
+                    <button type="button" class="paiement-bouton paiement-bouton--checkout" data-checkout
+                            {% if paiement.statut == 'en_cours' %}hidden{% endif %}>
+                        Payer avec Tamo Checkout
+                    </button>
+                {% endif %}
+            {% endif %}
+
+            <p class="paiement-aide">
+                Vous recevrez une demande de confirmation sur votre téléphone Mobile Money.
+                Ne fermez pas cette page pendant le paiement.
+            </p>
+
+            <a class="paiement-retour" href="{% url 'account:mes-billets' %}">Retour à mes billets</a>
+        </section>
+    </div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'payments/paiement.js' %}" defer></script>
+{% endblock %}

@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 
+
 class Events(models.Model):
     CATEGORIE_CHOICES = [
         ('concert', 'Concert'),

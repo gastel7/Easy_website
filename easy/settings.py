@@ -28,13 +28,44 @@ except ImportError:
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-change-me')
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DJANGO_DEBUG=0 en production (voir .env.example)
+DEBUG = os.environ.get('DJANGO_DEBUG', '1').lower() not in ('0', 'false', 'no', 'off')
 
-ALLOWED_HOSTS = []
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'dev-only-change-me'   # valeur de développement uniquement
+    else:
+        # En production, refus de démarrer plutôt que de tourner avec une clé prévisible
+        from django.core.exceptions import ImproperlyConfigured
+        raise ImproperlyConfigured(
+            "DJANGO_SECRET_KEY est obligatoire en production. "
+            "Générez-en une (django.core.management.utils.get_random_secret_key) et mettez-la dans .env "
+            "— cf. .env.example."
+        )
+
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h.strip()]
+if DEBUG and not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+
+# En production (DEBUG=0) tout passe par HTTPS : cookies et redirection sécurisés.
+# Réglable au cas par cas dans le .env (utile si le site est servi en HTTP derrière un proxy).
+def _env_drapeau(nom, defaut):
+    valeur = os.environ.get(nom)
+    if valeur is None:
+        return defaut
+    return valeur.lower() not in ('0', 'false', 'no', 'off')
+
+SECURE_SSL_REDIRECT = _env_drapeau('DJANGO_SECURE_SSL_REDIRECT', not DEBUG)
+SESSION_COOKIE_SECURE = _env_drapeau('DJANGO_SESSION_COOKIE_SECURE', not DEBUG)
+CSRF_COOKIE_SECURE = _env_drapeau('DJANGO_CSRF_COOKIE_SECURE', not DEBUG)
+SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_HSTS_SECONDS', '0' if DEBUG else '31536000'))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # derrière un proxy / Cloudflare
 
 
 # Application definition
@@ -62,6 +93,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',    # label "user_account" (cf. account/apps.py)
     'core',
     'tickets',
+    'payments',                      # paiement des billets (TamoAPI / tasa.pro)
 ]
 
 MIDDLEWARE = [
@@ -103,7 +135,8 @@ WSGI_APPLICATION = 'easy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # DJANGO_DB_NAME permet d'utiliser une autre base (ex. db.dev.sqlite3) sans toucher à db.sqlite3
+        'NAME': BASE_DIR / os.environ.get('DJANGO_DB_NAME', 'db.sqlite3'),
     }
 }
 
@@ -149,11 +182,41 @@ MEDIA_ROOT = BASE_DIR/'media/'
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+# En développement, les mails sont écrits dans la console. En production,
+# renseignez SMTP_* dans le .env (cf. .env.example).
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
+EMAIL_BACKEND = os.environ.get(
+    'DJANGO_EMAIL_BACKEND',
+    'django.core.mail.backends.console.EmailBackend',
+)
+EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST', '')
+EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('DJANGO_EMAIL_TLS', '1').lower() not in ('0', 'false', 'no')
+DEFAULT_FROM_EMAIL = os.environ.get('DJANGO_FROM_EMAIL', 'EASY <no-reply@easy.cg>')
+
+
+# ---------------------------------------------------------------------------
+# Paiement des billets — TamoAPI (https://tamo.tasa.pro)
+# Clés et identifiants dans le .env, jamais dans le code (cf. .env.example).
+# ---------------------------------------------------------------------------
+
+TAMO = {
+    # URL de base de l'API (chemins relatifs dans payments/tamo.py)
+    'API_BASE': os.environ.get('TAMO_API_BASE', 'https://tamoapi.tasa.pro/api').rstrip('/'),
+    'API_TOKEN': os.environ.get('TAMO_API_TOKEN', ''),        # api_token (tok_…) : en-tête X-API-Token
+    'API_SECRET': os.environ.get('TAMO_API_SECRET', ''),      # api_secret : signature HMAC v2, jamais exposé
+    'WEBHOOK_SECRET': os.environ.get('TAMO_WEBHOOK_SECRET', ''),  # secret du rappel, propre à la destination
+    # UUID du produit « Collecte » (Dashboard → Produits)
+    'PRODUCT_ID': os.environ.get('TAMO_PRODUCT_ID', ''),
+    'DEVISE': os.environ.get('TAMO_DEVISE', 'XAF'),
+    # Chemin de lecture du statut d'une transaction (à ajuster si TASA le publie autrement)
+    'STATUT_PATH': os.environ.get('TAMO_STATUT_PATH', '/v1/collections/{identifiant}'),
+    # Portail de paiement (SDK TamoCheckout) — optionnel
+    'CHECKOUT_SDK_URL': os.environ.get('TAMO_CHECKOUT_SDK_URL', 'https://tamoapi.tasa.pro/sdk/tamo.js'),
+    'CHECKOUT_ACTIVE': os.environ.get('TAMO_CHECKOUT', '0').lower() not in ('0', 'false', 'no', 'off'),
+    'NOM_MARCHAND': os.environ.get('TAMO_MARCHAND', 'EASY'),
 }
 
 

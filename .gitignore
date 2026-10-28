@@ -60,6 +60,8 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+# Bases de dev créées avec DJANGO_DB_NAME
+db.*.sqlite3
 
 # Flask stuff:
 instance/
