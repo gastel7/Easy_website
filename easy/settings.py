@@ -135,8 +135,8 @@ WSGI_APPLICATION = 'easy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        # DJANGO_DB_NAME permet d'utiliser une autre base (ex. db.dev.sqlite3) sans toucher à db.sqlite3
-        'NAME': BASE_DIR / os.environ.get('DJANGO_DB_NAME', 'db.sqlite3'),
+        # La base de développement contient les migrations à jour; DJANGO_DB_NAME permet de la remplacer.
+        'NAME': BASE_DIR / os.environ.get('DJANGO_DB_NAME', 'db.dev.sqlite3'),
     }
 }
 
@@ -198,25 +198,19 @@ DEFAULT_FROM_EMAIL = os.environ.get('DJANGO_FROM_EMAIL', 'EASY <no-reply@easy.cg
 
 
 # ---------------------------------------------------------------------------
-# Paiement des billets — TamoAPI (https://tamo.tasa.pro)
+# Paiement des billets — TamoAPI (https://tamoapi.tasa.pro/api/v1)
 # Clés et identifiants dans le .env, jamais dans le code (cf. .env.example).
 # ---------------------------------------------------------------------------
 
 TAMO = {
     # URL de base de l'API (chemins relatifs dans payments/tamo.py)
-    'API_BASE': os.environ.get('TAMO_API_BASE', 'https://tamoapi.tasa.pro/api').rstrip('/'),
+    'API_BASE': os.environ.get('TAMO_API_BASE', 'https://tamoapi.tasa.pro/api/v1').rstrip('/'),
     'API_TOKEN': os.environ.get('TAMO_API_TOKEN', ''),        # api_token (tok_…) : en-tête X-API-Token
     'API_SECRET': os.environ.get('TAMO_API_SECRET', ''),      # api_secret : signature HMAC v2, jamais exposé
     'WEBHOOK_SECRET': os.environ.get('TAMO_WEBHOOK_SECRET', ''),  # secret du rappel, propre à la destination
     # UUID du produit « Collecte » (Dashboard → Produits)
     'PRODUCT_ID': os.environ.get('TAMO_PRODUCT_ID', ''),
     'DEVISE': os.environ.get('TAMO_DEVISE', 'XAF'),
-    # Chemin de lecture du statut d'une transaction (à ajuster si TASA le publie autrement)
-    'STATUT_PATH': os.environ.get('TAMO_STATUT_PATH', '/v1/collections/{identifiant}'),
-    # Portail de paiement (SDK TamoCheckout) — optionnel
-    'CHECKOUT_SDK_URL': os.environ.get('TAMO_CHECKOUT_SDK_URL', 'https://tamoapi.tasa.pro/sdk/tamo.js'),
-    'CHECKOUT_ACTIVE': os.environ.get('TAMO_CHECKOUT', '0').lower() not in ('0', 'false', 'no', 'off'),
-    'NOM_MARCHAND': os.environ.get('TAMO_MARCHAND', 'EASY'),
 }
 
 

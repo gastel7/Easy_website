@@ -1,5 +1,5 @@
-// Page de paiement : lancement de la collecte Tamo, sondage du statut,
-// et portail TamoCheckout (optionnel). Le serveur reste la seule source de vérité.
+// Page de paiement : lancement de la collecte Tamo et sondage du statut.
+// Le serveur reste la seule source de vérité.
 
 (function () {
     const zone = document.querySelector('[data-paiement]');
@@ -7,21 +7,19 @@
 
     const form = zone.querySelector('[data-form-paiement]');
     const boutonLancer = zone.querySelector('[data-lancer]');
-    const boutonCheckout = zone.querySelector('[data-checkout]');
     const zoneStatut = zone.querySelector('[data-zone-statut]');
     const message = zone.querySelector('[data-message]');
 
     const urls = {
         lancer: zone.dataset.urlLancer,
         statut: zone.dataset.urlStatut,
-        checkout: zone.dataset.urlCheckout,
         billets: zone.dataset.urlBillets,
     };
 
     const csrf = document.querySelector('[data-csrf]')?.dataset.csrf || '';
     const entetes = {'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrf};
 
-    const STATUTS_FINALS = ['reussi', 'echoue', 'expire', 'annule'];
+    const STATUTS_FINALS = ['reussi', 'echoue', 'expire', 'annule', 'rembourse'];
     const DELAI_SONDAGE = 4000;              // 15 appels/min : large sous la limite de 120 lectures/min
     const DUREE_MAX = 30 * 60 * 1000;        // la collecte expire après 30 minutes chez Tamo
 
@@ -41,12 +39,10 @@
 
     function reactiver() {
         if (boutonLancer) { boutonLancer.disabled = false; boutonLancer.textContent = texteInitialBouton; }
-        if (boutonCheckout) boutonCheckout.disabled = false;
     }
 
     function masquerActions() {
         if (boutonLancer) boutonLancer.hidden = true;
-        if (boutonCheckout) boutonCheckout.hidden = true;
     }
 
     async function appeler(url, options) {
@@ -125,63 +121,6 @@
             }
         });
     }
-
-    // --- Portail TamoCheckout (SDK) -----------------------------------------
-    let chargementSdk = null;
-
-    function ouvrirCheckout() {
-        if (!window.TamoCheckout) {
-            if (chargementSdk) return;
-            chargementSdk = document.createElement('script');
-            chargementSdk.src = zone.dataset.sdkUrl;
-            chargementSdk.onload = ouvrirCheckout;
-            chargementSdk.onerror = () => {
-                chargementSdk = null;
-                afficher("Impossible de charger Tamo Checkout. Utilisez le paiement par numéro.", 'echoue');
-            };
-            document.head.appendChild(chargementSdk);
-            return;
-        }
-
-        if (boutonCheckout) boutonCheckout.disabled = true;
-
-        window.TamoCheckout.open({
-            publicKey: zone.dataset.publicKey,
-            productId: zone.dataset.produit,
-            amount: Number(zone.dataset.montant),
-            currency: zone.dataset.devise,
-            merchant: zone.dataset.marchand,
-            reference: zone.dataset.reference,
-            description: zone.dataset.description,
-            onSuccess: async (donnees) => {
-                // Le navigateur n'est pas cru : le serveur revérifie auprès de l'API Tamo
-                debutTentative = Date.now();
-                try {
-                    const etat = await appeler(urls.checkout, {
-                        method: 'POST',
-                        headers: {...entetes, 'Content-Type': 'application/x-www-form-urlencoded'},
-                        body: new URLSearchParams({reference: donnees.reference || ''}),
-                    });
-                    masquerActions();
-                    if (!traiterEtat(etat)) {
-                        afficher('Confirmation du paiement en cours…', 'attente');
-                        demarrerSondage();
-                    }
-                } catch (erreur) {
-                    masquerActions();
-                    afficher(erreur.message || 'Paiement reçu, confirmation en cours…', 'attente');
-                    demarrerSondage();
-                }
-            },
-            onClose: () => { if (boutonCheckout) boutonCheckout.disabled = false; },
-            onError: (erreur) => {
-                afficher(erreur?.message || 'Paiement interrompu.', 'echoue');
-                if (boutonCheckout) boutonCheckout.disabled = false;
-            },
-        });
-    }
-
-    if (boutonCheckout) boutonCheckout.addEventListener('click', ouvrirCheckout);
 
     // --- État initial --------------------------------------------------------
     const statutInitial = zone.dataset.statutInitial;

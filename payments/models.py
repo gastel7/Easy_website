@@ -13,6 +13,7 @@ STATUTS_TAMO = {
     'failed': 'echoue',
     'expired': 'expire',
     'cancelled': 'annule',
+    'refunded': 'rembourse',
 }
 
 # Événements webhook attendus (doc TASA §6)
@@ -23,6 +24,7 @@ EVENEMENTS_WEBHOOK = {
     'collection.failed': 'failed',
     'collection.expired': 'expired',
     'collection.cancelled': 'cancelled',
+    'collection.refunded': 'refunded',
 }
 
 OPERATEURS = [
@@ -53,8 +55,9 @@ class Paiement(models.Model):
         ('echoue', 'Échec du paiement'),
         ('expire', 'Paiement expiré'),
         ('annule', 'Paiement annulé'),
+        ('rembourse', 'Paiement remboursé'),
     ]
-    STATUTS_DEFINITIFS = ('reussi', 'echoue', 'expire', 'annule')
+    STATUTS_DEFINITIFS = ('reussi', 'echoue', 'expire', 'annule', 'rembourse')
 
     reference = models.CharField(max_length=64, unique=True, editable=False, default=generer_reference,
                                  verbose_name="Référence")
@@ -104,12 +107,12 @@ class Paiement(models.Model):
     @property
     def est_lance(self):
         """Une collecte a été appelée et attend encore une réponse définitive."""
-        return bool(self.cle_idempotence) and self.statut not in ('reussi',)
+        return bool(self.cle_idempotence) and not self.est_definitif
 
     def montant_confirme(self, montant_recu):
         """Le montant annoncé par Tamo correspond-il à celui de la commande ?"""
         if montant_recu in (None, ''):
-            return True  # champ absent : on ne peut pas comparer, on ne bloque pas
+            return False
         try:
             return int(montant_recu) == int(self.montant)
         except (TypeError, ValueError):
@@ -124,8 +127,11 @@ class Paiement(models.Model):
         if nouveau is None:
             return False
 
-        if self.statut == 'reussi':
-            return False  # déjà payé : idempotent, on ne touche plus à rien
+        if self.statut == nouveau:
+            return False
+        if self.statut in self.STATUTS_DEFINITIFS:
+            if self.statut != 'reussi' or nouveau != 'rembourse':
+                return False
         if nouveau in ('en_attente', 'en_cours') and self.statut in ('echoue', 'expire', 'annule'):
             return False  # pas de retour en arrière
 
@@ -137,6 +143,8 @@ class Paiement(models.Model):
         if nouveau == 'reussi':
             self.paye_le = timezone.now()
             self.valider_billets()
+        elif nouveau == 'rembourse':
+            self.billets.filter(statut='valide').update(statut='annule')
         return True
 
     def valider_billets(self):

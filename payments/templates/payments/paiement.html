@@ -25,20 +25,10 @@
          data-paiement
          data-url-lancer="{% url 'payments:lancer' paiement.reference %}"
          data-url-statut="{% url 'payments:statut' paiement.reference %}"
-         data-url-checkout="{% url 'payments:checkout' paiement.reference %}"
          data-url-billets="{% url 'account:mes-billets' %}"
          data-statut-initial="{{ paiement.statut }}"
          data-reference="{{ paiement.reference }}"
-         data-montant="{{ paiement.montant|unlocalize }}"
-         {% if tamo_checkout_actif %}
-         data-checkout
-         data-sdk-url="{{ tamo_sdk_url }}"
-         data-public-key="{{ tamo_public_key }}"
-         data-produit="{{ tamo_produit }}"
-         data-marchand="{{ tamo_marchand }}"
-         data-devise="{{ devise }}"
-         data-description="Billets EASY"
-         {% endif %}>
+         data-montant="{{ paiement.montant|unlocalize }}">
 
         <section class="paiement-recap">
             <header class="paiement-recap-entete">
@@ -112,12 +102,6 @@
                     </button>
                 </form>
 
-                {% if tamo_checkout_actif %}
-                    <button type="button" class="paiement-bouton paiement-bouton--checkout" data-checkout
-                            {% if paiement.statut == 'en_cours' %}hidden{% endif %}>
-                        Payer avec Tamo Checkout
-                    </button>
-                {% endif %}
             {% endif %}
 
             <p class="paiement-aide">

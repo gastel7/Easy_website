@@ -1,0 +1,584 @@
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+body {
+    min-width: 0;
+}
+
+main,
+section,
+article,
+aside,
+form,
+nav {
+    min-width: 0;
+}
+
+img,
+video,
+iframe {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+a,
+strong,
+small {
+    overflow-wrap: anywhere;
+}
+
+.signup-container {
+    position: relative;
+    isolation: isolate;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 110px 16px 48px;
+    overflow: visible;
+}
+
+.signup-background,
+.signup-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.signup-background {
+    z-index: -2;
+    object-fit: cover;
+}
+
+.signup-overlay {
+    z-index: -1;
+    background: rgba(0, 0, 0, .6);
+    pointer-events: none;
+}
+
+.signup-container > .main_content {
+    position: relative;
+    top: auto;
+    z-index: 0;
+    width: min(95%, 1300px);
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+@media (max-width: 991px) {
+    .header_content {
+        gap: 12px;
+        padding-inline: clamp(16px, 4vw, 30px);
+    }
+
+    .nav_menu.show ul {
+        top: 90px;
+        z-index: 1001;
+        max-height: calc(100dvh - 90px);
+        overflow-y: auto;
+        padding: 24px 16px;
+    }
+
+    .footer_informations {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+        gap: 24px;
+    }
+
+    .footer_informations section {
+        width: auto;
+        height: auto;
+        min-width: 0;
+    }
+
+    .footer_informations hr {
+        display: none;
+    }
+
+    .footer_informations section .footer_links {
+        height: auto;
+        margin: 0;
+        padding: 16px 0 0;
+        border-top: 1px solid var(--footer-link, #dee1e8);
+        border-left: 0;
+    }
+
+    .footer_informations section:nth-of-type(3) .footer_links {
+        padding-left: 0;
+        border-left: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .espace-header {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px 16px;
+    }
+
+    .espace-header-droite {
+        gap: 8px;
+    }
+
+    .espace-listes {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    }
+
+    .espace-contenu table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .espace-contenu th,
+    .espace-contenu td {
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (max-width: 1100px) {
+    main.container {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+        min-height: calc(100vh - 90px);
+        padding: 110px 16px 40px;
+    }
+
+    .container .main_content {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: min(100%, 480px);
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .container .login_text_info {
+        display: none;
+    }
+
+    .container .login_section {
+        position: relative;
+        z-index: 1;
+        display: block;
+        flex: none;
+        width: 100%;
+        min-width: 0;
+        max-width: 480px;
+        margin: 0 auto;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .container .login_section form {
+        width: 100%;
+    }
+
+    .container .login_section .input_field,
+    .container .login_section .btn_login,
+    .container .login_section .social-login,
+    .container .login_section .social_logins_links {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .signup-container {
+        overflow: visible;
+    }
+
+    .signup-container > .main_content {
+        width: min(100%, 640px);
+        max-width: 640px;
+        padding: 0;
+    }
+
+    .signup-container .carrousel_section {
+        display: none;
+    }
+}
+
+.our_team .carrousel_container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.our_team .carrousel_track {
+    width: max-content;
+}
+
+@media (max-width: 767px) {
+    .signup-container {
+        padding: 100px 16px 36px;
+    }
+
+    .signup-container > .main_content {
+        width: 100%;
+    }
+
+    .signup-container .logup_section {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .about {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        padding: 24px 16px;
+    }
+
+    .about_text {
+        padding: 0;
+    }
+
+    .about_text h1,
+    .our_vision_text h2,
+    .our_team_text h2 {
+        font-size: clamp(1.8rem, 8vw, 2.5rem);
+    }
+
+    .about_video {
+        height: auto;
+    }
+
+    .about_container_video {
+        width: 100%;
+        height: auto;
+    }
+
+    .about_container_video video {
+        display: block;
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    .about_stats {
+        gap: 20px;
+        justify-content: space-between;
+    }
+
+    .our_vision {
+        padding: 20px 16px;
+    }
+
+    .our_vision_content {
+        padding: 18px;
+    }
+
+    .our_vision_container_icon {
+        flex: 0 0 64px;
+        width: 64px;
+        height: 64px;
+    }
+
+    .our_vision_text {
+        min-width: 0;
+        padding-left: 16px;
+    }
+
+    .our_team {
+        padding: 44px 16px 56px;
+    }
+
+    .our_team_text p {
+        padding: 0;
+        font-size: 1rem;
+    }
+
+    .faq_page {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        align-items: stretch;
+        width: min(calc(100% - 32px), 680px);
+        height: auto;
+        padding: 24px 0 36px;
+        gap: 24px;
+    }
+
+    .section_questions {
+        gap: 16px;
+    }
+
+    .section_questions_content {
+        width: 100%;
+        padding-inline: clamp(16px, 5vw, 30px);
+    }
+
+    .section_questions_content_sub section.open {
+        padding: 16px 0;
+    }
+
+    .section_questions_content_sub section.open div {
+        gap: 12px;
+    }
+
+    .section_questions_content_sub section.open div h2 {
+        min-width: 0;
+        font-size: 1rem;
+    }
+
+    .contact_us_content {
+        width: 100%;
+        height: auto;
+        min-height: 190px;
+        gap: 20px;
+        padding: 22px;
+    }
+
+    .contact_page {
+        gap: 28px;
+        padding: 0 16px;
+    }
+
+    .contact_text,
+    .contact_form {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .contact_text_title h1 {
+        font-size: clamp(2rem, 9vw, 2.8rem);
+    }
+
+    .contact_text_infos section p {
+        font-size: 1rem;
+    }
+
+    .contact_text_infos section span {
+        font-size: 0.95rem;
+        overflow-wrap: anywhere;
+    }
+
+    .contact_form {
+        padding: 20px 16px;
+    }
+
+    .contact_form form section.contact_form_name_email {
+        flex-direction: column;
+    }
+
+    .contact_form form section.contact_form_name_email div {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .main_content {
+        width: min(calc(100% - 32px), 640px);
+        margin-inline: auto;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+    }
+
+    .login_text_info {
+        display: none;
+    }
+
+    .form_container {
+        width: 100%;
+        flex: none;
+    }
+
+    .login_section,
+    .logup_section {
+        width: 100%;
+        min-width: 0;
+        padding: clamp(18px, 5vw, 32px);
+    }
+
+    .form_container_sub {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .page-shell,
+    .form-shell {
+        width: 100%;
+        padding-inline: 16px;
+    }
+
+    .form-panel {
+        padding: clamp(16px, 5vw, 28px);
+    }
+
+    .event-detail-hero {
+        min-height: 260px;
+    }
+
+    .event-detail-hero-content {
+        padding: 20px;
+    }
+
+    .event-detail-infos,
+    .event-detail-orga,
+    .event-detail-bloc,
+    .event-detail-reserve,
+    .event-detail-share {
+        padding: 18px;
+    }
+
+    .paiement-recap,
+    .paiement-action {
+        padding: 18px;
+    }
+
+    .paiement-billets li,
+    .paiement-total {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 575px) {
+    footer {
+        padding: 28px 20px;
+    }
+
+    .footer_informations {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .footer_informations section .footer_links {
+        padding-top: 16px;
+    }
+
+    .footer_informations section:nth-child(1) .footer_links {
+        border-top: 0;
+    }
+
+    .section_questions_content_sub p {
+        line-height: 1.55;
+    }
+
+    .about_stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .our_vision_container_icon {
+        display: none;
+    }
+
+    .our_vision_text {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .espace-header {
+        padding: 10px 12px;
+    }
+
+    .espace-fil {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .espace-header-droite {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .espace-switch {
+        order: 1;
+        margin-right: auto;
+    }
+
+    .espace-switch-btn {
+        padding-inline: 10px;
+    }
+
+    .espace-contenu {
+        padding: 18px 12px 32px;
+    }
+
+    .billets-evenement {
+        padding: 16px;
+    }
+
+    .billet-infos {
+        min-width: 0;
+    }
+
+    .billet-actions {
+        flex-wrap: wrap;
+    }
+
+    .qr-carte {
+        padding: 18px;
+    }
+
+    .qr-image {
+        width: min(220px, 100%);
+        height: auto;
+        aspect-ratio: 1;
+    }
+
+    .event-detail-facts {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .event-detail-artistes {
+        gap: 14px;
+    }
+
+    .reserve-ticket {
+        flex-wrap: wrap;
+    }
+
+    .event-steps small {
+        display: none;
+    }
+
+    .event-steps li.is-active small {
+        display: inline;
+    }
+
+    article.card:not(.card-vertical) {
+        grid-template-columns: 96px minmax(0, 1fr);
+    }
+
+    article.card:not(.card-vertical) .card-body {
+        padding: 14px;
+    }
+
+    article.card:not(.card-vertical) .card-footer {
+        padding: 0 14px 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -31,11 +31,12 @@ def _paiement_de(reference, user):
 
 def _donnees_depuis_reponse(info):
     """Réponse de GET statut → dictionnaire dans le même format que la charge webhook."""
+    montants = info.get('amounts') if isinstance(info.get('amounts'), dict) else {}
     return {
         'status': info.get('statut', ''),
         'reference': info.get('reference', ''),
         'merchant_reference': info.get('merchant_reference', ''),
-        'amount': info.get('amount'),
+        'amount': info.get('amount', montants.get('requested')),
     }
 
 
@@ -57,7 +58,7 @@ def _confirmer(paiement, donnees, source=''):
         return False
 
     if statut_tamo == 'success' and not paiement.montant_confirme(donnees.get('amount')):
-        paiement.message = "Montant confirmé par Tamo différent de la commande."
+        paiement.message = "Montant confirmé par Tamo absent ou différent de la commande."
         paiement.save(update_fields=['message', 'updated_at'])
         WebhookTamo.objects.create(
             evenement=f'{source}.montant_incoherent' if source else 'montant_incoherent',
@@ -74,6 +75,7 @@ def _confirmer(paiement, donnees, source=''):
         'cancelled': "Paiement annulé.",
         'pending': "Paiement en attente de confirmation de l'opérateur…",
         'processing': "Confirmation reçue, paiement en cours…",
+        'refunded': "Paiement remboursé.",
     }.get(statut_tamo, '')
 
     changement = paiement.appliquer_statut_tamo(
@@ -86,8 +88,7 @@ def _interroger_tamo(paiement, forcer=False):
     """Interroge le statut chez Tamo (plafonné en fréquence) et applique le résultat."""
     if paiement.est_paye:
         return True
-    identifiant = paiement.tamo_reference or paiement.tamo_identifiant
-    if not identifiant:
+    if not paiement.tamo_reference:
         return False
 
     maintenant = timezone.now()
@@ -99,7 +100,7 @@ def _interroger_tamo(paiement, forcer=False):
     paiement.save(update_fields=['derniere_verification', 'updated_at'])
 
     try:
-        info = tamo.interroger_statut(identifiant)
+        info = tamo.interroger_statut(paiement.tamo_reference)
     except tamo.TamoError as erreur:
         # 429 / réseau : on garde l'état connu, l'utilisateur re-sonde
         paiement.message = str(erreur)
@@ -120,7 +121,6 @@ def page_paiement(request, reference):
         messages.success(request, "Ce paiement a déjà été confirmé : vos billets sont valides.")
         return redirect('account:mes-billets')
 
-    cfg = tamo.config()
     billets = paiement.billets.select_related('category', 'category__event').order_by('id')
 
     context = {
@@ -129,11 +129,6 @@ def page_paiement(request, reference):
         'evenement': paiement.event,
         'form': CollecteForm(),
         'tamo_configure': tamo.est_configure(),
-        'tamo_checkout_actif': cfg['CHECKOUT_ACTIVE'] and bool(cfg['API_TOKEN']) and bool(cfg['PRODUCT_ID']),
-        'tamo_sdk_url': cfg['CHECKOUT_SDK_URL'],
-        'tamo_public_key': cfg['API_TOKEN'],
-        'tamo_produit': cfg['PRODUCT_ID'],
-        'tamo_marchand': cfg['NOM_MARCHAND'],
         'devise': paiement.devise,
     }
     return render(request, 'payments/paiement.html', context)
@@ -158,12 +153,23 @@ def lancer_collecte(request, reference):
     if not form.is_valid():
         return JsonResponse({'erreurs': form.errors}, status=400)
 
-    paiement.telephone = form.cleaned_data['telephone']
-    paiement.operateur = form.cleaned_data['operateur']
+    telephone = form.cleaned_data['telephone']
+    operateur = form.cleaned_data['operateur']
+    nouvelle_operation = not paiement.cle_idempotence or paiement.statut in (
+        'echoue', 'expire', 'annule', 'rembourse')
+    if not nouvelle_operation and paiement.telephone \
+            and (paiement.telephone != telephone or paiement.operateur != operateur):
+        return JsonResponse({
+            'erreur': "Cette demande est déjà en cours. Son numéro et son opérateur ne peuvent plus changer.",
+        }, status=409)
+
+    if nouvelle_operation:
+        paiement.telephone = telephone
+        paiement.operateur = operateur
 
     # Clé d'idempotence : on la rejoue telle quelle tant que la tentative est en cours
     # (Tamo renvoie la transaction existante, rien n'est débité deux fois).
-    if not paiement.cle_idempotence or paiement.statut in ('echoue', 'expire', 'annule'):
+    if nouvelle_operation:
         paiement.nouvelle_cle_idempotence()
     paiement.save(update_fields=['telephone', 'operateur', 'tentative', 'cle_idempotence', 'updated_at'])
 
@@ -173,15 +179,13 @@ def lancer_collecte(request, reference):
             telephone=paiement.telephone,
             operateur=paiement.operateur,
             merchant_reference=paiement.reference,
-            payer_name=request.user.get_full_name() or request.user.username,
-            description=f"Billets EASY — {paiement.event.titre}",
-            metadata={'event_id': paiement.event_id, 'user_id': request.user.pk},
             idempotency_key=paiement.cle_idempotence,
         )
     except tamo.TamoError as erreur:
-        # Réseau / 5xx / 429 : on garde la même clé (le prochain appel rejoue l'opération).
-        # Refus 4xx : la requête a été rejetée, on repart avec une clé neuve.
-        rejouable = erreur.status_code is None or erreur.status_code == 429 or erreur.status_code >= 500
+        # Réseau / 5xx / 429 / conflit d'idempotence : garder la clé pour ne pas doubler l'opération.
+        # Les autres 4xx rejettent explicitement la requête : une correction partira avec une clé neuve.
+        rejouable = erreur.status_code is None or erreur.status_code in (429, 409) \
+            or erreur.status_code >= 500
         if rejouable:
             paiement.message = str(erreur)
         else:
@@ -189,7 +193,11 @@ def lancer_collecte(request, reference):
             paiement.cle_idempotence = ''
             paiement.statut = 'en_attente'
         paiement.save(update_fields=['message', 'cle_idempotence', 'statut', 'updated_at'])
-        return JsonResponse({'erreur': str(erreur)}, status=502)
+        code_http = erreur.status_code if erreur.status_code and 400 <= erreur.status_code < 500 else 502
+        reponse = JsonResponse({'erreur': str(erreur)}, status=code_http)
+        if code_http == 429 and erreur.retry_after:
+            reponse['Retry-After'] = erreur.retry_after
+        return reponse
 
     paiement.statut = 'en_cours'
     paiement.tamo_reference = resultat['reference'] or paiement.tamo_reference
@@ -217,36 +225,8 @@ def statut_paiement(request, reference):
         'statut': paiement.statut,
         'paye': paiement.est_paye,
         'message': paiement.message,
-        'lance': bool(paiement.cle_idempotence),
+        'lance': paiement.est_lance,
     })
-
-
-@login_required
-@require_POST
-def confirmer_checkout(request, reference):
-    """Le portail TamoCheckout (SDK) a renvoyé une référence : on la vérifie côté serveur.
-
-    Le navigateur n'est jamais cru sur parole : on interroge l'API avant de valider.
-    """
-    paiement = _paiement_de(reference, request.user)
-    reference_tamo = (request.POST.get('reference') or '').strip()
-    if not reference_tamo:
-        return JsonResponse({'erreur': "Référence de paiement manquante."}, status=400)
-
-    try:
-        info = tamo.interroger_statut(reference_tamo)
-    except tamo.TamoError as erreur:
-        # Non concluant : le webhook / la sonde finiront par confirmer.
-        return JsonResponse({'statut': paiement.statut, 'paye': paiement.est_paye,
-                             'message': str(erreur)}, status=202)
-
-    donnees = _donnees_depuis_reponse(info)
-    donnees['reference'] = donnees['reference'] or reference_tamo
-    donnees['merchant_reference'] = donnees['merchant_reference'] or paiement.reference
-    _confirmer(paiement, donnees, source='checkout')
-    paiement.refresh_from_db()
-    return JsonResponse({'statut': paiement.statut, 'paye': paiement.est_paye,
-                         'message': paiement.message})
 
 
 @login_required
@@ -295,6 +275,8 @@ def webhook_tamo(request):
         charge = json.loads(corps.decode('utf-8'))
     except (ValueError, UnicodeDecodeError):
         return HttpResponse("Charge illisible", status=400)
+    if not isinstance(charge, dict):
+        return HttpResponse("Charge illisible", status=400)
 
     evenement = str(charge.get('event') or '')
     data = charge.get('data') if isinstance(charge.get('data'), dict) else {}
@@ -315,13 +297,17 @@ def webhook_tamo(request):
                                    charge_utile=charge, signee_valide=True, traite=True,
                                    erreur="Événement non géré.")
         return HttpResponse("OK")
+    if not reference_tamo:
+        return HttpResponse("Référence de transaction manquante", status=400)
+    if str(data.get('status') or '').lower() != statut_attendu:
+        return HttpResponse("Statut incohérent avec l'événement", status=400)
 
     # Déduplication : même event + même reference = notification déjà reçue
     journal, deja_recu = WebhookTamo.objects.get_or_create(
         evenement=evenement, tamo_reference=reference_tamo,
         defaults={'charge_utile': charge, 'signee_valide': True},
     )
-    if not deja_recu:
+    if not deja_recu and journal.traite:
         return HttpResponse("Déjà traité")  # notification reçue deux fois
 
     paiement = Paiement.objects.filter(tamo_reference=reference_tamo).first() \
@@ -336,10 +322,10 @@ def webhook_tamo(request):
     journal.paiement = paiement
     try:
         modifie = _confirmer(paiement, data, source='webhook')
-    except Exception as erreur:  # journalise puis 200 pour ne pas boucler chez Tamo
+    except Exception as erreur:
         journal.erreur = f"Erreur de traitement : {erreur}"
         journal.save(update_fields=['paiement', 'erreur'])
-        return HttpResponse("OK")
+        return HttpResponse("Erreur de traitement", status=500)
     journal.traite = True
     if not modifie and paiement.statut != 'reussi':
         journal.erreur = "Statut ignoré (statut déjà définitif)."

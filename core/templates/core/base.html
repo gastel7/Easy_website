@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="{% static 'core/css/theme.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/header__footer.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/easy/carrousel.css' %}">
-    <link rel="shortcut icon" href="{% static 'core/images/logo.png' %}" type="image/x-icon">
-
     {% block css %}
         <style>
             main{
@@ -23,6 +21,8 @@
             }
         </style>
     {% endblock %}
+    <link rel="stylesheet" href="{% static 'core/css/responsive.css' %}">
+    <link rel="shortcut icon" href="{% static 'core/images/logo.png' %}" type="image/x-icon">
 </head>
 <body>
     {% include 'core/includes/notifications.html' %}
@@ -62,10 +62,25 @@
         const menuHamburger = document.querySelector("#nav-toggle")
         const nav_menu = document.querySelector(".nav_menu")
 
-        menuHamburger.addEventListener("click", ()=>{
-            nav_menu.classList.toggle("show")
-            menuHamburger.classList.toggle("active")
-        })
+        if (menuHamburger && nav_menu) {
+            menuHamburger.setAttribute("aria-controls", "nav-menu")
+            menuHamburger.setAttribute("aria-expanded", "false")
+            nav_menu.id = "nav-menu"
+
+            menuHamburger.addEventListener("click", () => {
+                const ouvert = nav_menu.classList.toggle("show")
+                menuHamburger.classList.toggle("active", ouvert)
+                menuHamburger.setAttribute("aria-expanded", String(ouvert))
+            })
+
+            nav_menu.querySelectorAll("a").forEach((lien) => {
+                lien.addEventListener("click", () => {
+                    nav_menu.classList.remove("show")
+                    menuHamburger.classList.remove("active")
+                    menuHamburger.setAttribute("aria-expanded", "false")
+                })
+            })
+        }
 
     </script>
 </body>

@@ -237,12 +237,6 @@
     cursor: wait;
 }
 
-.paiement-bouton--checkout {
-    color: var(--espace-texte);
-    background: transparent;
-    border-color: var(--espace-bord);
-}
-
 .paiement-avertissement,
 .paiement-aide {
     margin: 0;

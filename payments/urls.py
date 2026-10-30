@@ -12,5 +12,4 @@ urlpatterns = [
     path('<str:reference>/', views.page_paiement, name='page'),
     path('<str:reference>/lancer/', views.lancer_collecte, name='lancer'),
     path('<str:reference>/statut/', views.statut_paiement, name='statut'),
-    path('<str:reference>/checkout/', views.confirmer_checkout, name='checkout'),
 ]

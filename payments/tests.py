@@ -14,18 +14,15 @@ from tickets.models import TicketCategory, UserTicket
 
 from . import tamo
 from .models import Paiement, WebhookTamo
+from .views import _donnees_depuis_reponse
 
 TAMO_TEST = {
-    'API_BASE': 'https://tamoapi.test/api',
+    'API_BASE': 'https://tamoapi.test/api/v1',
     'API_TOKEN': 'tok_test_public',
     'API_SECRET': 'secret_de_test',
     'WEBHOOK_SECRET': 'whsec_de_test',
     'PRODUCT_ID': '8e2616a9-0842-4e4a-898c-dfb77338fe1c',
     'DEVISE': 'XAF',
-    'STATUT_PATH': '/v1/collections/{identifiant}',
-    'CHECKOUT_SDK_URL': 'https://tamoapi.test/sdk/tamo.js',
-    'CHECKOUT_ACTIVE': False,
-    'NOM_MARCHAND': 'EASY',
 }
 
 CORPS_EXEMPLE = (
@@ -89,6 +86,54 @@ class SignatureTests(TestCase):
         attendue = hmac.new(TAMO_TEST['API_SECRET'].encode(), chaine.encode(), hashlib.sha256).hexdigest()
         self.assertEqual(entetes['X-Signature'], attendue)
 
+    @mock.patch('payments.tamo.requests.request')
+    def test_creation_collecte_signe_et_envoie_le_meme_corps_sur_la_route_documentee(self, requete):
+        reponse = mock.Mock(status_code=201, headers={}, text='{"data":{}}')
+        reponse.json.return_value = {'data': {'reference': 'TAMOC-1', 'id': 'uuid-1'}}
+        requete.return_value = reponse
+
+        tamo.creer_collecte(5000, '+242060000000', 'MTN_CG', 'CMD-10045',
+                            idempotency_key='collecte-CMD-10045')
+
+        args, kwargs = requete.call_args
+        self.assertEqual(args, ('POST', 'https://tamoapi.test/api/v1/collections'))
+        corps = kwargs['data'].decode('utf-8')
+        self.assertEqual(json.loads(corps), json.loads(CORPS_EXEMPLE))
+        self.assertEqual(kwargs['headers']['X-Signature-Version'], '2')
+        self.assertEqual(kwargs['headers']['Idempotency-Key'], 'collecte-CMD-10045')
+        signature = tamo.signature_v2(
+            'POST', '/api/v1/collections', kwargs['headers']['X-Timestamp'],
+            kwargs['headers']['X-Nonce'], 'collecte-CMD-10045',
+            corps, TAMO_TEST['API_SECRET'])
+        self.assertEqual(kwargs['headers']['X-Signature'], signature)
+
+    @mock.patch('payments.tamo.requests.request')
+    def test_statut_utilise_le_chemin_documente_et_encode_la_reference(self, requete):
+        reponse = mock.Mock(status_code=200, headers={}, text='{"data":{"status":"pending"}}')
+        reponse.json.return_value = {'data': {'reference': 'TAMOC/1', 'status': 'pending'}}
+        requete.return_value = reponse
+
+        tamo.interroger_statut('TAMOC/1')
+
+        self.assertEqual(requete.call_args.args,
+                         ('GET', 'https://tamoapi.test/api/v1/collections/status/TAMOC%2F1'))
+        self.assertEqual(requete.call_args.kwargs['headers']['X-API-Token'], TAMO_TEST['API_TOKEN'])
+
+    def test_ecriture_exige_une_cle_idempotence_de_1_a_190_caracteres(self):
+        url = f"{TAMO_TEST['API_BASE']}{tamo.CHEMIN_COLLECTE}"
+        for cle in ('', None, 'k' * 191):
+            with self.subTest(cle=cle):
+                with self.assertRaises(tamo.TamoError):
+                    tamo._appeler('POST', url, payload={}, idempotency_key=cle)
+
+    def test_collecte_refuse_un_montant_hors_format_tamo(self):
+        for montant in (9, 500001, 10.5):
+            with self.subTest(montant=montant):
+                with self.assertRaises(tamo.TamoError) as erreur:
+                    tamo.creer_collecte(montant, '+242060000000', 'MTN_CG', 'CMD',
+                                        idempotency_key='cle-CMD')
+                self.assertEqual(erreur.exception.status_code, 422)
+
     def test_serialisation_stable_et_signee_brute(self):
         payload = {'amount': 5000, 'phone_number': '+242068409872'}
         corps = tamo.serialiser(payload)
@@ -104,6 +149,20 @@ class SignatureTests(TestCase):
         self.assertFalse(tamo.verifier_signature_webhook(corps, bonne[:-1]))  # longueur différente
         self.assertFalse(tamo.verifier_signature_webhook(corps, ''))         # absente
         self.assertFalse(tamo.verifier_signature_webhook(corps, bonne, secret=''))  # secret absent
+
+    def test_succes_sans_montant_ne_confirme_pas_le_paiement(self):
+        paiement = Paiement(montant=5000)
+        self.assertFalse(paiement.montant_confirme(None))
+        self.assertFalse(paiement.montant_confirme(''))
+        self.assertTrue(paiement.montant_confirme(5000))
+
+    def test_montant_de_reponse_detaillee_est_extrait_des_montants_demandes(self):
+        reponse = _donnees_depuis_reponse({
+            'reference': 'TAMOC-1',
+            'statut': 'success',
+            'amounts': {'requested': 5000, 'fee': 100, 'net': 4900},
+        })
+        self.assertEqual(reponse['amount'], 5000)
 
 
 # ---------------------------------------------------------------------------
@@ -200,6 +259,15 @@ class WebhookTests(TestCase):
         self.assertEqual(self.paiement.statut, 'echoue')
         self.assertEqual(self.billet.statut, 'en_attente')
 
+    def test_webhook_refunded_annule_les_billets_deja_valides(self):
+        self._envoyer(self._payload(statut='success'))
+        self._envoyer(self._payload(statut='refunded'))
+
+        self.paiement.refresh_from_db()
+        self.billet.refresh_from_db()
+        self.assertEqual(self.paiement.statut, 'rembourse')
+        self.assertEqual(self.billet.statut, 'annule')
+
     def test_webhook_pour_un_autre_paiement_ignore(self):
         payload = self._payload()
         payload['data']['merchant_reference'] = 'EASY-autre-reference'
@@ -212,6 +280,20 @@ class WebhookTests(TestCase):
     def test_webhook_test_repond_200(self):
         reponse = self._envoyer({'event': 'webhook.test', 'timestamp': 'x', 'data': {'amount': 0}})
         self.assertEqual(reponse.status_code, 200)
+
+    def test_evenement_de_transaction_sans_reference_est_refuse(self):
+        reponse = self._envoyer({
+            'event': 'collection.pending',
+            'timestamp': '2026-10-02T10:29:12.000000Z',
+            'data': {'status': 'pending'},
+        })
+        self.assertEqual(reponse.status_code, 400)
+
+    def test_evenement_et_statut_webhook_doivent_correspondre(self):
+        payload = self._payload(statut='pending', event='collection.success')
+        reponse = self._envoyer(payload)
+        self.assertEqual(reponse.status_code, 400)
+        self.assertEqual(WebhookTamo.objects.count(), 0)
 
 
 # ---------------------------------------------------------------------------
@@ -277,6 +359,27 @@ class VuesPaiementTests(TestCase):
         self.assertEqual(kwargs['montant'], 5000)
 
     @mock.patch('payments.tamo.creer_collecte')
+    def test_rejeu_avec_un_numero_different_est_refuse(self, creer):
+        creer.return_value = {'reference': 'TAMOC-1', 'identifiant': 'uuid-1',
+                              'statut': 'pending', 'charge': {}}
+        self.client.force_login(self.acheteur)
+        premiere = self.client.post(
+            self._url('payments:lancer'),
+            {'telephone': '068409872', 'operateur': ''},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(premiere.status_code, 200)
+
+        changement = self.client.post(
+            self._url('payments:lancer'),
+            {'telephone': '+242061234567', 'operateur': 'MTN_CG'},
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(changement.status_code, 409)
+        self.assertEqual(creer.call_count, 1)
+
+        self.paiement.refresh_from_db()
+        self.assertEqual(self.paiement.telephone, '+242068409872')
+
+    @mock.patch('payments.tamo.creer_collecte')
     def test_lancer_collecte_erreur_4xx_remonte_le_message(self, creer):
         creer.side_effect = tamo.TamoError('Erreur Tamo (400) : numéro invalide', status_code=400)
         self.client.force_login(self.acheteur)
@@ -284,7 +387,7 @@ class VuesPaiementTests(TestCase):
         reponse = self.client.post(self._url('payments:lancer'),
                                    {'telephone': '+242068409872', 'operateur': 'MTN_CG'},
                                    HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        self.assertEqual(reponse.status_code, 502)
+        self.assertEqual(reponse.status_code, 400)
         self.paiement.refresh_from_db()
         self.assertEqual(self.paiement.statut, 'en_attente')
         self.assertEqual(self.paiement.cle_idempotence, '')  # nouvelle tentative = nouvelle clé
@@ -306,22 +409,6 @@ class VuesPaiementTests(TestCase):
 
         self.billet.refresh_from_db()
         self.assertEqual(self.billet.statut, 'valide')
-
-    @mock.patch('payments.tamo.interroger_statut')
-    def test_confirmer_checkout_ne_fie_pas_au_navigateur(self, interroger):
-        interroger.return_value = {
-            'reference': 'TAMOC-1', 'statut': 'failed',
-            'merchant_reference': self.paiement.reference, 'amount': 5000, 'charge': {},
-        }
-        self.client.force_login(self.acheteur)
-
-        reponse = self.client.post(self._url('payments:checkout'), {'reference': 'TAMOC-1'},
-                                   HTTP_X_REQUESTED_WITH='XMLHttpRequest')
-        self.assertEqual(reponse.status_code, 200)
-        self.paiement.refresh_from_db()
-        self.assertEqual(self.paiement.statut, 'echoue')   # non, le client n'a rien validé
-        self.billet.refresh_from_db()
-        self.assertEqual(self.billet.statut, 'en_attente')
 
     def test_lien_payer_depuis_un_billet_cree_le_paiement(self):
         self.client.force_login(self.acheteur)

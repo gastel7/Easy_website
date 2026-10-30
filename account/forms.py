@@ -8,6 +8,8 @@ from django_countries.fields import CountryField
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.password_validation import MinimumLengthValidator, get_default_password_validators, validate_password
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .utils import normalize_phone
@@ -86,6 +88,19 @@ class SignUpForm(UserCreationForm):
         # Email ET téléphone obligatoires : c'est ce qui sert à se connecter
         for name in ('email', 'tel', 'first_name', 'last_name'):
             self.fields[name].required = True
+
+    def validate_password_for_user(self, user, password_field_name="password2"):
+        password = self.cleaned_data.get(password_field_name)
+        if password:
+            validators = [
+                validator
+                for validator in get_default_password_validators()
+                if not isinstance(validator, MinimumLengthValidator)
+            ]
+            try:
+                validate_password(password, user, password_validators=validators)
+            except ValidationError as error:
+                self.add_error(password_field_name, error)
 
     def clean_email(self):
         email = self.cleaned_data['email'].strip().lower()
