@@ -1,0 +1,158 @@
+/* =========================================================
+   MES ÉVÉNEMENTS (espace organisateur)
+   Couleurs relatives (opacité, fonds semi-transparents) :
+   la page reste lisible en clair comme en sombre.
+   ========================================================= */
+
+.evenements-filtres{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 24px 0 28px;
+}
+
+.evenements-filtre{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid rgba(127, 127, 127, 0.3);
+    border-radius: 999px;
+    color: inherit;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.evenements-filtre span{
+    opacity: 0.7;
+}
+
+.evenements-filtre.is-active{
+    background: #e50914;
+    border-color: #e50914;
+    color: #fff;
+}
+
+.evenements-filtre.is-active span{
+    opacity: 1;
+}
+
+.evenements-liste{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.evenement-ligne{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 18px;
+    padding: 14px;
+    border: 1px solid rgba(127, 127, 127, 0.2);
+    border-radius: 16px;
+}
+
+.evenement-vignette{
+    flex-shrink: 0;
+    width: 96px;
+    height: 72px;
+    border-radius: 12px;
+    background: rgba(127, 127, 127, 0.2) center / cover no-repeat;
+}
+
+.evenement-infos{
+    flex: 1 1 240px;
+    min-width: 0;
+}
+
+.evenement-infos h2{
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+}
+
+.evenement-infos h2 a{
+    color: inherit;
+    text-decoration: none;
+}
+
+.evenement-infos h2 a:hover{
+    text-decoration: underline;
+}
+
+.evenement-infos small{
+    opacity: 0.7;
+}
+
+.evenement-statut{
+    padding: 4px 12px;
+    border: 1px solid rgba(127, 127, 127, 0.3);
+    border-radius: 999px;
+    font-size: 0.8rem;
+}
+
+.evenement-chiffres{
+    display: flex;
+    gap: 16px;
+    font-size: 0.9rem;
+}
+
+.evenement-chiffres strong{
+    font-size: 1rem;
+}
+
+.evenement-actions{
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.evenement-btn{
+    padding: 8px 14px;
+    border: 1px solid rgba(127, 127, 127, 0.3);
+    border-radius: 10px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.evenement-btn--danger{
+    color: #e50914;
+    border-color: rgba(229, 9, 20, 0.4);
+}
+
+.evenement-btn--primaire{
+    background: #e50914;
+    border-color: #e50914;
+    color: #fff;
+}
+
+.evenements-vide{
+    padding: 24px 0;
+    opacity: 0.8;
+}
+
+.evenements-vide .evenement-btn{
+    display: inline-block;
+    margin-top: 8px;
+}
+
+@media (max-width: 720px){
+    .evenement-vignette{
+        width: 72px;
+        height: 56px;
+    }
+
+    .evenement-actions{
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .evenement-actions .evenement-btn{
+        flex: 1;
+        text-align: center;
+    }
+}

@@ -1,0 +1,675 @@
+/* =========================================================
+   ACCUEIL : sections après le hero
+   Variables --page-* sur .accueil : sombre par défaut,
+   clair via [data-theme="light"], comme le reste du site.
+   Les blocs « fond sombre » gardent un fond fixe.
+   ========================================================= */
+
+.accueil{
+    --page-bg: #0b0d11;
+    --page-text: #ffffff;
+    --page-muted: rgba(255, 255, 255, 0.7);
+    --page-line: rgba(255, 255, 255, 0.1);
+    --card-bg: #15181f;
+}
+
+[data-theme="light"] .accueil{
+    --page-bg: #ffffff;
+    --page-text: #111418;
+    --page-muted: #5b6270;
+    --page-line: #e3e6eb;
+    --card-bg: #f5f6f8;
+}
+
+.accueil-conteneur{
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.accueil-bloc{
+    padding: 80px 5%;
+}
+
+/* Bloc à fond sombre fixe, quel que soit le thème */
+.accueil-fond-sombre{
+    --page-text: #ffffff;
+    --page-muted: rgba(255, 255, 255, 0.7);
+    --page-line: rgba(255, 255, 255, 0.08);
+    --card-bg: rgba(255, 255, 255, 0.04);
+    background: #0b0d11;
+    color: #ffffff;
+}
+
+.accueil-rouge{
+    color: #e50914;
+}
+
+.accueil-eyebrow{
+    margin: 0 0 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e50914;
+}
+
+.accueil-texte{
+    margin: 0 0 16px;
+    line-height: 1.6;
+    color: var(--page-muted);
+}
+
+.accueil-gros-titre{
+    margin: 0;
+    font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+    line-height: 1.12;
+    color: var(--page-text);
+}
+
+.accueil-bouton{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    background: #e50914;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.accueil-bouton:hover{
+    background: #c70711;
+}
+
+/* ---------- 1. Barre de recherche (chevauche le hero) ---------- */
+.accueil-recherche{
+    position: relative;
+    z-index: 3;
+    width: min(1180px, 90%);
+    margin: -56px auto 0;
+}
+
+.accueil-recherche__barre{
+    display: flex;
+    align-items: stretch;
+    background: rgba(14, 17, 23, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+}
+
+.accueil-champ{
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 22px;
+    color: #fff;
+    cursor: text;
+}
+
+.accueil-champ + .accueil-champ{
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.accueil-champ > svg{
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.accueil-champ__texte{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.accueil-champ__texte small{
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.accueil-champ input{
+    width: 100%;
+    padding: 2px 0 0;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: #fff;
+    font: inherit;
+    font-size: 0.95rem;
+}
+
+.accueil-champ input::placeholder{
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.accueil-recherche__bouton{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 36px;
+    background: #e50914;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.accueil-recherche__bouton:hover{
+    background: #c70711;
+}
+
+.accueil-recherche__bouton svg{
+    width: 20px;
+    height: 20px;
+}
+
+/* ---------- 2. Événements à la une ---------- */
+.accueil-titre{
+    position: relative;
+    margin: 0 0 28px;
+    padding-bottom: 14px;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    line-height: 1.15;
+    color: var(--page-text);
+}
+
+.accueil-titre::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 48px;
+    height: 3px;
+    border-radius: 3px;
+    background: #e50914;
+}
+
+.accueil-voir-tout{
+    margin: 28px 0 0;
+    text-align: center;
+}
+
+.accueil-voir-tout a{
+    color: #e50914;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.accueil-voir-tout a:hover{
+    text-decoration: underline;
+}
+
+/* ---------- 3. Easy en 3 étapes ---------- */
+.accueil-etapes__grille{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr);
+    gap: 48px;
+    align-items: center;
+}
+
+.accueil-etapes__liste{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.accueil-etape{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    min-width: 0;
+}
+
+/* Tirets entre deux étapes, à la hauteur du centre du cercle */
+.accueil-etape:not(:last-child)::after{
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: 100%;
+    width: 24px;
+    border-top: 2px dashed rgba(229, 9, 20, 0.6);
+}
+
+.accueil-etape__cercle{
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1.5px solid #e50914;
+    background: rgba(229, 9, 20, 0.06);
+    color: #e50914;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.accueil-etape__cercle svg{
+    width: 34px;
+    height: 34px;
+}
+
+.accueil-etape__numero{
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #e50914;
+}
+
+.accueil-etape h3{
+    margin: 2px 0 6px;
+    font-size: 1.2rem;
+    color: var(--page-text);
+}
+
+.accueil-etape p{
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--page-muted);
+}
+
+/* ---------- 4. Pour les organisateurs ---------- */
+.accueil-organisateurs{
+    background: var(--page-bg);
+    color: var(--page-text);
+    overflow-x: clip;
+}
+
+.accueil-organisateurs__grille{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 64px;
+    align-items: center;
+}
+
+/* Cadre : le disque rouge et les points sont décalés autour de l'image */
+.accueil-visuel{
+    position: relative;
+}
+
+.accueil-visuel::before{
+    content: "";
+    position: absolute;
+    top: -32px;
+    left: -32px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: #e50914;
+}
+
+.accueil-visuel::after{
+    content: "";
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 120px;
+    height: 100px;
+    background-image: radial-gradient(circle, #e50914 2px, transparent 2.5px);
+    background-size: 14px 14px;
+}
+
+.accueil-visuel__image{
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 4 / 3;
+    border-radius: 22px;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+/* Décoratif pour l'instant : pas encore de vidéo */
+.accueil-play{
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #111418;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.accueil-atouts{
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    list-style: none;
+    margin: 36px 0 40px;
+    padding: 0;
+}
+
+.accueil-atout{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.accueil-atout + .accueil-atout{
+    border-left: 1px solid var(--page-line);
+}
+
+.accueil-atout svg{
+    width: 34px;
+    height: 34px;
+    color: #e50914;
+}
+
+.accueil-atout span{
+    font-size: 0.85rem;
+    line-height: 1.35;
+    color: var(--page-text);
+}
+
+/* ---------- 5. Pourquoi choisir Easy ---------- */
+.accueil-pourquoi__grille{
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 56px;
+    align-items: center;
+}
+
+.accueil-pourquoi__texte h2{
+    margin: 0 0 16px;
+    font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+    line-height: 1.12;
+}
+
+.accueil-pourquoi__cartes{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.accueil-carte{
+    padding: 22px;
+    border: 1px solid var(--page-line);
+    border-radius: 18px;
+    background: var(--card-bg);
+}
+
+.accueil-carte__icone{
+    width: 52px;
+    height: 52px;
+    margin-bottom: 14px;
+    border-radius: 14px;
+    background: rgba(229, 9, 20, 0.12);
+    color: #e50914;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.accueil-carte__icone svg{
+    width: 26px;
+    height: 26px;
+}
+
+.accueil-carte h3{
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+    color: var(--page-text);
+}
+
+.accueil-carte p{
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--page-muted);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px){
+    .accueil-etapes__grille,
+    .accueil-organisateurs__grille,
+    .accueil-pourquoi__grille{
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
+@media (max-width: 760px){
+    .accueil-recherche__barre{
+        flex-direction: column;
+    }
+
+    .accueil-champ + .accueil-champ{
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .accueil-recherche__bouton{
+        padding: 18px;
+    }
+
+    .accueil-bloc{
+        padding: 56px 5%;
+    }
+
+    .accueil-etapes__liste{
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .accueil-etape:not(:last-child)::after{
+        display: none;
+    }
+
+    .accueil-atouts{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 22px;
+    }
+
+    .accueil-atout + .accueil-atout{
+        border-left: 0;
+    }
+
+    .accueil-pourquoi__cartes{
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ---------- Vidéo organisateurs ---------- */
+.accueil-visuel__cadre{
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 4 / 3;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+}
+
+.accueil-video{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    cursor: pointer;
+}
+
+.accueil-play{
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.accueil-play:hover{
+    transform: translate(-50%, -50%) scale(1.06);
+}
+
+.accueil-play.is-hidden{
+    display: none;
+}
+
+/* ---------- À la une : mise en page et carrousel ---------- */
+
+/* Le wrapper de la liste ne doit pas réduire la section */
+.accueil .events-page{
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Mêmes marges latérales que le hero, et plus d'air en haut et en bas */
+.accueil-une{
+    padding: 80px 5%;
+}
+
+.accueil-une__carrousel{
+    position: relative;
+}
+
+.accueil-une__piste{
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 8px 2px 18px;
+}
+
+.accueil-une__piste::-webkit-scrollbar{
+    display: none;
+}
+
+/* 5 cartes visibles sur grand écran */
+.accueil-une__piste > *{
+    flex: 0 0 calc((100% - 72px) / 5);
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+.accueil-une__bouton{
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 50%;
+    background: #ffffff;
+    color: #111418;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    transition: opacity 0.2s ease;
+}
+
+.accueil-une__bouton--prev{
+    left: -28px;
+}
+
+.accueil-une__bouton--next{
+    right: -28px;
+}
+
+.accueil-une__bouton:disabled{
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* Pas de flèches si toutes les cartes tiennent à l'écran */
+.accueil-une__carrousel.is-simple .accueil-une__bouton{
+    display: none;
+}
+
+@media (max-width: 1100px){
+    .accueil-une__piste > *{
+        flex-basis: calc((100% - 36px) / 3);
+    }
+}
+
+@media (max-width: 760px){
+    .accueil-une{
+        padding: 56px 5%;
+    }
+
+    .accueil-une__piste > *{
+        flex-basis: 78%;
+    }
+
+    .accueil-une__bouton--prev{
+        left: 6px;
+    }
+
+    .accueil-une__bouton--next{
+        right: 6px;
+    }
+}
+
+
+/* ---------- Thème clair / sombre sur l'accueil ---------- */
+
+/* Mode sombre (par défaut) : « À la une » et ses cartes */
+.accueil .accueil-une,
+.accueil .events-page{
+    --page-bg: #0b0d11;
+    --section-bg: #0b0d11;
+    --page-text: #ffffff;
+    --page-muted: rgba(255, 255, 255, 0.7);
+    --page-line: rgba(255, 255, 255, 0.1);
+    --card-bg: #15181f;
+    --card-text: #ffffff;
+    --link: #e50914;
+}
+
+/* Mode clair : mêmes éléments, couleurs claires */
+[data-theme="light"] .accueil .accueil-une,
+[data-theme="light"] .accueil .events-page{
+    --page-bg: #ffffff;
+    --section-bg: #f5f6f8;
+    --page-text: #111418;
+    --page-muted: #5b6270;
+    --page-line: #e3e6eb;
+    --card-bg: #ffffff;
+    --card-text: #111418;
+    --link: #e50914;
+}
+
+/* Fond et couleur de la section « À la une » */
+.accueil .accueil-une{
+    background: var(--section-bg);
+    color: var(--page-text);
+}
+
+/* Le fond de la page suit le thème */
+.accueil{
+    background: var(--page-bg);
+    color: var(--page-text);
+}

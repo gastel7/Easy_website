@@ -1,3 +1,5 @@
+(function () {
+
 // Formulaire événement : étapes (PC et mobile), aperçu en direct, zones de dépôt, images supplémentaires, billets
 
 const layout = document.querySelector('.event-layout');
@@ -16,8 +18,14 @@ if (layout) {
     const maxTickets = 10;
     let current = 1;
 
+    // Lit un élément de l'aperçu. S'il manque dans le gabarit, on renvoie null au lieu de planter.
+    const pv = (selecteur) => (preview ? preview.querySelector(selecteur) : null);
+
+    form.noValidate = true; // on gère la validation étape par étape
+
 
     // ---------- Étapes (PC et mobile) ----------
+    // Placé en premier : même si l'aperçu ou les billets échouent, les étapes fonctionnent.
 
     function goTo(n, scroll = true) {
         current = Math.max(1, Math.min(steps.length, n));
@@ -27,9 +35,9 @@ if (layout) {
             li.classList.toggle('is-active', k + 1 === current);
             li.classList.toggle('is-done', k + 1 < current);
         });
-        prevBtn.hidden = current === 1;
-        nextBtn.hidden = current === steps.length;
-        submitBtn.hidden = current !== steps.length;
+        if (prevBtn) prevBtn.hidden = current === 1;
+        if (nextBtn) nextBtn.hidden = current === steps.length;
+        if (submitBtn) submitBtn.hidden = current !== steps.length;
         if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -41,13 +49,13 @@ if (layout) {
             .every((field) => field.reportValidity());
     }
 
-    nextBtn.addEventListener('click', () => {
+    nextBtn?.addEventListener('click', () => {
         if (stepIsValid()) goTo(current + 1);
     });
 
-    prevBtn.addEventListener('click', () => goTo(current - 1));
+    prevBtn?.addEventListener('click', () => goTo(current - 1));
 
-    // Entrée dans un champ = étape suivante (pas d'envoi à moitié rempli, pas de blocage des boutons)
+    // Entrée dans un champ = étape suivante (pas d'envoi à moitié rempli)
     form.addEventListener('keydown', (e) => {
         if (e.key !== 'Enter' || current === steps.length) return;
         if (['TEXTAREA', 'BUTTON'].includes(e.target.tagName) || e.target.type === 'file') return;
@@ -67,12 +75,15 @@ if (layout) {
             goTo(i, false);
             if (!stepIsValid()) { e.preventDefault(); return; }
         }
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Envoi en cours…';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours…';
+        }
     });
 
     // Erreur renvoyée par Django : on ouvre l'étape concernée
     const errorStep = form.querySelector('.errorlist')?.closest('.step');
+    goTo(errorStep ? Number(errorStep.dataset.step) : 1, false);
 
 
     // ---------- Aperçu en direct ----------
@@ -91,12 +102,14 @@ if (layout) {
     }
 
     function setText(key, text) {
-        const el = preview.querySelector(`[data-pv="${key}"]`);
+        const el = pv(`[data-pv="${key}"]`);
+        if (!el) return;
         el.textContent = text;
         (el.closest('li') || el).hidden = !text;
     }
 
     function updateText() {
+        if (!preview) return;
         const debut = splitDate(form.elements.date_debut?.value);
         const fin = splitDate(form.elements.date_fin?.value);
         const places = value('nombre_de_places');
@@ -112,19 +125,27 @@ if (layout) {
         setText('age', age ? `Âge min. : ${age} ans` : '');
         setText('statut', statut);
         setText('description', value('description'));
-        preview.querySelector('[data-pv="statut"]').dataset.state = /publi/i.test(statut) ? 'on' : 'off';
+
+        const badge = pv('[data-pv="statut"]');
+        if (badge) badge.dataset.state = /publi/i.test(statut) ? 'on' : 'off';
     }
 
     function updateMedia() {
-        const cover = preview.querySelector('[data-pv-cover]');
-        cover.hidden = !urls.image_principale;
-        if (urls.image_principale) cover.src = urls.image_principale;
-        preview.querySelector('[data-pv-cover-empty]').hidden = !!urls.image_principale;
+        const cover = pv('[data-pv-cover]');
+        if (cover) {
+            cover.hidden = !urls.image_principale;
+            if (urls.image_principale) cover.src = urls.image_principale;
+        }
+        const coverEmpty = pv('[data-pv-cover-empty]');
+        if (coverEmpty) coverEmpty.hidden = !!urls.image_principale;
 
-        const thumbs = slots.map((slot) => slot.querySelector('[data-slot-thumb]')).filter((t) => !t.hidden && t.src);
-        const gallery = preview.querySelector('[data-pv-gallery]');
-        gallery.replaceChildren(...thumbs.map((t) => Object.assign(new Image(), { src: t.src, alt: '' })));
-        preview.querySelector('[data-pv-gallery-wrap]').hidden = !thumbs.length;
+        const thumbs = slots
+            .map((slot) => slot.querySelector('[data-slot-thumb]'))
+            .filter((t) => t && !t.hidden && t.src);
+        const gallery = pv('[data-pv-gallery]');
+        if (gallery) gallery.replaceChildren(...thumbs.map((t) => Object.assign(new Image(), { src: t.src, alt: '' })));
+        const galleryWrap = pv('[data-pv-gallery-wrap]');
+        if (galleryWrap) galleryWrap.hidden = !thumbs.length;
     }
 
     function updateAll() {
@@ -151,6 +172,7 @@ if (layout) {
 
     form.querySelectorAll('.dropzone:not(.dropzone--multi)').forEach((zone) => {
         const input = zone.querySelector('input[type="file"]');
+        if (!input) return;
         const isVideo = input.name === 'video';
         const maxMo = isVideo ? 50 : 5;
         let added = []; // ce que le script ajoute dans ou sous la zone
@@ -259,9 +281,12 @@ if (layout) {
     function paintSlot(slot) {
         const input = slot.querySelector('input[type="file"]');
         const clear = slot.querySelector('input[type="checkbox"]');
+        const thumb = slot.querySelector('[data-slot-thumb]');
+        const remove = slot.querySelector('[data-slot-remove]');
+        if (!input || !thumb || !remove) return;
         const has = input.files.length > 0 || (!!clear && !clear.checked);
-        slot.querySelector('[data-slot-thumb]').hidden = !has;
-        slot.querySelector('[data-slot-remove]').hidden = !has;
+        thumb.hidden = !has;
+        remove.hidden = !has;
     }
 
     // Met un fichier dans un emplacement (null = emplacement vide)
@@ -269,6 +294,7 @@ if (layout) {
         const input = slot.querySelector('input[type="file"]');
         const clear = slot.querySelector('input[type="checkbox"]');
         const thumb = slot.querySelector('[data-slot-thumb]');
+        if (!input || !thumb) return;
         const dt = new DataTransfer();
         if (file) dt.items.add(file);
         input.files = dt.files;
@@ -277,56 +303,63 @@ if (layout) {
         paintSlot(slot);
     }
 
-    picker.addEventListener('change', () => {
+    picker?.addEventListener('change', () => {
         const files = [...picker.files];
         picker.value = ''; // pour pouvoir choisir les mêmes fichiers une deuxième fois
-        pickerMessage.hidden = files.length <= maxImages;
+        if (pickerMessage) pickerMessage.hidden = files.length <= maxImages;
         if (files.length > maxImages) return;
         slots.forEach((slot, i) => setSlot(slot, files[i] || null));
         updateMedia();
     });
 
     slots.forEach((slot) => {
-        slot.querySelector('[data-slot-remove]').addEventListener('click', () => {
+        slot.querySelector('[data-slot-remove]')?.addEventListener('click', () => {
             setSlot(slot, null);
             updateMedia();
         });
     });
 
-    bindDrag(form.querySelector('.dropzone--multi'), picker);
+    const zoneMulti = form.querySelector('.dropzone--multi');
+    if (picker && zoneMulti) bindDrag(zoneMulti, picker);
 
 
     // ---------- Billets ----------
 
     const ticketList = form.querySelector('[data-ticket-list]');
     const ticketTemplate = document.getElementById('ticket-template');
-    const ticketTotal = form.querySelector(`input[name="${ticketList.dataset.prefix}-TOTAL_FORMS"]`);
+    const ticketTotal = ticketList
+        ? form.querySelector(`input[name="${ticketList.dataset.prefix}-TOTAL_FORMS"]`)
+        : null;
 
     function visibleTickets() {
+        if (!ticketList) return [];
         return [...ticketList.querySelectorAll('[data-ticket-card]')]
             .filter((card) => !card.classList.contains('ticket-card--removed'));
     }
 
     function numberTickets() {
         visibleTickets().forEach((card, i) => {
-            card.querySelector('[data-ticket-number]').textContent = `Billet #${i + 1}`;
+            const numero = card.querySelector('[data-ticket-number]');
+            if (numero) numero.textContent = `Billet #${i + 1}`;
         });
     }
 
     function updateTickets() {
         numberTickets();
-        const list = preview.querySelector('[data-pv-tickets]');
+        const list = pv('[data-pv-tickets]');
+        if (!list) return;
         list.replaceChildren(...visibleTickets().map((card) => {
             const li = document.createElement('li');
-            const nom = card.querySelector('input[name$="-nom"]').value || 'Billet';
-            const prix = card.querySelector('input[name$="-prix"]').value;
+            const nom = card.querySelector('input[name$="-nom"]')?.value || 'Billet';
+            const prix = card.querySelector('input[name$="-prix"]')?.value;
             li.textContent = `${nom} · ${prix ? Number(prix).toLocaleString('fr-FR') + ' XAF' : 'Gratuit'}`;
             return li;
         }));
         list.hidden = !list.children.length;
     }
 
-    form.querySelector('[data-ticket-add]').addEventListener('click', () => {
+    form.querySelector('[data-ticket-add]')?.addEventListener('click', () => {
+        if (!ticketList || !ticketTemplate || !ticketTotal) return;
         if (visibleTickets().length >= maxTickets) return;
         const index = Number(ticketTotal.value);
         const holder = document.createElement('div');
@@ -337,11 +370,13 @@ if (layout) {
     });
 
     // Le billet reste dans le formulaire, marqué DELETE : le formset l'ignore
-    ticketList.addEventListener('click', (e) => {
+    ticketList?.addEventListener('click', (e) => {
         const remove = e.target.closest('[data-ticket-remove]');
         if (!remove) return;
         const card = remove.closest('[data-ticket-card]');
-        card.querySelector('input[name$="-DELETE"]').checked = true;
+        card.querySelector('input[name$="-DELETE"]')?.toggleAttribute('checked', true);
+        const deleteBox = card.querySelector('input[name$="-DELETE"]');
+        if (deleteBox) deleteBox.checked = true;
         card.querySelectorAll('[required]').forEach((field) => { field.required = false; });
         card.classList.add('ticket-card--removed');
         updateAll();
@@ -350,12 +385,12 @@ if (layout) {
 
     // ---------- Init ----------
 
-    form.noValidate = true; // on gère la validation étape par étape
     form.addEventListener('input', updateAll);
     form.addEventListener('change', updateAll);
 
     slots.forEach(paintSlot);
-    goTo(errorStep ? Number(errorStep.dataset.step) : 1, false);
     updateAll();
     updateMedia();
 }
+
+})();

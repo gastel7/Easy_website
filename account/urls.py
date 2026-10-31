@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from . import views, espace
+from . import views, espace, gestion
 
 
 
@@ -22,6 +22,12 @@ urlpatterns = [
     path('espace/favoris/', espace.mes_favoris, name='favoris'),
     path('espace/evenements/', espace.mes_evenements, name='mes-evenements'),
     path('espace/ventes/', espace.ventes, name='ventes'),
+
+    # Gestion du site (modérateurs et admins) : consultation uniquement
+    path('gestion/', gestion.accueil, name='gestion'),
+    path('gestion/utilisateurs/', gestion.liste_utilisateurs, name='gestion-utilisateurs'),
+    path('gestion/utilisateurs/<int:user_id>/', gestion.detail_utilisateur, name='gestion-utilisateur'),
+    path('gestion/utilisateurs/<int:user_id>/role/', gestion.attribuer_role, name='gestion-attribuer-role'),
     
     # path('profile/delete/', views.delete_account_view_view, name='delete_account'),
 ]

@@ -1,0 +1,72 @@
+<style>
+    /* Mise en page de l'espace : le conteneur gère déjà les marges. Couleurs : le texte hérite du thème,
+       les fonds sont translucides, donc ça marche en thème clair comme en thème sombre. */
+    .gest{width:100%}
+    .gest h1{font-size:1.6rem;margin:0}
+    .gest-entete{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:20px}
+    .gest-soustitre,.gest-secondaire{opacity:.7}
+    .gest-soustitre{margin-top:4px;font-size:.95em}
+    .gest-total{background:rgba(127,127,127,.1);border:1px solid rgba(127,127,127,.3);border-radius:20px;padding:6px 14px;font-size:.9em;font-weight:600}
+    .gest-retour{display:inline-block;margin-bottom:15px;color:inherit;opacity:.7;text-decoration:none;font-size:.9em}
+    .gest-retour:hover{color:#e50914;opacity:1}
+
+    .gest-recherche{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+    .gest-recherche input[type=search]{flex:1 1 280px;padding:11px 14px;border:1px solid rgba(127,127,127,.4);border-radius:8px;background:transparent;font-size:15px;color:inherit}
+    .gest-recherche button{padding:11px 20px;border:none;border-radius:8px;background:#e50914;color:#fff;font-weight:700;cursor:pointer}
+    .gest-reset{align-self:center;color:inherit;opacity:.7;font-size:.9em}
+
+    .gest-filtres{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+    .gest-filtres-titre{font-size:.8em;opacity:.7;font-weight:600;margin-right:4px}
+    .gest-chip{display:inline-flex;gap:6px;align-items:center;padding:6px 12px;border:1px solid rgba(127,127,127,.4);border-radius:20px;background:transparent;color:inherit;text-decoration:none;font-size:.88em}
+    .gest-chip span{opacity:.65;font-size:.9em}
+    .gest-chip:hover{border-color:#e50914}
+    .gest-chip.is-active{background:#e50914;border-color:#e50914;color:#fff}
+    .gest-chip.is-active span{opacity:.85}
+
+    .gest-carte{background:rgba(127,127,127,.07);border:1px solid rgba(127,127,127,.25);border-radius:14px;padding:20px;margin-top:15px}
+    .gest-tableau-conteneur{overflow-x:auto;background:rgba(127,127,127,.07);border:1px solid rgba(127,127,127,.25);border-radius:14px;margin-top:15px}
+    .gest-tableau{width:100%;border-collapse:collapse;font-size:.92em}
+    .gest-tableau th{text-align:left;padding:12px 14px;background:rgba(127,127,127,.13);font-size:.78em;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap}
+    .gest-tableau td{padding:12px 14px;border-top:1px solid rgba(127,127,127,.2);vertical-align:middle}
+    .gest-tableau tr:hover td{background:rgba(127,127,127,.08)}
+    .gest-nom{font-weight:600}
+    .gest-secondaire{font-size:.9em}
+    .gest-nombre{text-align:right;white-space:nowrap}
+    .gest-lien{color:#e50914;font-weight:600;text-decoration:none;white-space:nowrap}
+    .gest-lien:hover{text-decoration:underline}
+    .gest-vide{text-align:center;padding:40px 10px;opacity:.8}
+
+    .gest-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.8em;font-weight:600;white-space:nowrap}
+    .gest-badge--admin{background:#e50914;color:#fff}
+    .gest-badge--moderateur{background:#3b4a6b;color:#fff}
+    .gest-badge--organisateur{background:#ffe3e5;color:#b0060f}
+    .gest-badge--participant{background:#e5e5e5;color:#333}
+    .gest-badge--aucun{background:#fff3cd;color:#7a5b00}
+    .gest-badge--actif{background:#dcf5e3;color:#14692d}
+    .gest-badge--inactif{background:#e5e5e5;color:#666}
+
+    .gest-pagination{display:flex;justify-content:center;align-items:center;gap:20px;margin-top:20px;font-size:.92em}
+    .gest-pagination a{color:#e50914;font-weight:600;text-decoration:none}
+
+    .gest-profil{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+    .gest-avatar{width:80px;height:80px;border-radius:50%;background:#3b4a6b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;object-fit:cover}
+    .gest-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:20px}
+    .gest-champ dt{font-size:.78em;opacity:.65;text-transform:uppercase;letter-spacing:.03em;margin-bottom:3px}
+    .gest-champ dd{margin:0;font-weight:600;word-break:break-word}
+    .gest-deux{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:15px}
+    .gest-carte h2{font-size:1.05rem;margin:0 0 10px}
+    .gest-ligne{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid rgba(127,127,127,.2);font-size:.92em}
+    .gest-ligne:first-of-type{border-top:none}
+
+    .gest-role-form{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .gest-role-form select{flex:0 1 260px;padding:10px 12px;border:1px solid rgba(127,127,127,.4);border-radius:8px;background:transparent;color:inherit;font-size:15px}
+    .gest-role-form select option{color:#091123}
+    .gest-role-form button{padding:10px 20px;border:none;border-radius:8px;background:#e50914;color:#fff;font-weight:700;cursor:pointer}
+
+    .gest-cartes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:5px}
+    .gest-stat{background:rgba(127,127,127,.07);border:1px solid rgba(127,127,127,.25);border-radius:14px;padding:18px}
+    .gest-stat-label{font-size:.82em;opacity:.7}
+    .gest-stat-valeur{font-size:1.7rem;font-weight:700;margin-top:6px}
+    .gest-stat-unite{font-size:.5em;opacity:.7;font-weight:600;margin-left:6px}
+    .gest-section-titre{font-size:1.1rem;margin:28px 0 0}
+</style>

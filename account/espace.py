@@ -315,6 +315,7 @@ def ventes(request):
             'sous_titre': f"{billet.category.nom} · {billet.user.username}",
             'montant': formater_somme(billet.prix_achat),
             'statut': billet.get_statut_display(),
+            'code': billet.statut,
             'date': formater_date(billet.date_achat),
         }
         for billet in billets.select_related('category__event', 'user').order_by('-date_achat')[:NOMBRE_DE_VENTES_RECENTES]

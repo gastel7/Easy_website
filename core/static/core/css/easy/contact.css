@@ -1,9 +1,26 @@
-main{
+/* Couleurs de la page. Sombre par défaut, clair via data-theme (même palette que À propos). */
+.page-contenu {
+    --page-bg: #000208;
+    --page-text: #ffffff;
+    --page-line: grey;
+    --page-red: #e50914;
+    --page-icon: #000000;
+    --section-bg: #272727;
+
     padding-top: 40px;
     min-height: 100vh;
     /* padding-top: 150px; */
-    background-color: #f4f4f4;
+    background-color: var(--page-bg);
+    color: var(--page-text);
     padding-bottom: 20px;
+}
+
+[data-theme="light"] .page-contenu {
+    --page-bg: #f4f4f4;
+    --page-text: #0b0b0f;
+    --page-line: #a1a1aa;
+    --page-icon: #0b0b0f;
+    --section-bg: #e5e5e5;
 }
 
 .contact_page{
@@ -66,8 +83,8 @@ main{
     justify-content: center;
 
     border-radius: 50%;
-    outline: solid red 2px;
-    background-color: black;
+    outline: solid var(--page-red) 2px;
+    background-color: var(--page-icon);
 }
 
 .contact_text_infos_icone img{
@@ -94,7 +111,7 @@ main{
 }
 
 .contact_text_socials div a{
-    outline: solid grey 1px;
+    outline: solid var(--page-line) 1px;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -105,7 +122,7 @@ main{
 }
 
 .contact_text_socials div a:hover{
-    outline-color: #e50914;
+    outline-color: var(--page-red);
 }
 
 .contact_text_socials div a img{
@@ -114,15 +131,12 @@ main{
 }
 
 
-
-
 /* Le formulaire de contact */
 .contact_form{
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: #f4f4f4;
-    background-color: #fff;
+    background-color: var(--section-bg);
     box-shadow: black 0 1px 1px;
     /* outline: solid red 2px; */
     padding: 20px 25px;
@@ -170,8 +184,9 @@ main{
 
 .contact_form form section input, .contact_form form section textarea{
     border: none;
-    outline: solid 1px black;
-    background-color: #f4f4f4;
+    outline: solid 1px var(--page-text);
+    background-color: var(--page-bg);
+    color: var(--page-text);
     border-radius: 6px;
     padding: 8px 12px;
     font-size: 1rem;
@@ -179,13 +194,13 @@ main{
 }
 
 .contact_form form button{
-    background-color: #e50914;
+    background-color: var(--page-red);
     padding: 8px 12px;
     border: none;
     outline: none;
     font-size: 1rem;
     border-radius: 8px;
-    color: white;
+    color: #fff;
     font-weight: bold;
 }
 

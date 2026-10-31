@@ -1,9 +1,11 @@
-{% extends 'core/base.html' %}
+{% extends 'account/profile/espace/base_espace.html' %}
 
 {% load static %}
 
-
 {% block title %}Vérification du billet | EASY{% endblock %}
+
+
+{% block espace_fil %}<a href="{% url 'account:mes-billets' %}">Mes billets</a> › <span>QR code</span>{% endblock %}
 
 
 {% block css %}
@@ -12,7 +14,7 @@
 {% endblock %}
 
 
-{% block main %}
+{% block espace_contenu %}
     <main class="verif-page">
         <section class="verif-carte {% if utilisable %}is-valide{% elif billet.statut == 'annule' %}is-annule{% else %}is-autre{% endif %}">
             <p class="verif-surtitre">Vérification de billet</p>
@@ -37,7 +39,8 @@
                 <div><dt>Catégorie</dt><dd>{{ billet.category.nom }}</dd></div>
                 <div><dt>Type</dt><dd>{{ billet.category.get_type_de_ticket_display }}</dd></div>
                 <div><dt>Acheteur</dt><dd>{{ billet.user.get_full_name|default:billet.user.username }}</dd></div>
-                <div><dt>Payé le</dt><dd>{{ billet.prix_achat|floatformat:"0g" }} FCFA · {{ billet.date_achat|date:"d/m/Y à H:i" }}</dd></div>
+                <div><dt>Montant</dt><dd>{{ billet.prix_achat|floatformat:"0g" }} FCFA</dd></div>
+                <div><dt>Date</dt><dd>{{ billet.date_achat|date:"d/m/Y à H:i" }}</dd></div>
                 <div><dt>Code</dt><dd class="verif-code">{{ billet.code_unique }}</dd></div>
                 {% if billet.date_scan %}
                     <div><dt>Scanné le</dt><dd>{{ billet.date_scan|date:"d/m/Y à H:i" }}</dd></div>

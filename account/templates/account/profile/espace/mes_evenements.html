@@ -1,0 +1,93 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+
+{% load static %}
+
+
+{% block title %} Mes événements {% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/account/mes_evenements.css' %}">
+{% endblock %}
+
+
+{% block espace_fil %}<span>Mes événements</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <section class="espace-accueil" style="display: flex; justify-content: space-between;">
+        <div>
+            <p class="espace-surtitre">Mes événements</p>
+            <h1>Vos événements</h1>
+            <p class="espace-lead">Les événements que vous avez publiés, avec leurs ventes.</p>
+        </div>
+
+        {% if user.is_authenticated %}
+            <p>
+                <a href="{% url 'core:add-event' %}" class="action-btn">+ Créer un événement</a>
+            </p>
+        {% endif %}
+    </section>
+
+    <nav class="evenements-filtres" aria-label="Filtrer les événements">
+        {% for filtre in filtres %}
+            <a href="?periode={{ filtre.code }}" class="evenements-filtre {% if filtre_actif == filtre.code %}is-active{% endif %}">
+                {{ filtre.label }} <span>{{ filtre.nombre }}</span>
+            </a>
+        {% endfor %}
+    </nav>
+
+    <div class="evenements-liste">
+        {% for evenement in evenements %}
+            <article class="evenement-ligne">
+                <a href="{% url 'core:detail-event' evenement.id %}"
+                   class="evenement-vignette"
+                   {% if evenement.image_principale %}style="background-image: url('{{ evenement.image_principale.url }}');"{% endif %}
+                   aria-label="{{ evenement.titre }}"></a>
+
+                <div class="evenement-infos">
+                    <h2><a href="{% url 'core:detail-event' evenement.id %}">{{ evenement.titre }}</a></h2>
+                    <small>{{ evenement.date_debut|date:"d M Y à H:i" }} · {{ evenement.lieu|default:evenement.ville }}</small>
+                </div>
+
+                <span class="evenement-statut">{{ evenement.get_statut_display }}</span>
+
+                <div class="evenement-chiffres">
+                    <span><strong>{{ evenement.billets_vendus }}</strong> vendus</span>
+                    <span><strong>{{ evenement.montant_encaisse|floatformat:"0g" }}</strong> FCFA</span>
+                </div>
+
+                <div class="evenement-actions">
+                    <a href="{% url 'core:edit-event' evenement.id %}" class="evenement-btn">Modifier</a>
+                    
+                    {% if evenement.etat == 'annule' %}
+                        <span class="evenement-statut">Annulé</span>
+                    {% else %}
+                        <form method="post" action="{% url 'core:annuler-evenement' evenement.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="evenement-btn" onclick="return confirm('Annuler cet événement ? Il n\'acceptera plus de réservations.')">Annuler</button>
+                        </form>
+                    {% endif %}
+
+                    <button type="button" class="evenement-btn evenement-btn--danger" data-supprimer data-action="{% url 'core:delete-event' evenement.id %}" data-titre="{{ evenement.titre }}">Supprimer</button>
+                </div>
+            </article>
+        {% empty %}
+            <div class="evenements-vide">
+                {% if filtre_actif == 'tous' %}
+                    <p>Vous n'avez encore publié aucun événement.</p>
+                {% else %}
+                    <p>Aucun événement dans cette catégorie.</p>
+                {% endif %}
+                <a href="{% url 'core:add-event' %}" class="evenement-btn evenement-btn--primaire">+ Créer un événement</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% include 'core/easy/events/partials/modal_suppression.html' %}
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'core/js/easy/event_list.js' %}" defer></script>
+{% endblock %}

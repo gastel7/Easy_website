@@ -1,0 +1,93 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+
+{% load static %}
+
+
+{% block title %} Ventes {% endblock %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/account/ventes.css' %}">
+{% endblock %}
+
+
+{% block espace_fil %}<span>Ventes</span>{% endblock %}
+
+
+{% block espace_contenu %}
+    <section class="espace-accueil">
+        <p class="espace-surtitre">Ventes</p>
+        <h1>Suivi de vos ventes</h1>
+        <p class="espace-lead">Billets vendus et montants encaissés pour vos événements.</p>
+    </section>
+
+    <div class="ventes-cartes">
+        {% for carte in cartes %}
+            <article class="ventes-carte">
+                <span class="ventes-carte-label">{{ carte.label }}</span>
+                <strong class="ventes-carte-valeur">
+                    {{ carte.valeur }}
+                    {% if carte.unite %}<small>{{ carte.unite }}</small>{% endif %}
+                </strong>
+            </article>
+        {% endfor %}
+    </div>
+
+    <section class="ventes-bloc">
+        <h2>Par événement</h2>
+
+        {% if par_evenement %}
+            <div class="ventes-tableau-wrap">
+                <table class="ventes-tableau">
+                    <thead>
+                        <tr>
+                            <th scope="col">Événement</th>
+                            <th scope="col">Billets vendus</th>
+                            <th scope="col">En attente</th>
+                            <th scope="col">Encaissé</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ligne in par_evenement %}
+                            <tr>
+                                <td class="ventes-titre">
+                                    <a href="{{ ligne.url }}">{{ ligne.titre }}</a>
+                                    <small>{{ ligne.sous_titre }}</small>
+                                </td>
+                                <td data-label="Billets vendus">
+                                    {{ ligne.vendus }}{% if ligne.places %} / {{ ligne.places }}{% endif %}
+                                    {% if ligne.places %}
+                                        <div class="ventes-barre" aria-hidden="true">
+                                            <span style="width: {% widthratio ligne.vendus ligne.places 100 %}%"></span>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td data-label="En attente">{{ ligne.en_attente }}</td>
+                                <td data-label="Encaissé">{{ ligne.encaisse }} <small>FCFA</small></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="ventes-vide">Vous n'avez encore aucun événement. Publiez-en un pour voir vos ventes ici.</p>
+        {% endif %}
+    </section>
+
+    <section class="ventes-bloc">
+        <h2>Derniers billets réservés</h2>
+
+        {% for billet in derniers_billets %}
+            <article class="ventes-ligne">
+                <div class="ventes-ligne-infos">
+                    <strong>{{ billet.titre }}</strong>
+                    <small>{{ billet.sous_titre }} · {{ billet.date }}</small>
+                </div>
+                <span class="ventes-montant">{{ billet.montant }} <small>FCFA</small></span>
+                <span class="ventes-badge ventes-badge--{{ billet.code }}">{{ billet.statut }}</span>
+            </article>
+        {% empty %}
+            <p class="ventes-vide">Aucun billet réservé pour le moment.</p>
+        {% endfor %}
+    </section>
+{% endblock %}

@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+staticfiles/
+media/
+donnees.json
+.env.example

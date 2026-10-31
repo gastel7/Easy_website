@@ -1049,3 +1049,45 @@
 .success-actions .btn {
     min-width: 220px;
 }
+
+
+/* ==========================================================================
+   Responsive et champs (à coller tout en bas de event.css)
+   ========================================================================== */
+
+/* Deux colonnes seulement si l'écran est assez large, sinon l'aperçu passe sous le formulaire */
+@media (min-width: 1360px) {
+    .event-layout {
+        grid-template-columns: minmax(0, 1fr) 340px;
+    }
+}
+
+@media (max-width: 1359px) {
+    .event-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .event-preview {
+        position: static;
+    }
+}
+
+/* Champs côte à côte : une seule colonne sur téléphone */
+@media (max-width: 899px) {
+    .form-content-sub {
+        grid-auto-flow: row;
+        grid-auto-columns: auto;
+    }
+}
+
+/* Les champs peuvent rétrécir : plus de débordement hors de la carte */
+.container-input :is(input:not([type="file"]), select, textarea) {
+    min-width: 0;
+}
+
+/* Champ organisateur en modification : affiché, non modifiable */
+.container-input select:disabled {
+    color: var(--ev-muted);
+    background-color: var(--ev-bg);
+    cursor: not-allowed;
+}

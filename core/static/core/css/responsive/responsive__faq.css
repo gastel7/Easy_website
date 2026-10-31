@@ -1,0 +1,77 @@
+/* Tablette */
+@media (max-width: 1024px) {
+    .section_questions_content {
+        width: 480px;
+    }
+
+    .contact_us_content {
+        width: 400px;
+    }
+}
+
+/* Téléphone : les deux blocs passent l'un sous l'autre */
+@media (max-width: 768px) {
+    .page-contenu {
+        min-height: auto;
+        padding-top: 20px;
+    }
+
+    .faq_page {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 30px;
+    }
+
+    .section_questions {
+        height: auto;
+        width: 100%;
+    }
+
+    .section_questions_content {
+        width: 100%;
+        padding: 0 16px;
+        border-radius: 14px;
+    }
+
+    .section_questions_content_sub section.open div h2 {
+        font-size: 1rem;
+        padding-right: 12px;
+    }
+
+    .section_questions_content_sub p {
+        font-size: 0.95rem;
+        padding: 14px 0;
+    }
+
+    /* Sur mobile, les réponses sont plus longues : on augmente la hauteur max */
+    .section_questions_content_sub .div_faq_answer.text_open {
+        max-height: 600px;
+    }
+
+    .contact_us {
+        width: 100%;
+        height: auto;
+    }
+
+    .contact_us_content {
+        width: 100%;
+        height: auto;
+        gap: 16px;
+        padding: 24px 20px;
+    }
+
+    .contact_us_content a {
+        text-align: center;
+    }
+}
+
+/* Très petits écrans */
+@media (max-width: 400px) {
+    .section_questions_content_sub section.open div h2 {
+        font-size: 0.95rem;
+    }
+
+    .contact_us_content h2 {
+        font-size: 1.1rem;
+    }
+}

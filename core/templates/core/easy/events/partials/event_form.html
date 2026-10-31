@@ -8,6 +8,17 @@
 
 <!-- Étape 1 : informations -->
 <div class="step is-active" data-step="1">
+    {% if form.organisateur %}
+        <section class="form-content-sub">
+            <div class="form_div">
+                {{ form.organisateur.label_tag }}
+                <div class="container-input">{{ form.organisateur }}</div>
+                {{ form.organisateur.errors }}
+            </div>
+        </section>
+    {% endif %}
+
+
     <section class="form-content-sub">
         <div class="form_div">
             {{ form.titre.label_tag }}

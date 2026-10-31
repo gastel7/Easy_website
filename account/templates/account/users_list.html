@@ -1,0 +1,102 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+{% load static %}
+
+{% block title %}Gestion du site · Utilisateurs{% endblock %}
+
+{% block css %}
+    {% include 'account/profile/_style.html' %}
+{% endblock %}
+
+{% block espace_fil %}<a href="{% url 'account:gestion' %}">Gestion du site</a> › Utilisateurs{% endblock %}
+
+{% block espace_contenu %}
+    <div class="gest">
+        <header class="gest-entete">
+            <div>
+                <h1>Gestion du site</h1>
+                <p class="gest-soustitre">Utilisateurs · consultation uniquement</p>
+            </div>
+            <span class="gest-total">{{ total }} utilisateur{{ total|pluralize }}</span>
+        </header>
+
+        <form class="gest-recherche" method="get" action="{% url 'account:gestion-utilisateurs' %}">
+            <input type="search" name="q" value="{{ recherche }}" placeholder="Rechercher par nom, email, téléphone ou identifiant" aria-label="Rechercher un utilisateur">
+            {% if role_actif != 'tous' %}<input type="hidden" name="role" value="{{ role_actif }}">{% endif %}
+            {% if statut_actif != 'tous' %}<input type="hidden" name="statut" value="{{ statut_actif }}">{% endif %}
+            <button type="submit">Rechercher</button>
+            {% if recherche %}<a class="gest-reset" href="{{ url_sans_recherche }}">Effacer la recherche</a>{% endif %}
+        </form>
+
+        <nav class="gest-filtres" aria-label="Filtrer par rôle">
+            <span class="gest-filtres-titre">Rôle</span>
+            {% for filtre in filtres_role %}
+                <a href="{{ filtre.url }}" class="gest-chip {% if filtre.code == role_actif %}is-active{% endif %}">{{ filtre.label }} <span>{{ filtre.nombre }}</span></a>
+            {% endfor %}
+        </nav>
+
+        <nav class="gest-filtres" aria-label="Filtrer par statut">
+            <span class="gest-filtres-titre">Statut</span>
+            {% for filtre in filtres_statut %}
+                <a href="{{ filtre.url }}" class="gest-chip {% if filtre.code == statut_actif %}is-active{% endif %}">{{ filtre.label }}</a>
+            {% endfor %}
+        </nav>
+
+        {% if utilisateurs %}
+            <div class="gest-tableau-conteneur">
+                <table class="gest-tableau">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Contact</th>
+                            <th>Rôle</th>
+                            <th>Statut</th>
+                            <th>Inscrit le</th>
+                            <th>Dernière connexion</th>
+                            <th class="gest-nombre">Événements</th>
+                            <th class="gest-nombre">Billets</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in utilisateurs %}
+                            <tr>
+                                <td>
+                                    <div class="gest-nom">{{ u.get_full_name|default:u.username }}</div>
+                                    <div class="gest-secondaire">@{{ u.username }}</div>
+                                </td>
+                                <td>
+                                    <div>{{ u.email|default:"—" }}</div>
+                                    <div class="gest-secondaire">{{ u.tel|default:"—" }}</div>
+                                </td>
+                                <td><span class="gest-badge gest-badge--{{ u.role_css }}">{{ u.get_role_display|default:"Sans rôle" }}</span></td>
+                                <td>
+                                    {% if u.is_active %}<span class="gest-badge gest-badge--actif">Actif</span>
+                                    {% else %}<span class="gest-badge gest-badge--inactif">Inactif</span>{% endif %}
+                                </td>
+                                <td>{{ u.date_joined|date:"d/m/Y" }}</td>
+                                <td>{{ u.last_login|date:"d/m/Y H:i"|default:"Jamais" }}</td>
+                                <td class="gest-nombre">{{ u.nb_evenements }}</td>
+                                <td class="gest-nombre">{{ u.nb_billets }}</td>
+                                <td><a class="gest-lien" href="{% url 'account:gestion-utilisateur' u.id %}">Voir</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+                <nav class="gest-pagination" aria-label="Pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ page_obj.previous_page_number }}">← Précédent</a>
+                    {% endif %}
+                    <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+                    {% if page_obj.has_next %}
+                        <a href="?{% if base_qs %}{{ base_qs }}&{% endif %}page={{ page_obj.next_page_number }}">Suivant →</a>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        {% else %}
+            <div class="gest-carte gest-vide">Aucun utilisateur ne correspond à cette recherche.</div>
+        {% endif %}
+    </div>
+{% endblock %}

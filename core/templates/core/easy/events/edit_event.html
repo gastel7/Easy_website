@@ -10,16 +10,25 @@
     <link rel="stylesheet" href="{% static 'core/css/easy/event.css' %}">
 {% endblock %}
 
-{% block main %} 
+{% block espace_fil %}
+    <span>
+        <a href="{% url 'core:events-list' %}">
+            Événements › {{ event.titre }}
+        </a>
+    </span>
+{% endblock %}
+
+{% block espace_contenu %}
     <main class="event-page">
         <!-- data-step : sert aux étapes sur mobile -->
         <div class="event-layout" data-step="1">
+            
 
             <div class="event-card">
                 <div class="event-head">
                     <a class="event-back" href="{% url 'core:events-list' %}">Événements</a>
 
-                    <h2>Mise à jour de l'événement {{ event.titre }}</h2>
+                    
 
                     <p class="event-lead">Modifiez les détails de votre événement pour tenir votre communauté informée des dernières nouveautés.</p>
                 </div>

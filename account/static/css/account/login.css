@@ -1,4 +1,4 @@
-/* Ça, c'est login.css */
+/* Login : couleurs de la palette À propos. Sombre par défaut, clair via data-theme. */
 
 *{
     margin: 0;
@@ -9,18 +9,38 @@
 }
 
 body{
-    color: #272727;
-    background-color: #E5e5e5;
+    color: var(--text);
+    background-color: var(--bg-page);
     font-family: inter;
     font-family: sans-serif;
 }
 
 .container{
+    --page-bg: #000208;
+    --page-text: #ffffff;
+    --page-muted: grey;
+    --page-line: grey;
+    --page-red: #e50914;
+    --section-bg: #272727;
+    --login-bg: #272727;
+
     width: 100%;
     padding-top: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--page-bg);
+    color: var(--page-text);
+}
+
+[data-theme="light"] .container{
+    --page-bg: #f4f4f4;
+    --page-text: #0b0b0f;
+    --page-muted: #5f5f66;
+    --page-line: #a1a1aa;
+    --section-bg: #e5e5e5;
+    --login-bg: #fff;
+    --page-line: #fff;   
 }
 
 .main_content{
@@ -50,7 +70,7 @@ body{
 }
 
 .login_text_info h1 strong{
-    color: #e50914;
+    color: var(--page-red);
     font-variant: small-caps;
     font-style: italic;
     font-weight: 800;
@@ -59,11 +79,7 @@ body{
 .login_text_info p{
     font-size: 1.2rem;
     line-height: 1.5;
-    /* color: #e3e3e3; */
 }
-
-
-
 
 
 /* form_container */
@@ -78,16 +94,14 @@ body{
 }
 
 .form_container_sub{
-    /* width: 70%; */
-    /* height: 70%; */
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 30px;
     gap: 20px;
-    border: solid 1px black;
+    border: solid 1px var(--page-line);
     border-radius: 20px;
-    background-color: #fff;
+    background-color: var(--section-bg);
 }
 
 .form_container_sub h2{
@@ -110,16 +124,13 @@ body{
     color: #aaa;
 }
 
-/* On décale le texte de l'input pour ne pas qu'il écrive sur l'icône */
 .input-with-icon input {
-    padding-right: 35px; 
+    padding-right: 35px;
     width: 100%;
 }
 
 
 /* Section "OU" */
-
-/* La section "OU" */
 .section_or{
     display: flex;
     align-items: center;
@@ -127,18 +138,14 @@ body{
     gap: 10px;
     margin: 20px 0;
     font-size: 0.8em;
-    color: #555;
+    color: var(--page-muted);
 }
 
 .section_or div{
     flex: 1;
     height: 1px;
-    background-color: #dee1e8;
-    background-color: #E5e5e5;
+    background-color: var(--page-line);
 }
-
-
-
 
 
 /* Social login */
@@ -152,7 +159,7 @@ body{
     padding: 10px;
     border-radius: 20px;
     text-decoration: none;
-    color: #272727;
+    color: var(--page-text);
 }
 
 .social-login a svg {
@@ -161,8 +168,7 @@ body{
 }
 
 
-
-/* Greeting Section :  La section de salutation */
+/* Greeting */
 .greeting_section{
     display: flex;
     flex-direction: column;
@@ -170,7 +176,6 @@ body{
     gap: 20px;
     max-width: 480px;
 }
-
 
 .greeting_section svg{
     width: 44px;
@@ -187,19 +192,16 @@ body{
 
 .greeting_section p{
     font-size: 1.21em;
-    color: #555;
+    color: var(--page-muted);
 }
 
 
-
-
-/* Login Section : La section de connexion */
+/* Section de connexion */
 .login_section, .logup_section{
-    /* outline: solid 1px red; */
     padding: 25px 44px;
     border-radius: 20px;
-    border: 1px solid #dee1e8;
-    background-color: white;
+    border: 1px solid var(--page-line);
+    background-color: var(--login-bg);
 }
 
 .login_section h2{
@@ -207,13 +209,13 @@ body{
 }
 
 .form_text{
-    color: #555;
+    color: var(--page-muted);
     font-size: 0.96em;
     margin-bottom: 20px;
     margin-top: 8px;
 }
 
-/* Le block de choix de rôle */
+/* Bloc de choix de rôle */
 .choice_role_block{
     display: flex;
     align-items: center;
@@ -227,18 +229,16 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* gap: 5px; */
     flex: 1;
     padding: 8px 5px 13px 5px;
     border-radius: 12px;
-    border: 2px solid #dee1e8;
+    border: 2px solid var(--page-line);
     cursor: pointer;
     font-size: 0.8em;
 }
 
 .choice_role_block section:hover{
-    /* border-color: #0b6ba5; */
-    border-color: #ccc;
+    border-color: var(--page-muted);
 }
 
 .choice_role_block section svg{
@@ -246,18 +246,16 @@ body{
     height: 28px;
 }
 
-/* Le block qui contient le role sélectionné que je vais géré avec le javascript */
 .choice_role_block .is_clicked, .choice_role_block .is_clicked:hover{
-    border: 2px solid #000;
-    background-color: #f9f9f9;
-    background-color: #E5e5e5;
+    border: 2px solid var(--page-text);
+    background-color: var(--page-bg);
 }
 
 .choice_role_block .is_clicked svg{
-    color:#e50914;
+    color: var(--page-red);
 }
 
-/* Le conteneur des champs de formulaires */
+/* Conteneur des champs de formulaire */
 .container-input{
     display: flex;
     flex-direction: column;
@@ -272,26 +270,24 @@ body{
     gap: 10px;
 }
 
-
 .container-input label, .container-input .forget-password{
     font-size: 0.9em;
-    color: #091123;
+    color: var(--page-text);
     font-weight: 600;
 }
 
 .container-input .forget-password{
-    color: #555;
+    color: var(--page-muted);
     text-decoration: none;
     font-weight: normal;
 }
 
 .container-input .forget-password:hover{
     text-decoration: underline;
-    color: #000;
+    color: var(--page-text);
 }
 
-
-/* Bouton d'affichage / masquage du mot de passe */
+/* Bouton afficher / masquer le mot de passe */
 .toggle-password{
     display: flex;
     align-items: center;
@@ -301,7 +297,7 @@ body{
     border: none;
     background: none;
     cursor: pointer;
-    color: #555;
+    color: var(--page-muted);
 }
 
 .toggle-password .icon-eye-off{
@@ -316,12 +312,7 @@ body{
     display: block;
 }
 
-body.dark .toggle-password{
-    color: #8f9cae;
-}
-
-
-/* Le champ input lui même */
+/* Champ de saisie */
 .container-input div.input_field {
     width: 100%;
     padding: 10px;
@@ -329,16 +320,15 @@ body.dark .toggle-password{
     align-items: center;
     border-radius: 8px;
     gap: 5px;
-    border: 1px solid #dee1e8;
-    background-color: #f9f9f9;
-    background-color: #E5e5e5;
+    border: 1px solid var(--page-line);
+    background-color: var(--page-bg);
 }
 
 .container-input div.input_field svg{
     width: 24px;
     height: 24px;
     padding: 4px;
-    color: #555;
+    color: var(--page-muted);
 }
 
 .container-input div.input_field input{
@@ -347,7 +337,7 @@ body.dark .toggle-password{
     outline: none;
     background-color: transparent;
     font-size: 15px;
-    color: #091123;
+    color: var(--page-text);
 }
 
 .container-input div.input_field input::placeholder{
@@ -357,15 +347,14 @@ body.dark .toggle-password{
 #country_code{
     width: 140px;
     padding: 10px;
-    border: 1px solid #dee1e8;
-    background-color: #f9f9f9;
-    background-color: #E5e5e5;
+    border: 1px solid var(--page-line);
+    background-color: var(--page-bg);
     border-radius: 8px;
     font-size: 15px;
-    color: #091123;
+    color: var(--page-text);
 }
 
-/* Le bouton "Se connecter" */
+/* Bouton "Se connecter" */
 .btn_login{
     display: flex;
     align-items: center;
@@ -375,7 +364,7 @@ body.dark .toggle-password{
     padding: 12px;
     border-radius: 8px;
     border: none;
-    background: #e50914;
+    background: var(--page-red);
     color: white;
     font-weight: bold;
     font-size: 1em;
@@ -389,27 +378,7 @@ body.dark .toggle-password{
     cursor: not-allowed;
 }
 
-
-/* La section "OU" */
-.section_or{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin: 20px 0;
-    font-size: 0.8em;
-    color: #555;
-}
-
-.section_or div{
-    flex: 1;
-    height: 1px;
-    background-color: #dee1e8;
-    background-color: #E5e5e5;
-}
-
-
-/* La div : "Continuer avec Google" */
+/* Boutons de connexion sociale */
 .social_logins_links{
     display: flex;
     align-items: center;
@@ -418,9 +387,9 @@ body.dark .toggle-password{
     width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #dee1e8;
-    background-color: #f9f9f9;
-    color: #091123;
+    border: 1px solid var(--page-line);
+    background-color: var(--page-bg);
+    color: var(--page-text);
     font-weight: 600;
     font-size: 1em;
     cursor: pointer;
@@ -429,19 +398,19 @@ body.dark .toggle-password{
 }
 
 .social_logins_links:hover {
-    background-color: #f1f1f1;
+    background-color: var(--section-bg);
 }
 
-/* La section "Créer un compte" */
+/* Lien "Créer un compte" */
 .new_account{
     text-align: center;
     margin-top: 20px;
-    color: #555;
+    color: var(--page-muted);
     font-size: 0.9em;
 }
 
 .new_account a{
-    color: #091123;
+    color: var(--page-text);
     font-weight: 600;
     text-decoration: none;
 }
@@ -450,12 +419,10 @@ body.dark .toggle-password{
     text-decoration: underline;
 }
 
-
-/* Conteneur principal horizontal et arrondi */
+/* Sélecteur email / téléphone */
 .email_or_phone-selector-container {
     display: flex;
-    background-color: #f3f4f6; /* Gris très clair de fond */
-    background-color: #E5e5e5;
+    background-color: var(--section-bg);
     padding: 4px;
     border-radius: 12px;
     width: 100%;
@@ -466,7 +433,6 @@ body.dark .toggle-password{
     display: none;
 }
 
-/* Chaque bouton de rôle */
 .email_or_phone-item {
     flex: 1;
     display: flex;
@@ -479,7 +445,7 @@ body.dark .toggle-password{
     font-family: sans-serif;
     font-size: 14px;
     font-weight: 500;
-    color: #6b7280; 
+    color: var(--page-muted);
     transition: all 0.2s ease;
 }
 
@@ -489,10 +455,9 @@ body.dark .toggle-password{
     transition: transform 0.2s ease;
 }
 
-/* État actif (Sélectionné) */
 .email_or_phone-item.active {
-    background-color: #fff; 
-    color: #e50914;
+    background-color: var(--page-bg);
+    color: var(--page-red);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -500,12 +465,12 @@ body.dark .toggle-password{
     transform: scale(1.05);
 }
 
-
+/* Onglets Organisateur / Participant */
 .tabs-role-container {
     display: flex;
     width: 100%;
-    border-bottom: 2px solid #e5e7eb;
-    margin-bottom: 20px; 
+    border-bottom: 2px solid var(--page-line);
+    margin-bottom: 20px;
 }
 
 .tab-item input[type="radio"] {
@@ -523,14 +488,14 @@ body.dark .toggle-password{
     font-family: sans-serif;
     font-size: 15px;
     font-weight: 500;
-    color: #9ca3af;
+    color: var(--page-muted);
     border-bottom: 2px solid transparent;
-    margin-bottom: -2px; 
+    margin-bottom: -2px;
     transition: all 0.2s ease-in-out;
 }
 
 .tab-item:hover {
-    color: #4b5563;
+    color: var(--page-text);
 }
 
 .tab-item svg {
@@ -539,8 +504,8 @@ body.dark .toggle-password{
 }
 
 .tab-item.active {
-    color: #e50914; 
-    border-bottom-color: #e50914; 
+    color: var(--page-red);
+    border-bottom-color: var(--page-red);
     font-weight: 600;
 }
 

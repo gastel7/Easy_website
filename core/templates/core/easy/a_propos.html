@@ -6,14 +6,15 @@
 {% block title %} À propos de nous {% endblock %}
 
 
-{% block css %} 
+{% block css %}
     <link rel="stylesheet" href="{% static 'core/css/easy/a_propos.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/easy/carrousel.css' %}">
     <link rel="stylesheet" href="{% static 'core/css/responsive/responsive__a_propos.css' %}">
 {% endblock %}
 
+
 {% block main %} 
-    <main>
+    <main class="page-contenu">
         <!-- Section : à propos -->
         <section class="about">
             <section class="about_text">
@@ -109,7 +110,7 @@
 
             <section class="carrousel_container">
                 <section class="carrousel">
-                    <div class="carrousel_track" id="carrouselTrack">
+                    <div class="carrousel_track">
                         {% for member in users %}
                             <div class="card">
                                 <div class="image_profil">

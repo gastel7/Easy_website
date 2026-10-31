@@ -1,0 +1,90 @@
+{% extends 'account/profile/espace/base_espace.html' %}
+{% load static %}
+
+{% block title %}Gestion du site · {{ utilisateur.get_full_name|default:utilisateur.username }}{% endblock %}
+
+{% block css %}
+    {% include 'account/profile/_style.html' %}
+{% endblock %}
+
+{% block espace_fil %}<a href="{% url 'account:gestion' %}">Gestion du site</a> › <a href="{% url 'account:gestion-utilisateurs' %}">Utilisateurs</a> › {{ utilisateur.get_full_name|default:utilisateur.username }}{% endblock %}
+
+{% block espace_contenu %}
+    <div class="gest">
+        <a class="gest-retour" href="{% url 'account:gestion-utilisateurs' %}">← Retour à la liste des utilisateurs</a>
+
+        <div class="gest-carte">
+            <div class="gest-profil">
+                {% if utilisateur.profile_picture %}
+                    <img class="gest-avatar" src="{{ utilisateur.profile_picture.url }}" alt="Photo de {{ utilisateur.username }}">
+                {% else %}
+                    <span class="gest-avatar" aria-hidden="true">{{ utilisateur.initiales }}</span>
+                {% endif %}
+                <div>
+                    <h1>{{ utilisateur.get_full_name|default:utilisateur.username }}</h1>
+                    <p class="gest-secondaire">@{{ utilisateur.username }}</p>
+                    <p style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+                        <span class="gest-badge gest-badge--{{ utilisateur.role_css }}">{{ utilisateur.get_role_display|default:"Sans rôle" }}</span>
+                        {% if utilisateur.is_active %}<span class="gest-badge gest-badge--actif">Actif</span>
+                        {% else %}<span class="gest-badge gest-badge--inactif">Inactif</span>{% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <dl class="gest-grille">
+                <div class="gest-champ"><dt>Email</dt><dd>{{ utilisateur.email|default:"—" }}</dd></div>
+                <div class="gest-champ"><dt>Téléphone</dt><dd>{{ utilisateur.tel|default:"—" }}</dd></div>
+                <div class="gest-champ"><dt>Civilité</dt><dd>{{ utilisateur.get_civilite_display|default:"—" }}</dd></div>
+                <div class="gest-champ"><dt>Nationalité</dt><dd>{{ utilisateur.nationalite|default:"—" }}</dd></div>
+                <div class="gest-champ"><dt>Inscrit le</dt><dd>{{ utilisateur.date_joined|date:"d/m/Y à H:i" }}</dd></div>
+                <div class="gest-champ"><dt>Dernière connexion</dt><dd>{{ utilisateur.last_login|date:"d/m/Y à H:i"|default:"Jamais" }}</dd></div>
+                <div class="gest-champ"><dt>Événements créés</dt><dd>{{ utilisateur.nb_evenements }}</dd></div>
+                <div class="gest-champ"><dt>Billets achetés</dt><dd>{{ utilisateur.nb_billets }}</dd></div>
+            </dl>
+        </div>
+
+        {% if peut_attribuer_role %}
+            <section class="gest-carte gest-role">
+                <h2>Attribuer un rôle</h2>
+                <p class="gest-secondaire">Ce compte n'a pas encore de rôle (par exemple une inscription via Google ou Facebook). Seul un admin pourra le modifier ensuite.</p>
+                <form method="post" action="{% url 'account:gestion-attribuer-role' utilisateur.id %}" class="gest-role-form"
+                      onsubmit="return confirm('Attribuer ce rôle ? Seul un admin pourra le modifier ensuite.')">
+                    {% csrf_token %}
+                    <select name="role" required aria-label="Rôle à attribuer">
+                        <option value="" selected disabled>Choisir un rôle…</option>
+                        {% for code, libelle in roles_attribuables %}
+                            <option value="{{ code }}">{{ libelle }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit">Attribuer</button>
+                </form>
+            </section>
+        {% endif %}
+
+        <div class="gest-deux">
+            <section class="gest-carte">
+                <h2>Derniers événements créés</h2>
+                {% for evenement in evenements %}
+                    <div class="gest-ligne">
+                        <span>{{ evenement.titre }}</span>
+                        <span class="gest-secondaire">{{ evenement.date_debut|date:"d/m/Y" }} · {{ evenement.get_statut_display }}</span>
+                    </div>
+                {% empty %}
+                    <p class="gest-secondaire">Aucun événement créé.</p>
+                {% endfor %}
+            </section>
+
+            <section class="gest-carte">
+                <h2>Derniers billets</h2>
+                {% for billet in billets %}
+                    <div class="gest-ligne">
+                        <span>{{ billet.category.event.titre }} <span class="gest-secondaire">· {{ billet.category.nom }}</span></span>
+                        <span class="gest-secondaire">{{ billet.get_statut_display }} · {{ billet.date_achat|date:"d/m/Y" }}</span>
+                    </div>
+                {% empty %}
+                    <p class="gest-secondaire">Aucun billet acheté.</p>
+                {% endfor %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

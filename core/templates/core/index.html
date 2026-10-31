@@ -123,61 +123,21 @@
             font-weight: 600;
             text-decoration: none;
         }
-        .events-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 22px;
-        }
-        .event-card {
-            background: #fff;
-            border: 1px solid #eef0f4;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 16px 32px rgba(18, 24, 38, 0.05);
-        }
-        .event-card__image {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
-        .event-card__body {
-            padding: 20px;
-        }
-        .event-card__meta {
-            color: #7a7f89;
-            font-size: 0.81rem;
-            margin-bottom: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .event-card h3 {
-            margin: 0 0 10px;
-            font-size: 1.3rem;
-        }
-        .event-card p {
-            color: #5a6270;
-            margin: 0 0 16px;
-        }
-        .event-card__footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .price-tag {
-            font-weight: 700;
-            color: #111827;
-        }
+
         @media (max-width: 900px) {
             .hero__inner, .events-grid { grid-template-columns: 1fr; }
             .section-header { align-items: start; flex-direction: column; }
         }
     </style>
+
+    <link rel="stylesheet" href="{% static 'core/css/easy/events_list.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/easy/accueil.css' %}">
 {% endblock %}
 
 {% block main %}
-    <main>
+    <main class="accueil" data-csrf="{{ csrf_token }}">
+
+        <!-- ===== Hero (inchangé) ===== -->
         <section class="hero">
             <div class="hero__inner">
                 <div>
@@ -217,37 +177,265 @@
             </div>
         </section>
 
-        <section class="section">
-            <div class="section-header">
-                <h2>Événements à ne pas manquer</h2>
-                <a href="{% url 'core:events-list' %}">Voir tout</a>
-            </div>
-            <div class="events-grid">
-                {% for event in events %}
-                    <article class="event-card">
-                        {% if event.image %}
-                            <div class="event-card__image" style="background-image: url('{{ event.image.url }}');"></div>
-                        {% else %}
-                            <div class="event-card__image" style="background: linear-gradient(135deg, #111827, #e50914);"></div>
-                        {% endif %}
-                        <div class="event-card__body">
-                            <div class="event-card__meta">
-                                <span>{{ event.categorie }}</span>
-                                <span>•</span>
-                                <span>{{ event.date_debut|date:'d M Y' }}</span>
+        <!-- ===== Barre de recherche ===== -->
+        <section class="accueil-recherche">
+            <form class="accueil-recherche__barre" method="get" action="{% url 'core:events-list' %}">
+                <label class="accueil-champ">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                    <span class="accueil-champ__texte">
+                        <small>Que recherchez-vous ?</small>
+                        <input type="search" name="q" placeholder="Concert, soirée, conférence..." aria-label="Rechercher">
+                    </span>
+                </label>
+
+                <label class="accueil-champ">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                    <span class="accueil-champ__texte">
+                        <small>Où ?</small>
+                        <input type="text" name="ville" placeholder="Brazzaville, toute la ville" aria-label="Ville">
+                    </span>
+                </label>
+
+                <button type="submit" class="accueil-recherche__bouton">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                    Rechercher
+                </button>
+            </form>
+        </section>
+
+        <!-- ===== Événements à la une ===== -->
+        <div class="events-page">
+            {% if a_la_une %}
+                <section class="accueil-une">
+                    <div class="accueil-conteneur">
+                        <p class="accueil-eyebrow">À la une</p>
+                        <h2 class="accueil-titre">Événements à ne pas manquer</h2>
+
+                        <div class="accueil-une__carrousel" data-une>
+                            <button type="button" class="accueil-une__bouton accueil-une__bouton--prev" data-une-prev aria-label="Voir les événements précédents">‹</button>
+
+                            <div class="accueil-une__piste" data-une-piste>
+                                {% for event in a_la_une %}
+                                    {% include 'core/easy/events/partials/card_event_vertical.html' %}
+                                {% endfor %}
                             </div>
-                            <h3>{{ event.title }}</h3>
-                            <p>{{ event.short_description|default:event.description|truncatechars:120 }}</p>
-                            <div class="event-card__footer">
-                                <span class="price-tag">{{ event.price }} FCFA</span>
-                                <a href="{% url 'core:detail-event' event.id %}" class="btn-primary">Détails</a>
-                            </div>
+
+                            <button type="button" class="accueil-une__bouton accueil-une__bouton--next" data-une-next aria-label="Voir la suite">›</button>
                         </div>
-                    </article>
-                {% empty %}
-                    <p>Aucun événement publié pour le moment.</p>
-                {% endfor %}
+
+                        <p class="accueil-voir-tout">
+                            <a href="{% url 'core:events-list' %}">Voir tous les événements →</a>
+                        </p>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+
+        <!-- ===== Easy en 3 étapes ===== -->
+        <section class="accueil-bloc accueil-fond-sombre">
+            <div class="accueil-conteneur accueil-etapes__grille">
+                <div>
+                    <p class="accueil-eyebrow">Easy en 3 étapes</p>
+                    <h2 class="accueil-gros-titre">C'est simple, rapide<br>et sécurisé.</h2>
+                </div>
+
+                <ol class="accueil-etapes__liste">
+                    <li class="accueil-etape">
+                        <span class="accueil-etape__cercle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                        </span>
+                        <div>
+                            <span class="accueil-etape__numero">01</span>
+                            <h3>Trouve</h3>
+                            <p>Découvre les événements qui t'intéressent près de chez toi.</p>
+                        </div>
+                    </li>
+
+                    <li class="accueil-etape">
+                        <span class="accueil-etape__cercle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>
+                        </span>
+                        <div>
+                            <span class="accueil-etape__numero">02</span>
+                            <h3>Réserve</h3>
+                            <p>Choisis ton billet et effectue ton paiement en toute sécurité.</p>
+                        </div>
+                    </li>
+
+                    <li class="accueil-etape">
+                        <span class="accueil-etape__cercle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3h-3M17 20h4M20 17v3"/></svg>
+                        </span>
+                        <div>
+                            <span class="accueil-etape__numero">03</span>
+                            <h3>Vis</h3>
+                            <p>Reçois ton billet et présente ton QR code à l'entrée.</p>
+                        </div>
+                    </li>
+                </ol>
             </div>
         </section>
+
+        <!-- ===== Pour les organisateurs ===== -->
+        <section class="accueil-bloc accueil-organisateurs">
+            <div class="accueil-conteneur accueil-organisateurs__grille">
+                <div class="accueil-visuel">
+                    <div class="accueil-visuel__cadre">
+                        <video id="accueil-video" class="accueil-video"
+                               poster="{% static 'core/images/easy_background_org_section.jpeg' %}"
+                               autoplay muted loop playsinline preload="auto">
+                            <source src="{% static 'core/videos/easy_organisateurs.mp4' %}" type="video/mp4">
+                        </video>
+
+                        <button type="button" id="accueil-play" class="accueil-play is-hidden" aria-label="Lire la vidéo">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="accueil-eyebrow">Pour les organisateurs</p>
+                    <h2 class="accueil-gros-titre">Ton événement mérite<br>d'être vu.</h2>
+
+                    <p class="accueil-texte">
+                        EASY t'accompagne pour atteindre plus de personnes, vendre plus de billets
+                        et gérer ton événement facilement.
+                    </p>
+
+                    <ul class="accueil-atouts">
+                        <li class="accueil-atout">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M12 13v5M9.5 15.5h5"/></svg>
+                            <span>Publie ton événement</span>
+                        </li>
+                        <li class="accueil-atout">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10v4a1 1 0 0 0 1 1h2l5 4V5L6 9H4a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
+                            <span>Fais connaître ton événement</span>
+                        </li>
+                        <li class="accueil-atout">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg>
+                            <span>Vends tes billets</span>
+                        </li>
+                        <li class="accueil-atout">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 20h18"/><rect x="5" y="12" width="3" height="8"/><rect x="10.5" y="8" width="3" height="12"/><rect x="16" y="4" width="3" height="16"/></svg>
+                            <span>Suis tes ventes</span>
+                        </li>
+                        <li class="accueil-atout">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M8 12h8"/></svg>
+                            <span>Contrôle les entrées</span>
+                        </li>
+                    </ul>
+
+                    <a href="{% if user.is_authenticated %}{% url 'core:add-event' %}{% else %}{% url 'account:logup' %}{% endif %}" class="accueil-bouton">
+                        {% if user.is_authenticated %}Publier un événement{% else %}Je suis organisateur{% endif %}
+                        <svg viewBox="0 -960 960 960" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Pourquoi choisir Easy ===== -->
+        <section class="accueil-bloc accueil-fond-sombre accueil-pourquoi">
+            <div class="accueil-conteneur accueil-pourquoi__grille">
+                <div class="accueil-pourquoi__texte">
+                    <p class="accueil-eyebrow">Pourquoi choisir Easy ?</p>
+                    <h2>Ne cherche plus les événements. <span class="accueil-rouge">EASY</span> les rassemble pour toi.</h2>
+                    <p class="accueil-texte">
+                        Découvre les événements, réserve tes billets et reçois ton QR code,
+                        le tout depuis ton téléphone.
+                    </p>
+                </div>
+
+                <div class="accueil-pourquoi__cartes">
+                    <article class="accueil-carte">
+                        <span class="accueil-carte__icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8a2 2 0 0 1 2-2z"/><path d="M15 6v12" stroke-dasharray="2 2"/></svg>
+                        </span>
+                        <h3>Billetterie simple</h3>
+                        <p>Réserve ton billet en quelques clics seulement.</p>
+                    </article>
+
+                    <article class="accueil-carte">
+                        <span class="accueil-carte__icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
+                        </span>
+                        <h3>Pensé pour le mobile</h3>
+                        <p>Une expérience fluide et rapide sur ton téléphone.</p>
+                    </article>
+
+                    <article class="accueil-carte">
+                        <span class="accueil-carte__icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 10-3.5-2-7-5-7-10V6z"/></svg>
+                        </span>
+                        <h3>Billets sécurisés</h3>
+                        <p>Chaque billet a un code unique, vérifié à l'entrée.</p>
+                    </article>
+
+                    <article class="accueil-carte">
+                        <span class="accueil-carte__icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3 20h18"/><rect x="5" y="12" width="3" height="8"/><rect x="10.5" y="8" width="3" height="12"/><rect x="16" y="4" width="3" height="16"/></svg>
+                        </span>
+                        <h3>Suivi des ventes</h3>
+                        <p>Organisateurs, suivez vos performances en temps réel.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
     </main>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'core/js/easy/favoris.js' %}" defer></script>
+    <script src="{% static 'core/js/easy/event_list.js' %}" defer></script>
+
+    <script>
+        // Vidéo : lecture automatique muette, avec bouton de secours
+        (function () {
+            const video = document.getElementById('accueil-video');
+            const bouton = document.getElementById('accueil-play');
+            if (!video || !bouton) return;
+
+            video.muted = true;
+            const lecture = video.play();
+            if (lecture !== undefined) {
+                lecture.catch(() => bouton.classList.remove('is-hidden'));
+            }
+
+            bouton.addEventListener('click', () => {
+                video.muted = true;
+                video.play();
+                bouton.classList.add('is-hidden');
+            });
+        })();
+
+        // À la une : carrousel dans les deux sens
+        (function () {
+            const carrousel = document.querySelector('[data-une]');
+            if (!carrousel) return;
+
+            const piste = carrousel.querySelector('[data-une-piste]');
+            const precedent = carrousel.querySelector('[data-une-prev]');
+            const suivant = carrousel.querySelector('[data-une-next]');
+
+            // Distance entre deux cartes (carte + espace) : on avance d'une carte à la fois
+            function pas() {
+                const cartes = piste.children;
+                if (cartes.length > 1) return cartes[1].offsetLeft - cartes[0].offsetLeft;
+                return piste.clientWidth * 0.8;
+            }
+
+            function misAJour() {
+                const max = piste.scrollWidth - piste.clientWidth;
+                carrousel.classList.toggle('is-simple', max <= 2);
+                precedent.disabled = piste.scrollLeft <= 2;
+                suivant.disabled = piste.scrollLeft >= max - 2;
+            }
+
+            precedent.addEventListener('click', () => piste.scrollBy({ left: -pas(), behavior: 'smooth' }));
+            suivant.addEventListener('click', () => piste.scrollBy({ left: pas(), behavior: 'smooth' }));
+            piste.addEventListener('scroll', misAJour, { passive: true });
+            window.addEventListener('resize', misAJour);
+            misAJour();
+        })();
+    </script>
 {% endblock %}

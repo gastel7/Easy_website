@@ -1,13 +1,28 @@
-main {
+/* Couleurs de la page. Sombre par défaut, clair via data-theme (même palette que À propos). */
+.page-contenu {
+    --page-bg: #000208;
+    --page-text: #ffffff;
+    --page-line: grey;
+    --page-red: #e50914;
+    --section-bg: #272727;
+
     min-height: 85vh;
     padding-top: 30px;
-    background-color: #f4f4f4;
+    background-color: var(--page-bg);
+    color: var(--page-text);
     padding-bottom: 20px;
     width: 100%;
 
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+[data-theme="light"] .page-contenu {
+    --page-bg: #f4f4f4;
+    --page-text: #0b0b0f;
+    --page-line: #a1a1aa;
+    --section-bg: #e5e5e5;
 }
 
 .faq_page {
@@ -27,7 +42,7 @@ main {
 }
 
 .section_questions_content {
-    background-color: #fff;
+    background-color: var(--section-bg);
     padding: 0 30px;
     border-radius: 20px;
     width: 630px;
@@ -41,7 +56,7 @@ main {
 /* Le titre cliquable de la question */
 .section_questions_content_sub section.open {
     padding: 20px 0;
-    border-bottom: solid 1px grey;
+    border-bottom: solid 1px var(--page-line);
     cursor: pointer;
 }
 
@@ -51,7 +66,7 @@ main {
 }
 
 .section_questions_content_sub:nth-of-type(6) section.open.clicked {
-    border-bottom: solid grey 1px;
+    border-bottom: solid var(--page-line) 1px;
 }
 
 /* Fait tourner la flèche au clic */
@@ -59,30 +74,30 @@ main {
     transform: rotate(180deg);
 }
 
-/* Ajoute une transition fluide sur la flèche */
+/* Flèche : transition fluide, couleur du thème */
 .section_questions_content_sub section.open svg {
+    fill: var(--page-text);
     transition: transform 0.3s ease;
 }
 
-/* LE CONTENEUR DE LA RÉPONSE : Gère la transition d'ouverture ET de fermeture */
+/* Le conteneur de la réponse : ouverture et fermeture */
 .section_questions_content_sub .div_faq_answer {
-    max-height: 0;            /* Totalement caché et replié par défaut */
-    opacity: 0;               /* Invisible par défaut */
+    max-height: 0;
+    opacity: 0;
     overflow: hidden;
-    /* Transition sur la hauteur et l'opacité (0.35s pour l'ouverture et la fermeture) */
     transition: max-height 0.35s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 /* Quand le JS ajoute la classe au clic */
 .section_questions_content_sub .div_faq_answer.text_open {
-    max-height: 300px;        /* Une valeur max supérieure à la taille de ton texte pour lui laisser la place de s'ouvrir */
-    opacity: 1;               /* Devient visible */
+    max-height: 300px;
+    opacity: 1;
 }
 
 /* Le texte à l'intérieur */
 .section_questions_content_sub p {
     align-content: center;
-    padding: 20px 0;          /* Garde les marges internes propres */
+    padding: 20px 0;
 }
 
 .section_questions_content_sub section.open div {
@@ -100,10 +115,10 @@ main {
     height: 100%;
     display: flex;
     align-items: center;
-}  
+}
 
 .contact_us_content {
-    background-color: white;
+    background-color: var(--section-bg);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -115,14 +130,14 @@ main {
 
 .contact_us_content h2 {
     font-size: 1.30rem;
-}   
+}
 
 .contact_us_content a {
-    background-color: #e50914;
+    background-color: var(--page-red);
     border-radius: 10px;
     padding: 12px 20px;
     width: max-content;
     text-decoration: none;
-    color: white;
+    color: #fff;
     font-weight: bold;
 }

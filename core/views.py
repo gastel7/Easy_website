@@ -36,37 +36,52 @@ def index(request):
     else:
         evenements = Events.objects.filter(statut='public')
 
+    # --- NOUVEAU : les événements « à ne pas manquer » ---
+    a_la_une = (
+        evenements_visibles(user)
+        .filter(statut='public', date_debut__gte=timezone.now())
+        .annotate(
+            prix_max=Max('ticket_categories__prix'),
+            nb_favoris=Count('favoris', distinct=True),
+        )
+        .order_by('-nb_favoris', '-nombre_de_vues', 'date_debut')[:6]
+    )
+
     context = {
-        'events': evenements.order_by('-created_at')[:2]
+        'events': evenements.order_by('-created_at')[:2],
+        'a_la_une': a_la_une,                # NOUVEAU
+        'ids_favoris': ids_favoris(user),    # NOUVEAU
     }
     return render(request, 'core/index.html', context)
 
 @login_required
 def add_event(request):
     if request.method == 'POST':
-        form = EventForm(request.POST, request.FILES)
+        form = EventForm(request.POST, request.FILES, user=request.user)
         ticket_formset = TicketFormSet(request.POST)
- 
+
         form_ok = form.is_valid()
         # Les billets sont vérifiés par rapport au nombre de places qui vient d'être envoyé
         ticket_formset.places_max = form.cleaned_data.get('nombre_de_places')
- 
+
         if form_ok and ticket_formset.is_valid():
             # Tout ou rien : si l'enregistrement des billets échoue, l'événement n'est pas créé
             with transaction.atomic():
                 event = form.save(commit=False)
-                event.organisateur = request.user
+                # Admin ou modérateur : l'organisateur choisi. Sinon : l'utilisateur connecté.
+                event.organisateur = form.cleaned_data.get('organisateur') or request.user
                 event.save()
- 
+
                 ticket_formset.instance = event
                 ticket_formset.save()
             return render(request, 'core/easy/events/partials/event_success.html', {'event': event})
     else:
-        form = EventForm()
+        form = EventForm(user=request.user)
         ticket_formset = TicketFormSet()
- 
+
     return render(request, 'core/easy/events/new_event.html', {'form': form, 'ticket_formset': ticket_formset})
- 
+
+
 @login_required
 def edit_event(request, event_id):
     event = get_object_or_404(Events, id=event_id)
@@ -76,25 +91,23 @@ def edit_event(request, event_id):
         raise PermissionDenied
 
     if request.method == 'POST':
-        form = EventForm(request.POST, request.FILES, instance=event)
+        form = EventForm(request.POST, request.FILES, instance=event, user=request.user)
         ticket_formset = TicketFormSet(request.POST, instance=event)
- 
+
         form_ok = form.is_valid()
         ticket_formset.places_max = form.cleaned_data.get('nombre_de_places')
- 
+
         if form_ok and ticket_formset.is_valid():
             with transaction.atomic():
+                # L'organisateur n'est pas dans les champs enregistrés : il ne change pas
                 form.save()
                 ticket_formset.save()
             return redirect("core:events-list")
     else:
-        form = EventForm(instance=event)
+        form = EventForm(instance=event, user=request.user)
         ticket_formset = TicketFormSet(instance=event)
- 
+
     return render(request, 'core/easy/events/edit_event.html', {'form': form, 'ticket_formset': ticket_formset, 'event': event})
- 
- 
- 
 
 
 
@@ -261,6 +274,9 @@ def detail_event(request, event_id):
             categorie.etat_vente = 'termine'
         else:
             categorie.etat_vente = 'ouvert'
+
+        if event.etat in ('annule', 'termine'):
+            categorie.etat_vente = 'termine'
  
     places_vendues = sum(categorie.vendus for categorie in categories)
     places_restantes = event.nombre_de_places - places_vendues
@@ -321,7 +337,7 @@ def delete_event(request, event_id):
         messages.error(
             request,
             f"L'événement « {titre} » ne peut pas être supprimé, car des billets ont déjà été réservés. "
-            "Vous pouvez le passer en « annulé »."
+            "Vous pouvez l'annuler depuis « Mes événements »."
         )
         return redirect('core:events-list')
 
@@ -335,7 +351,23 @@ def delete_event(request, event_id):
     return redirect('core:events-list')
 
 
+@login_required
+@require_POST
+def annuler_evenement(request, event_id):
+    event = get_object_or_404(Events, id=event_id)
 
+    peut_gerer = request.user.is_superuser or getattr(request.user, 'role', None) in ('admin', 'modérateur') or request.user == event.organisateur
+    if not peut_gerer:
+        raise PermissionDenied
+
+    if event.etat == 'annule':
+        messages.info(request, f"L'événement « {event.titre} » est déjà annulé.")
+        return redirect('account:mes-evenements')
+
+    event.etat = 'annule'
+    event.save()
+    messages.success(request, f"L'événement « {event.titre} » a été annulé. Il n'accepte plus de réservations.")
+    return redirect('account:mes-evenements')
  
  
 def a_propos(request):

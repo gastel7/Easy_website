@@ -1,0 +1,226 @@
+/* =========================================================
+   VENTES (espace organisateur)
+   Couleurs relatives (opacité, fonds semi-transparents) :
+   la page reste lisible en clair comme en sombre.
+   ========================================================= */
+
+.ventes-cartes{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px;
+    margin: 24px 0 36px;
+}
+
+.ventes-carte{
+    padding: 20px;
+    border: 1px solid rgba(127, 127, 127, 0.25);
+    border-radius: 16px;
+    background: rgba(127, 127, 127, 0.08);
+}
+
+.ventes-carte-label{
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.ventes-carte-valeur{
+    display: block;
+    margin-top: 8px;
+    font-size: 1.8rem;
+    line-height: 1.1;
+}
+
+.ventes-carte-valeur small{
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.ventes-bloc{
+    margin-bottom: 40px;
+}
+
+.ventes-bloc h2{
+    margin: 0 0 16px;
+    font-size: 1.3rem;
+}
+
+.ventes-tableau-wrap{
+    overflow-x: auto;
+}
+
+.ventes-tableau{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ventes-tableau th{
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.7;
+    border-bottom: 1px solid rgba(127, 127, 127, 0.25);
+}
+
+.ventes-tableau td{
+    padding: 16px 14px;
+    border-bottom: 1px solid rgba(127, 127, 127, 0.15);
+    vertical-align: middle;
+}
+
+.ventes-tableau td a{
+    color: #e50914;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.ventes-tableau td a:hover{
+    text-decoration: underline;
+}
+
+.ventes-tableau td small{
+    display: block;
+    margin-top: 2px;
+    opacity: 0.7;
+}
+
+/* Barre de remplissage des billets vendus */
+.ventes-barre{
+    margin-top: 6px;
+    width: 100%;
+    max-width: 180px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(127, 127, 127, 0.2);
+    overflow: hidden;
+}
+
+.ventes-barre span{
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: #e50914;
+}
+
+/* Derniers billets */
+.ventes-ligne{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(127, 127, 127, 0.2);
+    border-radius: 14px;
+}
+
+.ventes-ligne-infos{
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.ventes-ligne-infos small{
+    opacity: 0.7;
+}
+
+.ventes-montant{
+    font-weight: 700;
+}
+
+.ventes-montant small{
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+.ventes-badge{
+    padding: 4px 12px;
+    border: 1px solid rgba(127, 127, 127, 0.3);
+    border-radius: 999px;
+    font-size: 0.8rem;
+}
+
+.ventes-vide{
+    opacity: 0.7;
+}
+
+/* Petit écran : chaque ligne du tableau devient une carte */
+@media (max-width: 720px){
+    .ventes-tableau thead{
+        display: none;
+    }
+
+    .ventes-tableau,
+    .ventes-tableau tbody,
+    .ventes-tableau tr,
+    .ventes-tableau td{
+        display: block;
+        width: 100%;
+    }
+
+    .ventes-tableau tr{
+        margin-bottom: 14px;
+        padding: 6px 14px;
+        border: 1px solid rgba(127, 127, 127, 0.2);
+        border-radius: 14px;
+    }
+
+    .ventes-tableau td{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 4px 12px;
+        padding: 8px 0;
+        border-bottom: 0;
+    }
+
+    .ventes-tableau td.ventes-titre{
+        display: block;
+    }
+
+    .ventes-tableau td::before{
+        content: attr(data-label);
+        font-size: 0.85rem;
+        opacity: 0.7;
+    }
+
+    .ventes-tableau td.ventes-titre::before{
+        content: none;
+    }
+
+    .ventes-tableau td .ventes-barre{
+        order: 3;
+        flex-basis: 100%;
+        max-width: none;
+    }
+}
+
+/* Pastilles de statut des billets */
+.ventes-badge--valide {
+    color: #12a150;
+    background: rgba(18, 161, 80, 0.12);
+    border-color: rgba(18, 161, 80, 0.45);
+}
+
+.ventes-badge--en_attente {
+    color: #b7791f;
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.5);
+}
+
+.ventes-badge--scanne {
+    color: #2563eb;
+    background: rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.45);
+}
+
+.ventes-badge--annule {
+    color: #e50914;
+    background: rgba(229, 9, 20, 0.12);
+    border-color: rgba(229, 9, 20, 0.45);
+}

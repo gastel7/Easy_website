@@ -5,11 +5,36 @@
     font-family: inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-main {
-    background-color: #000208;
-    color: white;
+/* Couleurs de la page. Sombre par défaut (design d'origine). */
+.page-contenu {
+    --page-bg: #000208;
+    --page-text: #ffffff;
+    --page-muted: grey;
+    --page-line: grey;
+    --page-red: #e50914;
+    --vision-bg: rgba(128, 128, 128, 0.068);
+    --section-bg: #272727;
+    --card-bg: #e5e5e5;
+    --card-text: #000105;
+    --link: #dee1e8;
+
+    background-color: var(--page-bg);
+    color: var(--page-text);
     padding-top: 40px;
     min-height: 100vh;
+}
+
+/* Clair */
+[data-theme="light"] .page-contenu {
+    --page-bg: #f4f4f4;
+    --page-text: #0b0b0f;
+    --page-muted: #5f5f66;
+    --page-line: #a1a1aa;
+    --vision-bg: rgba(0, 0, 0, 0.04);
+    --section-bg: #e5e5e5;
+    --card-bg: #ffffff;
+    --card-text: #0b0b0f;
+    --link: #3f3f46;
 }
 
 
@@ -43,7 +68,7 @@ main {
     display: flex;
     padding-top: 2rem;
     gap: 3rem;
-    border-top: 2px #e50914 solid;
+    border-top: 2px var(--page-red) solid;
     flex-wrap: wrap;
 }
 
@@ -56,13 +81,13 @@ main {
 .stat__number {
     font-size: 2rem;
     font-weight: 700;
-    color: #e50914;
+    color: var(--page-red);
     line-height: 1;
 }
 
 .stat__label {
     font-size: 0.9rem;
-    color: grey;
+    color: var(--page-muted);
     letter-spacing: 0.5px;
 }
 
@@ -98,17 +123,17 @@ main {
     display: flex;
     align-items: center;
     border-radius: 15px;
-    background-color: rgba(128, 128, 128, 0.068);
-    border: solid 2px grey;
+    background-color: var(--vision-bg);
+    border: solid 2px var(--page-line);
 }
 
 .our_vision_container_icon {
-    width: 100px; 
-    height: 100px; 
+    width: 100px;
+    height: 100px;
 }
 
 .our_vision_container_icon img {
-    width: 100%; 
+    width: 100%;
     height: 100%;
 }
 
@@ -117,12 +142,12 @@ main {
     align-items: flex-start;
     flex-direction: column;
     gap: 6px;
-    border-left: solid 3px grey;
+    border-left: solid 3px var(--page-line);
     padding-left: 20px;
 }
 
 .our_vision_text h2 {
-    color: #e50914;
+    color: var(--page-red);
     font-size: 2.5em;
     margin-bottom: 5px;
 }
@@ -139,9 +164,9 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 30px;
-    padding:60px 20px;
+    padding: 60px 20px;
     padding-bottom: 90px;
-    background-color: #272727; 
+    background-color: var(--section-bg);
 }
 
 .our_team_text {
@@ -152,7 +177,7 @@ main {
 }
 
 .our_team_text h2 {
-    color: #e50914;
+    color: var(--page-red);
     margin-bottom: 20px;
     font-size: 2.5rem;
 }
@@ -166,30 +191,25 @@ main {
 
 
 
-/* ==========================================
-   6. CARTES DE PROFIL (Tes styles inchangés)
-   ========================================== */
+/* Cartes de profil */
 .our_team .card {
     display: flex;
     flex-direction: column;
     width: 290px;
     align-items: center;
-    background-color: #e5e5e5;
+    background-color: var(--card-bg);
     border-radius: 30px;
-    color: #000105;
+    color: var(--card-text);
     padding: 20px;
     padding-bottom: 0;
-    flex-shrink: 0; /* Empêche les cartes de s'écraser horizontalement */
+    flex-shrink: 0;
     transition: transform 0.3s ease;
 }
 
-/* Optionnel : Léger effet visuel de pop au survol d'une carte */
 .our_team .card:hover {
     transform: scale(1.03);
     cursor: pointer;
 }
-
-
 
 .our_team .card .image_profil {
     width: 180px;
@@ -202,7 +222,7 @@ main {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    outline: solid grey 2px;
+    outline: solid 2px var(--page-line);
 }
 
 .our_team .card .text_profil {
@@ -222,7 +242,7 @@ main {
 }
 
 .our_team .card .text_profil .user_statut {
-    color: #e50914;
+    color: var(--page-red);
     font-weight: bold;
     margin-bottom: 8px;
     text-align: center;
@@ -234,7 +254,7 @@ main {
     text-align: center;
 }
 
-/* Réseaux Sociaux */
+/* Réseaux sociaux */
 .our_team .user_socials_media {
     list-style: none;
     display: flex;
@@ -248,10 +268,14 @@ main {
 
 .our_team .user_socials_media a {
     text-decoration: none;
-    color: #dee1e8;
+    color: var(--link);
     display: flex;
     align-items: center;
     gap: 5px;
     padding-bottom: 5px;
 }
 
+.carrousel_container{
+    overflow: hidden;
+    width: 95vw;
+}

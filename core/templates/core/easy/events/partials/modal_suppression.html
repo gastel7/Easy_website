@@ -1,5 +1,76 @@
 {% load static %}
 
+<style>
+    .modal-suppression[hidden] {
+        display: none !important;
+    }
+
+    .modal-suppression {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-suppression-box {
+        width: 100%;
+        max-width: 420px;
+        padding: 24px;
+        background: #ffffff;
+        color: #111418;
+        border-radius: 16px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .modal-suppression-box h2 {
+        margin: 0 0 12px;
+        font-size: 1.3rem;
+        color: #111418;
+    }
+
+    .modal-suppression-box p {
+        margin: 0 0 20px;
+        line-height: 1.5;
+        color: #5b6270;
+    }
+
+    .modal-suppression-actions {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .modal-suppression-btn {
+        padding: 10px 18px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .modal-suppression-btn--secondary {
+        background: #ffffff;
+        color: #111418;
+        border-color: #d4d4d8;
+    }
+
+    .modal-suppression-btn--danger {
+        background: #e50914;
+        color: #ffffff;
+    }
+
+    .modal-suppression-btn:disabled {
+        opacity: 0.6;
+        cursor: wait;
+    }
+</style>
+
 <div class="modal-suppression" id="modal-suppression" role="dialog" aria-modal="true" aria-labelledby="modal-suppression-titre" hidden>
     <div class="modal-suppression-box">
         <h2 id="modal-suppression-titre">Supprimer l'événement ?</h2>
