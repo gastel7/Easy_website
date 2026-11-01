@@ -1,8 +1,8 @@
-Django==6.1
+Django==6.1.1
 django-allauth==65.20.1
 django-countries==9.1.0
 phonenumbers==9.0.39
-pillow==12.3.0
+pillow==13.0.0
 PyJWT==2.15.1
 python-dotenv==1.2.4
 qrcode==8.2
