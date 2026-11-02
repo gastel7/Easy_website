@@ -386,3 +386,22 @@ def contact(request):
 
 def faq(request):
     return render(request, 'core/easy/faq.html')
+
+
+# Centre d'aide
+def centre_aide(request):
+    return render(request, 'core/informations/centre_aide.html')
+
+
+# Mentions légales
+def mentions_legales(request):
+    return render(request, 'core/informations/mentions_legales.html')
+
+
+# Politique de confidentialité
+def politique_confidentialite(request):
+    return render(request, 'core/informations/politique_confidentialite.html')
+
+# Condition d'utilisation
+def conditions_utilisation(request):
+    return render(request, 'core/informations/conditions_utilisation.html')

@@ -1,0 +1,51 @@
+{% extends 'core/legal_base.html' %}
+
+{% block title %} Mentions légales {% endblock %}
+{% block legal_titre %}Mentions légales{% endblock %}
+
+{% block legal_contenu %}
+    <p class="legal-intro">Conformément à la réglementation applicable en République du Congo, voici les informations légales relatives au site <strong>{{ request.scheme }}://{{ request.get_host }}</strong> (le « Site »), exploité sous le nom <strong>Easy</strong>.</p>
+
+    <h2>1. Éditeur du Site</h2>
+    <table class="legal-tableau">
+        <tr><th>Nom commercial</th><td>Easy — plateforme de billetterie et de découverte d'événements</td></tr>
+        <tr><th>Raison sociale</th><td><span class="a-completer">[à compléter : nom de la société ou de l'entrepreneur]</span></td></tr>
+        <tr><th>Forme juridique</th><td><span class="a-completer">[à compléter : SARL, SAS, entreprise individuelle…]</span></td></tr>
+        <tr><th>Siège social</th><td><span class="a-completer">[à compléter : adresse complète]</span>, Brazzaville, République du Congo</td></tr>
+        <tr><th>N° RCCM</th><td><span class="a-completer">[à compléter]</span></td></tr>
+        <tr><th>N° d'identification unique (NIU)</th><td><span class="a-completer">[à compléter]</span></td></tr>
+        <tr><th>Directeur de la publication</th><td><span class="a-completer">[à compléter : nom et prénom]</span></td></tr>
+        <tr><th>E-mail</th><td><a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a></td></tr>
+        <tr><th>Téléphone</th><td><span class="a-completer">[à compléter]</span></td></tr>
+    </table>
+
+    <h2>2. Hébergement</h2>
+    <p>Le Site est hébergé par <strong>Wasmer, Inc.</strong> (Wasmer Edge), société établie à San Francisco, Californie, États-Unis — <a href="https://wasmer.io" target="_blank" rel="noopener">wasmer.io</a>.</p>
+
+    <h2>3. Objet du Site</h2>
+    <p>Easy permet de découvrir des événements, de réserver des billets en ligne et, pour les organisateurs, de publier leurs événements et de suivre leurs ventes. Easy agit en qualité d'intermédiaire technique : les événements sont organisés sous la seule responsabilité de leurs organisateurs (voir les <strong>Conditions d'utilisation</strong>).</p>
+
+    <h2>4. Propriété intellectuelle</h2>
+    <p>La marque Easy, le logo, la structure du Site, les textes, les graphismes et le code informatique sont la propriété d'Easy ou de ses partenaires et sont protégés par la législation sur la propriété intellectuelle. Toute reproduction, représentation ou exploitation, totale ou partielle, sans autorisation écrite préalable est interdite.</p>
+    <p>Les textes, images, vidéos et logos associés à un événement restent la propriété de l'organisateur concerné ou de leurs titulaires, qui garantissent à Easy disposer des droits nécessaires pour les diffuser.</p>
+
+    <h2>5. Responsabilité</h2>
+    <p>Easy s'efforce de maintenir le Site accessible et ses informations exactes, sans pouvoir garantir une disponibilité permanente ni l'absence d'erreur. Les informations relatives aux événements (programme, horaires, lieu, prix, artistes) sont fournies par les organisateurs, qui en sont seuls responsables. Le Site peut contenir des liens vers des sites tiers ; Easy n'exerce aucun contrôle sur leur contenu.</p>
+
+    <h2>6. Données personnelles et cookies</h2>
+    <p>Le traitement des données personnelles est décrit dans notre <strong>Politique de confidentialité</strong>, établie conformément à la loi n° 29-2019 du 10 octobre 2019 portant protection des données à caractère personnel. Les cookies utilisés sont détaillés dans la même page.</p>
+
+    <h2>7. Crédits</h2>
+    <ul>
+        <li>Certaines icônes proviennent de <a href="https://icons8.com" target="_blank" rel="noopener">Icons8</a>.</li>
+        <li>Les logos Google, Facebook et LinkedIn appartiennent à leurs propriétaires respectifs ; ils sont affichés uniquement pour permettre la connexion via ces services.</li>
+    </ul>
+
+    <h2>8. Droit applicable</h2>
+    <p>Le Site et les présentes mentions sont soumis au droit congolais. En cas de litige, et à défaut de résolution amiable, les tribunaux compétents de Brazzaville seront seuls compétents.</p>
+
+    <div class="legal-contact">
+        <strong>Une question sur ces mentions ?</strong><br>
+        Écrivez-nous à <a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a>.
+    </div>
+{% endblock %}

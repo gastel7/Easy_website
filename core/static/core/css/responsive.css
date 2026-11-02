@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
     max-width: 100%;
     overflow-x: clip;
 }
@@ -8,35 +7,19 @@ body {
     min-width: 0;
 }
 
-main,
-section,
-article,
-aside,
-form,
-nav {
+main, section, article, aside, form, nav {
     min-width: 0;
 }
 
-img,
-video,
-iframe {
+img, video, iframe {
     max-width: 100%;
 }
 
-input,
-select,
-textarea,
-button {
+input, select, textarea, button {
     max-width: 100%;
 }
 
-h1,
-h2,
-h3,
-p,
-a,
-strong,
-small {
+h1, h2, h3, p, a, strong, small {
     overflow-wrap: anywhere;
 }
 
@@ -49,8 +32,7 @@ small {
     overflow: visible;
 }
 
-.signup-background,
-.signup-overlay {
+.signup-background, .signup-overlay {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -142,8 +124,7 @@ small {
         overflow-x: auto;
     }
 
-    .espace-contenu th,
-    .espace-contenu td {
+    .espace-contenu th, .espace-contenu td {
         white-space: normal;
         overflow-wrap: anywhere;
     }
@@ -189,10 +170,7 @@ small {
         width: 100%;
     }
 
-    .container .login_section .input_field,
-    .container .login_section .btn_login,
-    .container .login_section .social-login,
-    .container .login_section .social_logins_links {
+    .container .login_section .input_field, .container .login_section .btn_login, .container .login_section .social-login, .container .login_section .social_logins_links {
         min-width: 0;
         max-width: 100%;
     }
@@ -253,9 +231,7 @@ small {
         padding: 0;
     }
 
-    .about_text h1,
-    .our_vision_text h2,
-    .our_team_text h2 {
+    .about_text h1, .our_vision_text h2, .our_team_text h2 {
         font-size: clamp(1.8rem, 8vw, 2.5rem);
     }
 
@@ -352,8 +328,7 @@ small {
         padding: 0 16px;
     }
 
-    .contact_text,
-    .contact_form {
+    .contact_text, .contact_form {
         width: 100%;
         min-width: 0;
     }
@@ -401,8 +376,7 @@ small {
         flex: none;
     }
 
-    .login_section,
-    .logup_section {
+    .login_section, .logup_section {
         width: 100%;
         min-width: 0;
         padding: clamp(18px, 5vw, 32px);
@@ -413,8 +387,7 @@ small {
         min-width: 0;
     }
 
-    .page-shell,
-    .form-shell {
+    .page-shell, .form-shell {
         width: 100%;
         padding-inline: 16px;
     }
@@ -431,21 +404,15 @@ small {
         padding: 20px;
     }
 
-    .event-detail-infos,
-    .event-detail-orga,
-    .event-detail-bloc,
-    .event-detail-reserve,
-    .event-detail-share {
+    .event-detail-infos, .event-detail-orga, .event-detail-bloc, .event-detail-reserve, .event-detail-share {
         padding: 18px;
     }
 
-    .paiement-recap,
-    .paiement-action {
+    .paiement-recap, .paiement-action {
         padding: 18px;
     }
 
-    .paiement-billets li,
-    .paiement-total {
+    .paiement-billets li, .paiement-total {
         align-items: flex-start;
         flex-wrap: wrap;
     }
@@ -573,9 +540,7 @@ small {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         scroll-behavior: auto !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;

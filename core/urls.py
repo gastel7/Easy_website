@@ -13,6 +13,12 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'), 
     path('faq/', views.faq, name='faq'), 
 
+    # Les liens d'informations 
+    path('centre_aide/', views.centre_aide, name='centre_aide'), 
+    path('mentions_legales/', views.mentions_legales, name='mentions_legales'), 
+    path('politique_confidentialite/', views.politique_confidentialite, name='politique_confidentialite'), 
+    path('conditions_utilisation/', views.conditions_utilisation, name='conditions_utilisation'), 
+
     # Les vues des évenements
     path('nouvel-evenement/', views.add_event, name='add-event'), 
     path('liste-evenements/', views.events_list, name='events-list'), 

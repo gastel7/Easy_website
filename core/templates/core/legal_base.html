@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block css %}
+    <style>
+        .legal-page{background:#E5e5e5;padding:40px 16px 80px}
+        .legal{max-width:880px;margin:0 auto;padding:36px 44px 44px;line-height:1.75;color:#091123;background:#fff;border:1px solid #dee1e8;border-radius:16px}
+        .legal h1,.legal h2,.legal h3,.legal p,.legal li,.legal td,.legal th,.legal strong,.legal summary{color:inherit}
+        .legal h1{font-size:2rem;margin:0 0 6px}
+        .legal-maj{opacity:.65;font-size:.9em;margin:0 0 26px}
+        .legal-intro{font-size:1.05em;margin-bottom:22px}
+        .legal h2{font-size:1.25rem;margin:36px 0 10px;scroll-margin-top:110px}
+        .legal h3{font-size:1.05rem;margin:20px 0 6px}
+        .legal p,.legal li{margin:0 0 10px}
+        .legal ul,.legal ol{padding-left:22px;margin:0 0 12px}
+        .legal a{color:#e50914}
+        .legal-sommaire{background:rgba(127,127,127,.08);border:1px solid rgba(127,127,127,.25);border-radius:12px;padding:16px 22px;margin:0 0 10px}
+        .legal-sommaire strong{display:block;margin-bottom:4px}
+        .legal-sommaire ol{margin:0;columns:2;column-gap:30px}
+        .legal-sommaire li{margin:0 0 4px;break-inside:avoid}
+        .legal-encadre{background:rgba(229,9,20,.07);border-left:4px solid #e50914;border-radius:6px;padding:12px 16px;margin:14px 0}
+        .legal-tableau{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:.95em}
+        .legal-tableau th,.legal-tableau td{border:1px solid rgba(127,127,127,.3);padding:8px 12px;text-align:left;vertical-align:top}
+        .legal-tableau th{background:rgba(127,127,127,.12)}
+        .a-completer{background:#fff3cd;color:#7a5b00;padding:1px 6px;border-radius:4px;font-weight:600;white-space:normal}
+        .legal-contact{background:rgba(127,127,127,.08);border:1px solid rgba(127,127,127,.25);border-radius:12px;padding:16px 22px;margin-top:30px}
+
+        /* Centre d'aide */
+        .aide-groupe{margin-top:36px}
+        .aide-q{border:1px solid rgba(127,127,127,.3);border-radius:10px;margin:0 0 10px;background:rgba(127,127,127,.05)}
+        .aide-q summary{cursor:pointer;padding:14px 18px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+        .aide-q summary::-webkit-details-marker{display:none}
+        .aide-q summary::after{content:"+";font-size:1.4em;line-height:1;color:#e50914;flex-shrink:0}
+        .aide-q[open] summary::after{content:"−"}
+        .aide-q[open] summary{border-bottom:1px solid rgba(127,127,127,.25)}
+        .aide-reponse{padding:12px 18px 6px}
+        /* Mode sombre : la classe « dark » (body ou html) ou l'attribut data-theme="dark" */
+        body.dark .legal-page,html.dark .legal-page,[data-theme="dark"] .legal-page{background:#0e1118}
+        body.dark .legal,html.dark .legal,[data-theme="dark"] .legal{color:#e8eaf0;background:#161b26;border-color:#2a3140}
+        body.dark .legal a,html.dark .legal a,[data-theme="dark"] .legal a{color:#ff5a63}
+        body.dark .legal-sommaire,body.dark .legal-contact,body.dark .aide-q,
+        html.dark .legal-sommaire,html.dark .legal-contact,html.dark .aide-q,
+        [data-theme="dark"] .legal-sommaire,[data-theme="dark"] .legal-contact,[data-theme="dark"] .aide-q{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.18)}
+        body.dark .legal-tableau th,body.dark .legal-tableau td,
+        html.dark .legal-tableau th,html.dark .legal-tableau td,
+        [data-theme="dark"] .legal-tableau th,[data-theme="dark"] .legal-tableau td{border-color:rgba(255,255,255,.18)}
+        body.dark .legal-tableau th,html.dark .legal-tableau th,[data-theme="dark"] .legal-tableau th{background:rgba(255,255,255,.08)}
+        body.dark .aide-q[open] summary,html.dark .aide-q[open] summary,[data-theme="dark"] .aide-q[open] summary{border-bottom-color:rgba(255,255,255,.18)}
+        body.dark .a-completer,html.dark .a-completer,[data-theme="dark"] .a-completer{background:#5c4a00;color:#ffe9a6}
+
+        @media (max-width:640px){.legal-sommaire ol{columns:1}.legal h1{font-size:1.6rem}.legal{padding:24px 20px 30px}.legal-page{padding:24px 10px 60px}}
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="legal-page">
+        <main class="legal">
+            <h1>{% block legal_titre %}{% endblock %}</h1>
+            <p class="legal-maj">Dernière mise à jour : 1er novembre 2026</p>
+            {% block legal_contenu %}{% endblock %}
+        </main>
+    </div>
+{% endblock %}

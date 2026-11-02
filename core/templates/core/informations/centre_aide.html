@@ -1,0 +1,176 @@
+{% extends 'core/legal_base.html' %}
+
+{% block title %} Centre d'aide {% endblock %}
+{% block legal_titre %}Centre d'aide{% endblock %}
+
+{% block legal_contenu %}
+    <p class="legal-intro">Retrouvez ici les réponses aux questions les plus fréquentes. Vous ne trouvez pas ce que vous cherchez ? <a href="mailto:easycongo0@gmail.com">Écrivez-nous</a>, nous vous répondrons.</p>
+
+    <nav class="legal-sommaire" aria-label="Sommaire">
+        <strong>Aller à</strong>
+        <ol>
+            <li><a href="#compte">Compte et connexion</a></li>
+            <li><a href="#billets">Billets et paiement</a></li>
+            <li><a href="#organisateurs">Organisateurs</a></li>
+            <li><a href="#securite">Sécurité et signalement</a></li>
+        </ol>
+    </nav>
+
+    <section class="aide-groupe" id="compte">
+        <h2>Compte et connexion</h2>
+
+        <details class="aide-q"><summary>Comment créer un compte ?</summary>
+            <div class="aide-reponse">
+                <p>Cliquez sur « Créer un compte », choisissez <strong>Organisateur</strong> (vous publiez des événements) ou <strong>Participant</strong> (vous réservez des billets), puis remplissez le formulaire. Votre numéro de téléphone se saisit avec l'indicatif du pays, par exemple <strong>+242 06 123 4567</strong> pour le Congo. Vous pouvez aussi vous inscrire en un clic avec Google ou Facebook.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Comment me connecter ?</summary>
+            <div class="aide-reponse">
+                <p>Saisissez votre <strong>e-mail</strong> ou votre <strong>numéro de téléphone avec l'indicatif</strong> (+242…), puis votre mot de passe. Vous pouvez aussi utiliser les boutons Google ou Facebook si vous avez créé votre compte ainsi.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>J'ai oublié mon mot de passe</summary>
+            <div class="aide-reponse">
+                <p>La réinitialisation automatique n'est pas encore disponible. Écrivez-nous à <a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a> en indiquant l'e-mail ou le numéro de téléphone de votre compte : nous vous aiderons à retrouver l'accès.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Je me suis inscrit avec Google ou Facebook et je n'ai pas de rôle</summary>
+            <div class="aide-reponse">
+                <p>Ouvrez votre profil (menu « Mon espace ») et choisissez votre rôle, <strong>Participant</strong> ou <strong>Organisateur</strong>. Pensez aussi à renseigner votre civilité et votre téléphone. Le choix du rôle ne se fait qu'une fois.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Comment changer mon rôle ?</summary>
+            <div class="aide-reponse">
+                <p>Une fois le rôle choisi, il est verrouillé pour des raisons de sécurité. Contactez-nous à <a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a> en expliquant votre demande : un administrateur pourra le modifier.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Comment modifier mes informations ou ma photo ?</summary>
+            <div class="aide-reponse">
+                <p>Rendez-vous dans « Mon espace » : vous pouvez y modifier votre nom, votre e-mail, votre téléphone (avec l'indicatif), votre civilité, votre nationalité et votre photo de profil.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>On me dit que mon e-mail ou mon numéro est déjà utilisé</summary>
+            <div class="aide-reponse">
+                <p>Un compte existe déjà avec ces informations : essayez de vous connecter avec. Si ce n'est pas vous qui l'avez créé, contactez-nous.</p>
+            </div>
+        </details>
+    </section>
+
+    <section class="aide-groupe" id="billets">
+        <h2>Billets et paiement</h2>
+
+        <details class="aide-q"><summary>Comment réserver un billet ?</summary>
+            <div class="aide-reponse">
+                <p>Ouvrez la page de l'événement qui vous intéresse, choisissez la catégorie de billet (Standard, VIP, etc.) et suivez les étapes jusqu'au paiement. Vous devez être connecté.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Où retrouver mes billets ?</summary>
+            <div class="aide-reponse">
+                <p>Dans votre espace, rubrique <strong>« Mes billets »</strong>. Vous pouvez les filtrer par statut.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Que signifient les statuts d'un billet ?</summary>
+            <div class="aide-reponse">
+                <ul>
+                    <li><strong>En attente de paiement</strong> : la commande est enregistrée, le paiement n'est pas encore confirmé.</li>
+                    <li><strong>Valide</strong> : le paiement est confirmé, le billet est utilisable.</li>
+                    <li><strong>Scanné</strong> : le billet a été utilisé à l'entrée de l'événement.</li>
+                    <li><strong>Annulé</strong> : le billet n'est plus valable.</li>
+                </ul>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>J'ai payé mais mon billet est toujours « en attente »</summary>
+            <div class="aide-reponse">
+                <p>La confirmation peut prendre quelques minutes. Actualisez la page « Mes billets ». Si le statut ne change pas, écrivez-nous à <a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a> avec le nom de l'événement et la <strong>référence de votre paiement</strong>.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Comment utiliser mon billet le jour de l'événement ?</summary>
+            <div class="aide-reponse">
+                <p>Présentez le code unique de votre billet à l'entrée. Un billet n'est valable qu'une fois : après le scan, il est marqué comme utilisé. Ne partagez jamais votre code, une copie pourrait être utilisée avant vous.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Puis-je me faire rembourser ?</summary>
+            <div class="aide-reponse">
+                <p>Si l'événement est <strong>annulé</strong> par l'organisateur, vous êtes remboursé. Dans les autres cas, un billet acheté n'est en principe ni remboursable ni échangeable. Le détail figure dans nos <strong>Conditions d'utilisation</strong> ; pour une demande, contactez-nous avec votre billet et sa référence de paiement.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Comment ajouter un événement à mes favoris ?</summary>
+            <div class="aide-reponse">
+                <p>Ajoutez l'événement à vos favoris depuis sa fiche. Vous retrouverez ensuite vos favoris dans votre espace, rubrique « Favoris ».</p>
+            </div>
+        </details>
+    </section>
+
+    <section class="aide-groupe" id="organisateurs">
+        <h2>Organisateurs</h2>
+
+        <details class="aide-q"><summary>Comment devenir organisateur ?</summary>
+            <div class="aide-reponse">
+                <p>Choisissez le rôle <strong>Organisateur</strong> lors de votre inscription, ou dans votre profil si vous n'avez pas encore de rôle. Pour un changement de rôle sur un compte existant, contactez-nous.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Comment passer de l'espace Participant à l'espace Organisateur ?</summary>
+            <div class="aide-reponse">
+                <p>En haut de votre espace, les boutons <strong>Participant</strong> et <strong>Organisateur</strong> changent l'affichage. En mode Organisateur, le menu propose « Mes événements » et « Ventes » ; en mode Participant, vous retrouvez la liste de tous les événements.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Comment suivre mes ventes ?</summary>
+            <div class="aide-reponse">
+                <p>En mode Organisateur, ouvrez <strong>« Ventes »</strong> : vous y voyez le nombre de billets vendus, le montant encaissé, les billets en attente de paiement et le détail par événement. « Mes événements » liste tous les événements que vous avez créés.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Quels types de billets puis-je proposer ?</summary>
+            <div class="aide-reponse">
+                <ul>
+                    <li><strong>Early Bird</strong> : tarif réduit de lancement.</li>
+                    <li><strong>Standard</strong>, <strong>VIP</strong>, <strong>VVIP</strong> : catégories payantes classiques.</li>
+                    <li><strong>Gratuit</strong> : entrée libre avec billet.</li>
+                    <li><strong>Donation</strong> : le participant donne le montant qu'il souhaite (à partir d'un minimum éventuel).</li>
+                </ul>
+                <p>La somme des places de vos catégories ne peut pas dépasser le nombre de places de l'événement.</p>
+            </div>
+        </details>
+    </section>
+
+    <section class="aide-groupe" id="securite">
+        <h2>Sécurité et signalement</h2>
+
+        <details class="aide-q"><summary>Comment signaler un événement suspect ou un contenu inapproprié ?</summary>
+            <div class="aide-reponse">
+                <p>Écrivez-nous à <a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a> avec le lien de l'événement ou du contenu et une courte explication. Notre équipe de modération examine les signalements et peut retirer un contenu ou désactiver un compte.</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Que faites-vous de mes données personnelles ?</summary>
+            <div class="aide-reponse">
+                <p>Tout est expliqué dans notre <strong>Politique de confidentialité</strong> : données collectées, utilisation, durée de conservation et vos droits (accès, rectification, suppression).</p>
+            </div>
+        </details>
+
+        <details class="aide-q"><summary>Je pense que mon compte a été piraté</summary>
+            <div class="aide-reponse">
+                <p>Changez immédiatement votre mot de passe depuis votre profil, puis prévenez-nous à <a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a> : nous pourrons vérifier l'activité de votre compte.</p>
+            </div>
+        </details>
+    </section>
+
+    <div class="legal-contact">
+        <strong>Besoin d'aide ?</strong><br>
+        Notre équipe est à votre écoute à Brazzaville : <a href="mailto:easycongo0@gmail.com">easycongo0@gmail.com</a>. Vous pouvez aussi nous écrire via la chaîne WhatsApp indiquée en bas de page.
+    </div>
+{% endblock %}
